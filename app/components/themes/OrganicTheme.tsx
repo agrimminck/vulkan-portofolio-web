@@ -1,6 +1,7 @@
 "use client";
 
 import { projects } from "../../lib/projects";
+import ThemedPortrait from "../ThemedPortrait";
 
 function Blob({
   className,
@@ -52,6 +53,15 @@ export default function OrganicTheme() {
       <div className="relative z-10 max-w-[1300px] mx-auto px-10 py-16">
         {/* Sticker hero */}
         <header className="mb-16 relative">
+          <div className="absolute top-0 right-0 hidden md:block" style={{ transform: "rotate(4deg)" }}>
+            <ThemedPortrait variant="organic" size={170} shape="square" />
+            <div
+              className="mt-2 text-center text-lg italic"
+              style={{ fontFamily: "var(--font-body-organic)", color: "var(--terra)" }}
+            >
+              ✿ the gardener
+            </div>
+          </div>
           <div className="inline-block transform -rotate-2 mb-6">
             <span
               className="inline-block px-5 py-1.5 text-xs uppercase tracking-[0.3em] font-bold"

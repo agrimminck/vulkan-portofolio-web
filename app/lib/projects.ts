@@ -43,6 +43,7 @@ export const projects: Project[] = [
     tagline: "Affiliate marketplace, MLC API",
     description:
       "Next.js 15 affiliate site for home appliances in Chile. Full SEO pipeline, JSON-LD, sitemap, Mercado Libre OAuth integration.",
+    url: "https://topelectrohogar.com",
     category: "basilisk",
     tags: ["Next.js 15", "MLC API", "SEO", "Affiliate"],
     status: "live",
@@ -75,6 +76,18 @@ export const projects: Project[] = [
     accent: "#3b82f6",
   },
   {
+    id: "boti-finder",
+    name: "Boti Finder",
+    tagline: "Discover liquor stores w/ live promos",
+    description:
+      "Map-driven discovery for botillerías y minimarkets. Google Places API (New). Standby on GCP billing.",
+    category: "basilisk",
+    tags: ["Next.js 16", "Places API", "Drizzle"],
+    status: "standby",
+    year: 2026,
+    accent: "#f59e0b",
+  },
+  {
     id: "free-pickup",
     name: "Free Pickup",
     tagline: "Give away items locally for free",
@@ -102,6 +115,7 @@ export const projects: Project[] = [
 ];
 
 export const themes = [
+  { id: "refined", label: "Refined", subtitle: "Quiet · Considered", color: "#1e3a5f" },
   { id: "metropolis", label: "Metropolis", subtitle: "Future City + Orbit", color: "#67e8f9" },
   { id: "corporate", label: "Corporate", subtitle: "Boardroom", color: "#0a2540" },
   { id: "cyberpunk", label: "Cyberpunk", subtitle: "Terminal/Neon", color: "#ff007a" },

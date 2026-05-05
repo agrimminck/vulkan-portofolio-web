@@ -1,6 +1,7 @@
 "use client";
 
 import { projects } from "../../lib/projects";
+import ThemedPortrait from "../ThemedPortrait";
 
 export default function EditorialTheme() {
   return (
@@ -56,6 +57,12 @@ export default function EditorialTheme() {
             className="md:col-span-4 border-l-2 border-[var(--ink)] pl-6 text-base leading-relaxed columns-1"
             style={{ fontFamily: "var(--font-display-editorial)" }}
           >
+            <div className="mb-4">
+              <ThemedPortrait variant="editorial" size={150} shape="square" />
+              <div className="mt-2 text-[10px] tracking-[0.3em] uppercase font-bold" style={{ fontFamily: "var(--font-body-editorial)", color: "var(--red)" }}>
+                ↳ The author, photographed in studio
+              </div>
+            </div>
             <p className="mb-4 first-letter:text-6xl first-letter:font-black first-letter:float-left first-letter:mr-2 first-letter:leading-[0.85] first-letter:text-[var(--red)]">
               The portfolio you are reading is intentionally heterogeneous. An MMORPG built ground-up
               shares a column with a forex algorithm, a pharmacy-shift marketplace, and a humble

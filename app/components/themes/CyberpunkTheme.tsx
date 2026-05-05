@@ -2,6 +2,7 @@
 
 import { projects } from "../../lib/projects";
 import { useEffect, useState } from "react";
+import ThemedPortrait from "../ThemedPortrait";
 
 function GlitchText({ children, className }: { children: string; className?: string }) {
   return (
@@ -67,7 +68,7 @@ export default function CyberpunkTheme() {
           <div className="absolute -top-3 left-6 px-2 bg-[var(--bg)] text-[10px] tracking-[0.3em] text-[var(--neon-pink)]">
             // SYS_HELLO.EXE
           </div>
-          <div className="grid md:grid-cols-3 gap-6 items-end">
+          <div className="grid md:grid-cols-4 gap-6 items-end">
             <div className="md:col-span-2">
               <div className="text-[10px] tracking-[0.4em] text-[var(--neon-cyan)] mb-2">
                 NODE.LATAM // PORTFOLIO_v5.0 // 2026.05
@@ -85,6 +86,12 @@ export default function CyberpunkTheme() {
             </div>
             <div className="border-l border-[var(--neon-cyan)] pl-4">
               <Terminal />
+            </div>
+            <div className="flex flex-col items-center md:items-end gap-2">
+              <ThemedPortrait variant="cyberpunk" size={140} shape="square" />
+              <span className="text-[10px] tracking-[0.3em] text-[var(--neon-pink)] font-mono">
+                ID:0xAGRM·LIVE
+              </span>
             </div>
           </div>
         </header>

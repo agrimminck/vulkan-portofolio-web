@@ -1,6 +1,7 @@
 "use client";
 
 import { projects } from "../../lib/projects";
+import ThemedPortrait from "../ThemedPortrait";
 
 function PlaneSilhouette({ className, scale = 1 }: { className?: string; scale?: number }) {
   return (
@@ -83,10 +84,16 @@ export default function CorporateTheme() {
               software · games · infrastructure
             </div>
           </div>
-          <div className="hidden md:flex flex-col items-end text-right text-xs uppercase tracking-[0.25em] opacity-70 leading-relaxed">
-            <span>Reg. №&nbsp;CL-2026-MMXXVI</span>
-            <span>Volume I · Folio 01</span>
-            <span>Annual Report</span>
+          <div className="hidden md:flex items-center gap-6">
+            <div className="flex flex-col items-end text-right text-xs uppercase tracking-[0.25em] opacity-70 leading-relaxed">
+              <span>Reg. №&nbsp;CL-2026-MMXXVI</span>
+              <span>Volume I · Folio 01</span>
+              <span>Annual Report</span>
+              <span className="mt-2 italic opacity-80" style={{ fontFamily: "var(--font-display-corporate)" }}>
+                Principal —
+              </span>
+            </div>
+            <ThemedPortrait variant="corporate" size={120} shape="circle" />
           </div>
         </header>
 

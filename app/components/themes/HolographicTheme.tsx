@@ -1,6 +1,7 @@
 "use client";
 
 import { projects } from "../../lib/projects";
+import ThemedPortrait from "../ThemedPortrait";
 
 export default function HolographicTheme() {
   return (
@@ -40,28 +41,33 @@ export default function HolographicTheme() {
       />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-10 py-16">
-        <header className="mb-20">
-          <div className="text-[10px] tracking-[0.5em] uppercase opacity-70 mb-4 iridescent inline-block">
-            ✦ a portfolio of impossible objects ✦
+        <header className="mb-20 grid md:grid-cols-12 gap-8 items-center">
+          <div className="md:col-span-9">
+            <div className="text-[10px] tracking-[0.5em] uppercase opacity-70 mb-4 iridescent inline-block">
+              ✦ a portfolio of impossible objects ✦
+            </div>
+            <h1
+              className="text-7xl md:text-[9rem] leading-[0.9] font-normal"
+              style={{ fontFamily: "var(--font-display-holo)" }}
+            >
+              <span className="iridescent">Soft</span>ware
+              <br />
+              from <span className="italic iridescent">a parallel</span>
+              <br />
+              <span className="iridescent">timeline</span>.
+            </h1>
+            <p
+              className="mt-6 text-lg max-w-2xl opacity-80 leading-relaxed font-mono"
+              style={{ fontFamily: "var(--font-body-holo)" }}
+            >
+              // {projects.length} projects rendered through a chrome lens. some live, some still loading,
+              <br />
+              // all built by one engineer & a small library of tools.
+            </p>
           </div>
-          <h1
-            className="text-7xl md:text-[9rem] leading-[0.9] font-normal"
-            style={{ fontFamily: "var(--font-display-holo)" }}
-          >
-            <span className="iridescent">Soft</span>ware
-            <br />
-            from <span className="italic iridescent">a parallel</span>
-            <br />
-            <span className="iridescent">timeline</span>.
-          </h1>
-          <p
-            className="mt-6 text-lg max-w-2xl opacity-80 leading-relaxed font-mono"
-            style={{ fontFamily: "var(--font-body-holo)" }}
-          >
-            // eleven projects rendered through a chrome lens. some live, some still loading,
-            <br />
-            // all built by one engineer & a small library of tools.
-          </p>
+          <div className="md:col-span-3 flex md:justify-end">
+            <ThemedPortrait variant="holographic" size={200} shape="circle" />
+          </div>
         </header>
 
         {/* Stats holo */}

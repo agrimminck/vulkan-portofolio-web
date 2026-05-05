@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { type ThemeId } from "./lib/projects";
 import ThemeSwitcher from "./components/ThemeSwitcher";
+import RefinedTheme from "./components/themes/RefinedTheme";
 import MetropolisTheme from "./components/themes/MetropolisTheme";
 import CorporateTheme from "./components/themes/CorporateTheme";
 import CyberpunkTheme from "./components/themes/CyberpunkTheme";
@@ -11,6 +12,7 @@ import OrganicTheme from "./components/themes/OrganicTheme";
 import HolographicTheme from "./components/themes/HolographicTheme";
 
 const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
+  refined: RefinedTheme,
   metropolis: MetropolisTheme,
   corporate: CorporateTheme,
   cyberpunk: CyberpunkTheme,
@@ -20,7 +22,7 @@ const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
 };
 
 export default function Home() {
-  const [theme, setTheme] = useState<ThemeId>("metropolis");
+  const [theme, setTheme] = useState<ThemeId>("refined");
   const [revealing, setRevealing] = useState<{ theme: ThemeId; x: number; y: number } | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
