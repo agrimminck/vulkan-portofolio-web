@@ -12,6 +12,7 @@ export default function AdminPage() {
   const [settings, setSettings] = useState<PortfolioSettings>(DEFAULT_SETTINGS);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   useEffect(() => {
     if (status !== "authenticated") return;
@@ -22,14 +23,21 @@ export default function AdminPage() {
 
   async function save() {
     setSaving(true);
-    await fetch("/api/settings", {
+    setSaveError("");
+    const res = await fetch("/api/settings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(settings),
     });
     setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    if (res.ok) {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } else {
+      const body = await res.json().catch(() => ({}));
+      setSaveError(body.error ?? `Error ${res.status}`);
+      setTimeout(() => setSaveError(""), 4000);
+    }
   }
 
   if (status === "loading") {
@@ -138,8 +146,8 @@ export default function AdminPage() {
       </section>
 
       {/* Save */}
-      <button onClick={save} disabled={saving} style={btnStyle(saved ? "#16a34a" : "#4285F4", { width: "100%", padding: "13px" })}>
-        {saving ? "Saving..." : saved ? "✓ Saved" : "Save Changes"}
+      <button onClick={save} disabled={saving} style={btnStyle(saveError ? "#dc2626" : saved ? "#16a34a" : "#4285F4", { width: "100%", padding: "13px" })}>
+        {saving ? "Saving..." : saveError ? `✗ ${saveError}` : saved ? "✓ Saved" : "Save Changes"}
       </button>
     </Screen>
   );

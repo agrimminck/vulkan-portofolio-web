@@ -1,7 +1,8 @@
 import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -11,13 +12,11 @@ const handler = NextAuth({
   callbacks: {
     async signIn({ user }) {
       if (!user.email) return false;
-      // Gmail ignores dots — strip them from local part for comparison
       const normalize = (e: string) => {
         const parts = e.toLowerCase().trim().split("@");
         return `${parts[0].replace(/\./g, "")}@${parts[1]}`;
       };
       const email = normalize(user.email);
-      // Accept both dot variants of the same Gmail account
       const allowed = ["agrimminck94@gmail.com", "agrimminck.94@gmail.com"];
       return allowed.some((a) => normalize(a) === email);
     },
@@ -30,6 +29,7 @@ const handler = NextAuth({
     error: "/admin",
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
