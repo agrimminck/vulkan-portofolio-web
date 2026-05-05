@@ -11,13 +11,15 @@ const handler = NextAuth({
   callbacks: {
     async signIn({ user }) {
       if (!user.email) return false;
-      // Gmail ignores dots in local part — normalize both sides
+      // Gmail ignores dots — strip them from local part for comparison
       const normalize = (e: string) => {
-        const [local, domain] = e.toLowerCase().split("@");
-        return `${local.replace(/\./g, "")}@${domain}`;
+        const parts = e.toLowerCase().trim().split("@");
+        return `${parts[0].replace(/\./g, "")}@${parts[1]}`;
       };
-      const adminRaw = process.env.ADMIN_EMAIL ?? "";
-      return normalize(user.email) === normalize(adminRaw);
+      const email = normalize(user.email);
+      // Accept both dot variants of the same Gmail account
+      const allowed = ["agrimminck94@gmail.com", "agrimminck.94@gmail.com"];
+      return allowed.some((a) => normalize(a) === email);
     },
     async session({ session }) {
       return session;
