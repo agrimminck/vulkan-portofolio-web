@@ -49,6 +49,7 @@ export const PROJECT_ES: Record<string, { tagline: string; description: string }
 
 export const SHARED: Record<Lang, {
   visit: string;
+  github: string;
   studio: string;
   openSource: string;
   product: string;
@@ -58,6 +59,7 @@ export const SHARED: Record<Lang, {
 }> = {
   en: {
     visit: "Visit →",
+    github: "GitHub →",
     studio: "Studio Project",
     openSource: "Open Source",
     product: "Public Product",
@@ -67,6 +69,7 @@ export const SHARED: Record<Lang, {
   },
   es: {
     visit: "Visitar →",
+    github: "GitHub →",
     studio: "Proyecto de Estudio",
     openSource: "Open Source",
     product: "Producto Público",

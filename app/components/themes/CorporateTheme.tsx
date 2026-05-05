@@ -131,20 +131,14 @@ export default function CorporateTheme() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((p, i) => (
-              <a
+              <div
                 key={p.id}
-                href={p.url ?? "#"}
-                target={p.url ? "_blank" : undefined}
-                rel="noreferrer"
                 className="group relative bg-[var(--bg-deep)] border border-[var(--rule)] p-6 transition-all hover:border-[var(--ink)] hover:shadow-[8px_8px_0_var(--ink)] hover:-translate-x-1 hover:-translate-y-1"
                 style={{ minHeight: 200 }}
               >
                 <div className="flex items-start justify-between mb-4">
                   <span className="text-[10px] uppercase tracking-[0.3em] opacity-60">
                     №&nbsp;{String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-[10px] uppercase tracking-[0.25em] px-2 py-0.5 border border-current opacity-70">
-                    {p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby}
                   </span>
                 </div>
                 <h3 className="text-2xl font-bold mb-1">{p.name}</h3>
@@ -165,10 +159,31 @@ export default function CorporateTheme() {
                     </span>
                   ))}
                 </div>
-                {p.url && (
-                  <div className="mt-3 text-xs uppercase tracking-[0.2em] opacity-60">{sh.visit}</div>
+                {(p.url || p.github) && (
+                  <div className="mt-3 flex items-center gap-4">
+                    {p.url && (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs uppercase tracking-[0.2em] opacity-60 hover:opacity-100 transition-opacity"
+                      >
+                        {sh.visit}
+                      </a>
+                    )}
+                    {p.github && (
+                      <a
+                        href={p.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs uppercase tracking-[0.2em] opacity-60 hover:opacity-100 transition-opacity"
+                      >
+                        {sh.github}
+                      </a>
+                    )}
+                  </div>
                 )}
-              </a>
+              </div>
             ))}
           </div>
         </section>

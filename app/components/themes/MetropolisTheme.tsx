@@ -169,11 +169,8 @@ export default function MetropolisTheme() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {projects.map((p, i) => (
-              <a
+              <div
                 key={p.id}
-                href={p.url ?? "#"}
-                target={p.url ? "_blank" : undefined}
-                rel="noreferrer"
                 className="group relative rounded-2xl p-6 transition-all duration-500 hover:-translate-y-1 overflow-hidden"
                 style={{
                   background: "rgba(255,255,255,0.78)",
@@ -203,19 +200,6 @@ export default function MetropolisTheme() {
                       {String(i + 1).padStart(2, "0")} ·{" "}
                       {p.category === "idyllic" ? sh.studio : p.category === "social" ? sh.openSource : sh.product}
                     </span>
-                    <span
-                      className="text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full font-medium"
-                      style={{
-                        background: `${p.accent}33`,
-                        color: p.accent,
-                        border: `2px solid #000`,
-                        outline: "1px solid #000",
-                        textShadow: "0 0 4px #000, 0 0 8px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000",
-                        boxShadow: "0 0 0 1px #000",
-                      }}
-                    >
-                      {p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby}
-                    </span>
                   </div>
                   <h3
                     className="text-3xl mb-1 leading-tight font-bold tracking-tight"
@@ -241,17 +225,33 @@ export default function MetropolisTheme() {
                         </span>
                       ))}
                     </div>
-                    {p.url && (
-                      <span
-                        className="text-xs tracking-[0.2em] uppercase font-medium transition-transform group-hover:translate-x-1"
-                        style={{ color: p.accent }}
-                      >
-                        {sh.visit}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-3">
+                      {p.url && (
+                        <a
+                          href={p.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs tracking-[0.2em] uppercase font-medium hover:translate-x-1 transition-transform"
+                          style={{ color: p.accent }}
+                        >
+                          {sh.visit}
+                        </a>
+                      )}
+                      {p.github && (
+                        <a
+                          href={p.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs tracking-[0.2em] uppercase font-medium"
+                          style={{ color: "#71717a" }}
+                        >
+                          {sh.github}
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </section>

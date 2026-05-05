@@ -97,11 +97,8 @@ export default function RefinedTheme() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {projects.map((p, i) => (
-              <a
+              <div
                 key={p.id}
-                href={p.url ?? "#"}
-                target={p.url ? "_blank" : undefined}
-                rel="noreferrer"
                 className="refined-card group relative p-7 md:p-8 refined-rise overflow-hidden"
                 style={{ animationDelay: `${0.35 + i * 0.06}s` }}
               >
@@ -120,7 +117,6 @@ export default function RefinedTheme() {
                         ? sh.openSource
                         : sh.product}
                   </span>
-                  <StatusPill status={p.status} labels={{ live: sh.live, wip: sh.wip, standby: sh.standby }} />
                 </div>
                 <h3 className="text-3xl md:text-4xl mb-2" style={{ fontFamily: "var(--font-display-refined)" }}>
                   {p.name}
@@ -143,16 +139,32 @@ export default function RefinedTheme() {
                       </span>
                     ))}
                   </div>
-                  {p.url && (
-                    <span
-                      className="ml-4 text-xs tracking-[0.2em] uppercase text-[var(--ink)] font-medium whitespace-nowrap transition-transform group-hover:translate-x-1"
-                      style={{ fontFamily: "var(--font-body-refined)" }}
-                    >
-                      {sh.visit}
-                    </span>
-                  )}
+                  <div className="ml-4 flex items-center gap-3">
+                    {p.url && (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs tracking-[0.2em] uppercase text-[var(--ink)] font-medium whitespace-nowrap hover:translate-x-1 transition-transform"
+                        style={{ fontFamily: "var(--font-body-refined)" }}
+                      >
+                        {sh.visit}
+                      </a>
+                    )}
+                    {p.github && (
+                      <a
+                        href={p.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs tracking-[0.2em] uppercase text-[var(--ink-muted)] font-medium whitespace-nowrap"
+                        style={{ fontFamily: "var(--font-body-refined)" }}
+                      >
+                        {sh.github}
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </section>
@@ -167,28 +179,5 @@ export default function RefinedTheme() {
         </footer>
       </div>
     </div>
-  );
-}
-
-function StatusPill({
-  status,
-  labels,
-}: {
-  status: "live" | "wip" | "standby";
-  labels: { live: string; wip: string; standby: string };
-}) {
-  const map = {
-    live: { color: "#16a34a", bg: "#dcfce7" },
-    wip: { color: "#1e3a5f", bg: "#dbeafe" },
-    standby: { color: "#a16207", bg: "#fef3c7" },
-  } as const;
-  const m = map[status];
-  return (
-    <span
-      className="text-[10px] tracking-[0.2em] uppercase px-2.5 py-1 font-medium"
-      style={{ color: m.color, background: m.bg, borderRadius: "999px" }}
-    >
-      {labels[status]}
-    </span>
   );
 }

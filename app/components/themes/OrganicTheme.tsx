@@ -127,13 +127,9 @@ export default function OrganicTheme() {
             const rot = [-2, 1.5, -1, 2, -1.5, 1, -2, 1, -1, 2, 0][i];
             const tagline = lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline;
             const description = lang === "es" ? (PROJECT_ES[p.id]?.description ?? p.description) : p.description;
-            const statusLabel = p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby;
             return (
-              <a
+              <div
                 key={p.id}
-                href={p.url ?? "#"}
-                target={p.url ? "_blank" : undefined}
-                rel="noreferrer"
                 className="block relative transition-transform duration-300 hover:scale-105"
                 style={{
                   background: pal.bg,
@@ -157,12 +153,6 @@ export default function OrganicTheme() {
                   }}
                 />
                 <div className="flex items-start justify-between mb-3">
-                  <span
-                    className="inline-block px-2 py-0.5 text-[10px] uppercase font-bold tracking-widest"
-                    style={{ background: pal.accent, color: pal.bg, borderRadius: "999px" }}
-                  >
-                    {statusLabel}
-                  </span>
                   <span className="text-xs opacity-60 font-bold">·{String(i + 1).padStart(2, "0")}·</span>
                 </div>
                 <h3
@@ -198,7 +188,43 @@ export default function OrganicTheme() {
                     </span>
                   ))}
                 </div>
-              </a>
+                {(p.url || p.github) && (
+                  <div className="flex items-center gap-3 mt-4">
+                    {p.url && (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[10px] px-3 py-1 font-bold uppercase tracking-wider hover:opacity-80 transition-opacity"
+                        style={{
+                          background: pal.accent,
+                          color: pal.bg,
+                          borderRadius: "999px",
+                          border: `1.5px solid ${pal.ink}`,
+                        }}
+                      >
+                        {sh.visit}
+                      </a>
+                    )}
+                    {p.github && (
+                      <a
+                        href={p.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[10px] px-3 py-1 font-bold uppercase tracking-wider hover:opacity-80 transition-opacity"
+                        style={{
+                          background: "transparent",
+                          color: pal.ink,
+                          borderRadius: "999px",
+                          border: `1.5px dashed ${pal.ink}`,
+                        }}
+                      >
+                        {sh.github}
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
             );
           })}
         </section>

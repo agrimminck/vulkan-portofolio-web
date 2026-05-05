@@ -99,13 +99,9 @@ export default function HolographicTheme() {
           {projects.map((p, i) => {
             const tagline = lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline;
             const description = lang === "es" ? (PROJECT_ES[p.id]?.description ?? p.description) : p.description;
-            const statusLabel = p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby;
             return (
-              <a
+              <div
                 key={p.id}
-                href={p.url ?? "#"}
-                target={p.url ? "_blank" : undefined}
-                rel="noreferrer"
                 className="group glass-card rounded-3xl p-6 relative overflow-hidden transition-all duration-500 hover:-translate-y-2"
                 style={{ minHeight: 300 }}
               >
@@ -121,16 +117,6 @@ export default function HolographicTheme() {
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-[10px] tracking-[0.3em] opacity-60 font-mono">
                       №{String(i + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
-                    </span>
-                    <span
-                      className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full font-mono"
-                      style={{
-                        background: `${p.accent}33`,
-                        color: p.accent,
-                        border: `1px solid ${p.accent}66`,
-                      }}
-                    >
-                      {statusLabel}
                     </span>
                   </div>
                   <h3
@@ -162,8 +148,34 @@ export default function HolographicTheme() {
                       </span>
                     ))}
                   </div>
+                  {(p.url || p.github) && (
+                    <div className="flex items-center gap-4 mt-4">
+                      {p.url && (
+                        <a
+                          href={p.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[10px] tracking-[0.25em] uppercase font-mono iridescent hover:opacity-100 transition-opacity"
+                          style={{ opacity: 0.8 }}
+                        >
+                          {sh.visit}
+                        </a>
+                      )}
+                      {p.github && (
+                        <a
+                          href={p.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[10px] tracking-[0.25em] uppercase font-mono hover:opacity-100 transition-opacity"
+                          style={{ opacity: 0.6, color: "rgba(255,255,255,0.8)" }}
+                        >
+                          {sh.github}
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
-              </a>
+              </div>
             );
           })}
         </div>

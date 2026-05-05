@@ -4,6 +4,7 @@ export type Project = {
   tagline: string;
   description: string;
   url?: string;
+  github?: string;
   category: "idyllic" | "basilisk" | "social";
   tags: string[];
   status: "live" | "wip" | "standby";
@@ -19,6 +20,7 @@ export const projects: Project[] = [
     description:
       "Massive online game. Custom Godot engine work, NestJS backend mesh, server meshing, multi-region. Player-driven economy, anti-P2W manifesto.",
     url: "https://idyllic-web.vercel.app",
+    github: "https://github.com/agrimminck/idyllic-web",
     category: "idyllic",
     tags: ["Godot", "NestJS", "Postgres", "Server Mesh", "Game Design"],
     status: "wip",
@@ -45,6 +47,7 @@ export const projects: Project[] = [
     description:
       "Sales, inventory, customers, vehicles, services. Transbank POS Integrado. pnpm monorepo, Vercel deploy.",
     url: "https://basilisk-car-shop-app.vercel.app",
+    github: "https://github.com/agrimminck/basilisk-car-shop-app",
     category: "basilisk",
     tags: ["Next.js", "Transbank", "Postgres", "POS"],
     status: "live",
@@ -58,6 +61,7 @@ export const projects: Project[] = [
     description:
       "Web + mobile PWA. Document vault, interest signals, 1-to-1 chat after acceptance. Standby on R2 storage credentials.",
     url: "https://basilisk-inversionistas.vercel.app",
+    github: "https://github.com/agrimminck/basilisk-inversionistas",
     category: "basilisk",
     tags: ["Next.js 16", "Better Auth", "PWA", "Drizzle"],
     status: "standby",
@@ -71,6 +75,7 @@ export const projects: Project[] = [
     description:
       "Map-driven discovery for botillerías y minimarkets. Google Places API (New). Standby on GCP billing.",
     url: "https://basilisk-boti-finder.vercel.app",
+    github: "https://github.com/agrimminck/basilisk-boti-finder",
     category: "basilisk",
     tags: ["Next.js 16", "Places API", "Drizzle"],
     status: "standby",
@@ -84,6 +89,7 @@ export const projects: Project[] = [
     description:
       "Geolocated free-item exchange. Better Auth, Drizzle ORM, Neon. Schema-isolated multi-tenant.",
     url: "https://basilisk-free-pickup.vercel.app",
+    github: "https://github.com/agrimminck/basilisk-free-pickup",
     category: "basilisk",
     tags: ["Next.js 16", "Better Auth", "Geolocation"],
     status: "live",

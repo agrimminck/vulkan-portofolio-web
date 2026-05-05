@@ -135,21 +135,18 @@ export default function CyberpunkTheme() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {projects.map((p, i) => (
-            <a
+            <div
               key={p.id}
-              href={p.url ?? "#"}
-              target={p.url ? "_blank" : undefined}
-              rel="noreferrer"
               className="group relative border border-[var(--neon-pink)]/40 hover:border-[var(--neon-cyan)] p-5 transition-all duration-300"
               style={{
                 background: "rgba(0,0,0,0.5)",
                 boxShadow: "0 0 0 transparent",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(0,240,255,0.55)";
+                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 0 30px rgba(0,240,255,0.55)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 0 transparent";
+                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 0 0 transparent";
               }}
             >
               <div
@@ -162,21 +159,6 @@ export default function CyberpunkTheme() {
               <div className="relative">
                 <div className="flex items-center justify-between text-[10px] tracking-[0.25em] mb-3">
                   <span className="text-[var(--neon-cyan)]">/{String(i + 1).padStart(3, "0")}</span>
-                  <span
-                    className="px-1.5 py-0.5"
-                    style={{
-                      background:
-                        p.status === "live"
-                          ? "var(--neon-pink)"
-                          : p.status === "wip"
-                            ? "var(--neon-violet)"
-                            : "transparent",
-                      border: p.status === "standby" ? "1px solid var(--neon-cyan)" : "none",
-                      color: p.status === "standby" ? "var(--neon-cyan)" : "#fff",
-                    }}
-                  >
-                    {p.status === "live" ? sh.live.toUpperCase() : p.status === "wip" ? sh.wip.toUpperCase() : sh.standby.toUpperCase()}
-                  </span>
                 </div>
                 <h3
                   className="text-2xl mb-1 uppercase"
@@ -201,8 +183,34 @@ export default function CyberpunkTheme() {
                     </span>
                   ))}
                 </div>
+                {(p.url || p.github) && (
+                  <div className="flex items-center gap-3 mt-3">
+                    {p.url && (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[10px] tracking-[0.2em] uppercase font-mono hover:opacity-100 transition-opacity"
+                        style={{ color: "var(--neon-cyan)", opacity: 0.8 }}
+                      >
+                        {sh.visit}
+                      </a>
+                    )}
+                    {p.github && (
+                      <a
+                        href={p.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[10px] tracking-[0.2em] uppercase font-mono hover:opacity-100 transition-opacity"
+                        style={{ color: "var(--neon-pink)", opacity: 0.8 }}
+                      >
+                        {sh.github}
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
-            </a>
+            </div>
           ))}
         </div>
 
