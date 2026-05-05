@@ -206,9 +206,12 @@ export default function MetropolisTheme() {
                     <span
                       className="text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full font-medium"
                       style={{
-                        background: `${p.accent}22`,
+                        background: `${p.accent}33`,
                         color: p.accent,
-                        border: `1px solid ${p.accent}55`,
+                        border: `2px solid #000`,
+                        outline: "1px solid #000",
+                        textShadow: "0 0 4px #000, 0 0 8px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000",
+                        boxShadow: "0 0 0 1px #000",
                       }}
                     >
                       {p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby}
