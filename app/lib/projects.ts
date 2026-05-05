@@ -141,7 +141,7 @@ export const projects: Project[] = [
     tagline: "Source code, public repos",
     description:
       "Open source contributions and public repos. Engine work, web stacks, infra automation.",
-    url: "https://github.com/idyllicentertainmentofficial",
+    url: "https://github.com/agrimminck",
     category: "social",
     tags: ["Open Source"],
     status: "live",
