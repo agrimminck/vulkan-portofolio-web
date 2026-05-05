@@ -17,22 +17,22 @@ export default function HolographicTheme() {
         <div
           className="absolute top-[10%] left-[15%] w-72 h-72 rounded-full orb-1"
           style={{
-            background: "radial-gradient(circle at 30% 30%, #ff6ec7, transparent 70%)",
-            filter: "blur(40px)",
+            background: "radial-gradient(circle at 30% 30%, rgba(160,20,90,0.45), transparent 70%)",
+            filter: "blur(55px)",
           }}
         />
         <div
           className="absolute top-[40%] right-[10%] w-96 h-96 rounded-full orb-2"
           style={{
-            background: "radial-gradient(circle at 50% 50%, #67e8f9, transparent 70%)",
-            filter: "blur(50px)",
+            background: "radial-gradient(circle at 50% 50%, rgba(0,70,130,0.45), transparent 70%)",
+            filter: "blur(65px)",
           }}
         />
         <div
           className="absolute bottom-[10%] left-[40%] w-80 h-80 rounded-full orb-3"
           style={{
-            background: "radial-gradient(circle at 60% 40%, #c084fc, transparent 70%)",
-            filter: "blur(45px)",
+            background: "radial-gradient(circle at 60% 40%, rgba(80,20,140,0.45), transparent 70%)",
+            filter: "blur(60px)",
           }}
         />
       </div>

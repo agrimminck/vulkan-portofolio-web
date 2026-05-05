@@ -30,7 +30,7 @@ export default function LangToggle() {
       onMouseEnter={(e) => ((e.target as HTMLButtonElement).style.opacity = "0.75")}
       onMouseLeave={(e) => ((e.target as HTMLButtonElement).style.opacity = "1")}
     >
-      {lang === "en" ? "ES" : "EN"}
+      {lang === "en" ? "EN" : "ES"}
     </button>
   );
 }

@@ -5,6 +5,7 @@ import { type ThemeId } from "./lib/projects";
 import type { PortfolioSettings } from "./lib/settings";
 import { DEFAULT_SETTINGS } from "./lib/settings";
 import { LangProvider } from "./lib/lang-context";
+import LangToggle from "./components/LangToggle";
 import type { Lang } from "./lib/i18n";
 
 export const SettingsContext = createContext<PortfolioSettings>(DEFAULT_SETTINGS);
@@ -69,6 +70,7 @@ export default function Home() {
   return (
     <LangProvider defaultLang={defaultLang}>
     <SettingsContext.Provider value={settings}>
+    <LangToggle />
     <main className="relative min-h-screen overflow-x-hidden">
       <div className="relative z-0">
         <Current />

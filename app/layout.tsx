@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AdminKeyListener from "./components/AdminKeyListener";
-import LangToggle from "./components/LangToggle";
 
 export const metadata: Metadata = {
   title: "Portfolio — Multiverse",
@@ -14,7 +13,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <AdminKeyListener />
-        <LangToggle />
         {children}
       </body>
     </html>
