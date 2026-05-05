@@ -103,11 +103,9 @@ export default function CyberpunkTheme() {
         </header>
 
         {/* Stats bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        <div className="grid grid-cols-2 gap-4 mb-12" style={{ maxWidth: 480 }}>
           {[
             { k: t.sProjects, v: projects.length, c: "var(--neon-cyan)" },
-            { k: t.sWip, v: 12, c: "var(--neon-pink)" },
-            { k: t.sLive, v: projects.filter((p) => p.status === "live").length, c: "var(--neon-violet)" },
             { k: t.sStandby, v: "99.9%", c: "var(--neon-cyan)" },
           ].map((s) => (
             <div
