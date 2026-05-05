@@ -1,7 +1,6 @@
 import { neon } from "@neondatabase/serverless";
-import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
-import { authOptions } from "../../lib/auth";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
 const db = neon(process.env.DATABASE_URL!);
 
@@ -12,9 +11,9 @@ export async function GET() {
   return NextResponse.json(map);
 }
 
-export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.email || session.user.email !== process.env.ADMIN_EMAIL) {
+export async function POST(req: NextRequest) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  if (!token?.email || token.email !== process.env.ADMIN_EMAIL) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json() as Record<string, string>;
