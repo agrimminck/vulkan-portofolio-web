@@ -158,8 +158,10 @@ function Screen({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ── Crop editor ───────────────────────────────────────────────────────────
-const FRAME = 260;
+// ── Crop modal ────────────────────────────────────────────────────────────
+const CROP_FRAME = 300;
+const CANVAS_W = 540;
+const CANVAS_H = 420;
 
 type Crop = { x: number; y: number; zoom: number };
 
@@ -168,10 +170,38 @@ function parseCropStr(raw: string): Crop {
   return { x: 50, y: 50, zoom: 1 };
 }
 
-function CropEditor({ src, initial, onSave }: { src: string; initial: Crop; onSave: (c: Crop) => void }) {
-  const [crop, setCrop] = useState<Crop>(initial);
+function CropModal({ src, initial, onSave, onCancel }: {
+  src: string; initial: Crop;
+  onSave: (c: Crop) => void; onCancel: () => void;
+}) {
+  const [zoom, setZoom] = useState(initial.zoom);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [natural, setNatural] = useState({ w: 1, h: 1 });
   const dragging = useRef(false);
   const lastMouse = useRef({ x: 0, y: 0 });
+
+  // Fit scale: make image fill canvas at zoom=1
+  const fitScale = Math.max(CANVAS_W / natural.w, CANVAS_H / natural.h);
+  const dispW = natural.w * fitScale * zoom;
+  const dispH = natural.h * fitScale * zoom;
+
+  // Convert initial {x%, y%} → pixel offset once image loads
+  const initOffset = useRef(false);
+  useEffect(() => {
+    if (natural.w === 1 || initOffset.current) return;
+    initOffset.current = true;
+    setOffset({
+      x: (50 - initial.x) * dispW / 100,
+      y: (50 - initial.y) * dispH / 100,
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [natural]);
+
+  // Clamp offset so image always covers the crop frame
+  const clamp = (off: { x: number; y: number }) => ({
+    x: Math.max(-(dispW - CROP_FRAME) / 2, Math.min((dispW - CROP_FRAME) / 2, off.x)),
+    y: Math.max(-(dispH - CROP_FRAME) / 2, Math.min((dispH - CROP_FRAME) / 2, off.y)),
+  });
 
   const onMouseDown = (e: React.MouseEvent) => {
     dragging.current = true;
@@ -183,64 +213,116 @@ function CropEditor({ src, initial, onSave }: { src: string; initial: Crop; onSa
     const dx = e.clientX - lastMouse.current.x;
     const dy = e.clientY - lastMouse.current.y;
     lastMouse.current = { x: e.clientX, y: e.clientY };
-    const room = FRAME * (crop.zoom - 1);
-    if (room < 1) return;
-    setCrop(prev => ({
-      ...prev,
-      x: Math.max(0, Math.min(100, prev.x - (dx / room) * 100)),
-      y: Math.max(0, Math.min(100, prev.y - (dy / room) * 100)),
-    }));
+    setOffset(prev => clamp({ x: prev.x + dx, y: prev.y + dy }));
   };
   const onMouseUp = () => { dragging.current = false; };
 
+  const handleZoom = (z: number) => {
+    setZoom(z);
+    // Re-clamp after zoom changes display size
+    setOffset(prev => clamp(prev));
+  };
+
+  const handleSave = () => {
+    // x% = 50 - (offset.x / dispW) * 100
+    const x = Math.max(0, Math.min(100, 50 - (offset.x / dispW) * 100));
+    const y = Math.max(0, Math.min(100, 50 - (offset.y / dispH) * 100));
+    onSave({ x, y, zoom });
+  };
+
+  // Min zoom: image must cover crop frame
+  const minZoom = Math.max(
+    CROP_FRAME / (natural.w * fitScale),
+    CROP_FRAME / (natural.h * fitScale),
+    0.5,
+  );
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
-      {/* Crop frame */}
-      <div
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseUp}
-        style={{
-          width: FRAME, height: FRAME, borderRadius: "22%",
-          overflow: "hidden", cursor: "grab", userSelect: "none",
-          background: "#111", border: "2px solid rgba(255,255,255,0.15)",
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          draggable={false}
-          alt=""
-          style={{
-            width: "100%", height: "100%",
-            objectFit: "cover",
-            objectPosition: `${crop.x}% ${crop.y}%`,
-            transform: `scale(${crop.zoom})`,
-            transformOrigin: `${crop.x}% ${crop.y}%`,
-            pointerEvents: "none", userSelect: "none",
-          }}
-        />
-      </div>
-      <p style={{ fontSize: 11, color: "#555", margin: 0 }}>Drag to reposition</p>
-
-      {/* Zoom slider */}
-      <div style={{ width: FRAME }}>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-          <span style={{ fontSize: 11, color: "#888" }}>Zoom</span>
-          <span style={{ fontSize: 11, color: "#ccc" }}>{crop.zoom.toFixed(1)}×</span>
+    <div
+      style={{
+        position: "fixed", inset: 0, zIndex: 99999,
+        background: "rgba(0,0,0,0.88)", backdropFilter: "blur(8px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}
+      onClick={e => { if (e.target === e.currentTarget) onCancel(); }}
+    >
+      <div style={{
+        background: "#111", borderRadius: 16,
+        padding: "20px 24px 22px", width: CANVAS_W + 48,
+        maxWidth: "95vw", boxShadow: "0 40px 80px rgba(0,0,0,0.8)",
+      }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#ddd" }}>Position photo</span>
+          <button onClick={onCancel} style={{ background: "none", border: "none", color: "#666", cursor: "pointer", fontSize: 20, lineHeight: 1 }}>✕</button>
         </div>
-        <input
-          type="range" min="1" max="3" step="0.05"
-          value={crop.zoom}
-          onChange={e => setCrop(prev => ({ ...prev, zoom: Number(e.target.value) }))}
-          style={{ width: "100%", accentColor: "#67e8f9" }}
-        />
-      </div>
 
-      <button onClick={() => onSave(crop)} style={btnStyle("#4285F4", { width: FRAME + "px" })}>
-        Save crop
-      </button>
+        {/* Canvas */}
+        <div
+          style={{
+            width: CANVAS_W, height: CANVAS_H, position: "relative",
+            overflow: "hidden", background: "#000", borderRadius: 8,
+            cursor: dragging.current ? "grabbing" : "grab", userSelect: "none",
+          }}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseUp}
+        >
+          {/* Image */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            draggable={false}
+            alt=""
+            onLoad={e => setNatural({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })}
+            style={{
+              position: "absolute",
+              width: dispW, height: dispH,
+              left: CANVAS_W / 2 - dispW / 2 + offset.x,
+              top: CANVAS_H / 2 - dispH / 2 + offset.y,
+              pointerEvents: "none", userSelect: "none",
+            }}
+          />
+
+          {/* Dark overlay with crop frame hole (box-shadow punch-out) */}
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+            <div style={{
+              position: "absolute",
+              left: CANVAS_W / 2 - CROP_FRAME / 2,
+              top: CANVAS_H / 2 - CROP_FRAME / 2,
+              width: CROP_FRAME, height: CROP_FRAME,
+              borderRadius: "22%",
+              boxShadow: "0 0 0 9999px rgba(0,0,0,0.55)",
+              border: "2px solid rgba(255,255,255,0.55)",
+            }} />
+          </div>
+        </div>
+
+        <p style={{ textAlign: "center", fontSize: 11, color: "#444", margin: "8px 0 14px" }}>
+          Drag to reposition · image is always saved at full quality
+        </p>
+
+        {/* Zoom */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+          <span style={{ fontSize: 11, color: "#888", flexShrink: 0 }}>Zoom</span>
+          <input
+            type="range" min={minZoom} max="3" step="0.01"
+            value={zoom}
+            onChange={e => handleZoom(Number(e.target.value))}
+            style={{ flex: 1, accentColor: "#67e8f9" }}
+          />
+          <span style={{ fontSize: 11, color: "#ccc", width: 30, textAlign: "right" }}>{zoom.toFixed(1)}×</span>
+        </div>
+
+        <div style={{ display: "flex", gap: 10 }}>
+          <button onClick={onCancel} style={btnStyle("#222", { flex: 1, border: "1px solid rgba(255,255,255,0.12)" })}>
+            Cancel
+          </button>
+          <button onClick={handleSave} style={btnStyle("#4285F4", { flex: 2 })}>
+            Save position
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -341,7 +423,12 @@ function PortraitUploader({ theme, color, label }: { theme: ThemeId; color: stri
 
       {/* Crop editor */}
       {cropSrc && (
-        <CropEditor src={cropSrc} initial={crop} onSave={handleSaveCrop} />
+        <CropModal
+          src={cropSrc}
+          initial={crop}
+          onSave={handleSaveCrop}
+          onCancel={() => { setCropSrc(null); setPendingFile(null); }}
+        />
       )}
     </div>
   );
