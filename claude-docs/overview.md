@@ -1,6 +1,6 @@
 # vulkan-portofolio-web — Overview
 
-Portfolio landing page. Vercel-deployed. Next.js 16 + Tailwind v4. **Cinco temas drásticamente distintos**, switcher con clip-path circular reveal.
+Portfolio landing page. Vercel-deployed (`agrimminck-portofolio.vercel.app`). Next.js 16 + Tailwind v4. **Seis temas drásticamente distintos** (default = `metropolis`), switcher con clip-path circular reveal.
 
 ## Stack
 
@@ -24,6 +24,7 @@ app/
   components/
     ThemeSwitcher.tsx      # dial top-right, 5 chips → emite (id, x, y) al click
     themes/
+      MetropolisTheme.tsx  # **DEFAULT**: ciudad futurista + espacio, satélites, aviones, autos calle, skyline procedural windows
       CorporateTheme.tsx   # navy/oro, aviones SVG volando, contrails
       CyberpunkTheme.tsx   # CRT scanlines, glitch text, neón grid
       EditorialTheme.tsx   # paper grain, masthead, columnas magazine
@@ -43,18 +44,16 @@ Resultado: revelar circular cinematográfico desde donde el usuario tocó.
 
 ## Datos — `app/lib/projects.ts`
 
-11 proyectos hard-coded. **Basilisk apps SIN prefix** (regla de marca portfolio):
+7 proyectos hard-coded. **Basilisk apps SIN prefix** (regla de marca portfolio):
 - Idyllic (MMORPG)
 - Trading
 - Mercado Libre Electrodomésticos
 - Car Shop App
-- Turnos QF
 - Inversionistas
-- Boti Finder
 - Free Pickup
-- Sports Information for Betting
-- Hub
 - GitHub (link)
+
+Removidos del scope portfolio: turnos-qf, boti-finder, sports-betting-info, hub.
 
 Cada proyecto: `id, name, tagline, description, url?, category, tags[], status, year, accent`.
 

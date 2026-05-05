@@ -8,6 +8,7 @@ Personal portfolio landing page. One page, five dramatically different aesthetic
 
 | ID | Name | Direction |
 |---|---|---|
+| `metropolis` ★ default | Future City + Orbit | Layered scene: deep-space backdrop w/ satellites + shooting stars, aviation traffic, procedurally-generated skyline w/ lit windows, cars driving the foreground street. Orbitron + Rajdhani. |
 | `corporate` | Boardroom | Navy + gold serif. Planes flying across the sky, contrails, gold rules, letterhead-style typography. |
 | `cyberpunk` | Terminal/Neon | Dark slate, neon pink/cyan grid, scanlines, CRT flicker, glitching display type, ASCII terminal hero. |
 | `editorial` | Print Brutalism | Cream paper grain, editorial serif (Fraunces), asymmetric column grid, drop caps, magazine masthead. |

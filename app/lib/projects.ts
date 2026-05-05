@@ -63,18 +63,6 @@ export const projects: Project[] = [
     accent: "#dc2626",
   },
   {
-    id: "turnos-qf",
-    name: "Turnos QF",
-    tagline: "Marketplace for pharmacist shifts",
-    description:
-      "Cross-user shift alert flow, Leaflet map w/ 3914 OSM-seeded farmacias, MercadoPago, Better Auth + Google OAuth.",
-    category: "basilisk",
-    tags: ["Next.js 15", "Better Auth", "MercadoPago", "Leaflet"],
-    status: "live",
-    year: 2026,
-    accent: "#10b981",
-  },
-  {
     id: "inversionistas",
     name: "Inversionistas",
     tagline: "Match investors w/ projects",
@@ -87,18 +75,6 @@ export const projects: Project[] = [
     accent: "#3b82f6",
   },
   {
-    id: "boti-finder",
-    name: "Boti Finder",
-    tagline: "Discover liquor stores w/ live promos",
-    description:
-      "Map-driven discovery for botillerías y minimarkets. Google Places API (New). Standby on GCP billing.",
-    category: "basilisk",
-    tags: ["Next.js 16", "Places API", "Drizzle"],
-    status: "standby",
-    year: 2026,
-    accent: "#f59e0b",
-  },
-  {
     id: "free-pickup",
     name: "Free Pickup",
     tagline: "Give away items locally for free",
@@ -109,31 +85,6 @@ export const projects: Project[] = [
     status: "live",
     year: 2026,
     accent: "#84cc16",
-  },
-  {
-    id: "sports-betting-info",
-    name: "Sports Information for Betting",
-    tagline: "Poisson predictions for Chilean football",
-    description:
-      "Analytics platform for sports bettors. Value bets, Primera División CL, freemium + affiliate model.",
-    category: "basilisk",
-    tags: ["React", "Poisson Model", "API-Football"],
-    status: "wip",
-    year: 2026,
-    accent: "#ef4444",
-  },
-  {
-    id: "hub",
-    name: "Hub",
-    tagline: "Dashboard for the whole ecosystem",
-    description:
-      "Central directory for every public app. Static export, fast as light. Built to grow with each new shipped product.",
-    url: "https://basilisk-hub.vercel.app",
-    category: "basilisk",
-    tags: ["Next.js 16", "Tailwind v4", "Static"],
-    status: "live",
-    year: 2026,
-    accent: "#a855f7",
   },
   {
     id: "github",
@@ -151,6 +102,7 @@ export const projects: Project[] = [
 ];
 
 export const themes = [
+  { id: "metropolis", label: "Metropolis", subtitle: "Future City + Orbit", color: "#67e8f9" },
   { id: "corporate", label: "Corporate", subtitle: "Boardroom", color: "#0a2540" },
   { id: "cyberpunk", label: "Cyberpunk", subtitle: "Terminal/Neon", color: "#ff007a" },
   { id: "editorial", label: "Editorial", subtitle: "Print Brutalism", color: "#1a1a1a" },

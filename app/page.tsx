@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
-import { themes, type ThemeId } from "./lib/projects";
+import { type ThemeId } from "./lib/projects";
 import ThemeSwitcher from "./components/ThemeSwitcher";
+import MetropolisTheme from "./components/themes/MetropolisTheme";
 import CorporateTheme from "./components/themes/CorporateTheme";
 import CyberpunkTheme from "./components/themes/CyberpunkTheme";
 import EditorialTheme from "./components/themes/EditorialTheme";
@@ -10,6 +11,7 @@ import OrganicTheme from "./components/themes/OrganicTheme";
 import HolographicTheme from "./components/themes/HolographicTheme";
 
 const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
+  metropolis: MetropolisTheme,
   corporate: CorporateTheme,
   cyberpunk: CyberpunkTheme,
   editorial: EditorialTheme,
@@ -18,7 +20,7 @@ const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
 };
 
 export default function Home() {
-  const [theme, setTheme] = useState<ThemeId>("corporate");
+  const [theme, setTheme] = useState<ThemeId>("metropolis");
   const [revealing, setRevealing] = useState<{ theme: ThemeId; x: number; y: number } | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
