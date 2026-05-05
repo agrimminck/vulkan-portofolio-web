@@ -10,7 +10,14 @@ const handler = NextAuth({
   ],
   callbacks: {
     async signIn({ user }) {
-      return user.email === process.env.ADMIN_EMAIL;
+      if (!user.email) return false;
+      // Gmail ignores dots in local part — normalize both sides
+      const normalize = (e: string) => {
+        const [local, domain] = e.toLowerCase().split("@");
+        return `${local.replace(/\./g, "")}@${domain}`;
+      };
+      const adminRaw = process.env.ADMIN_EMAIL ?? "";
+      return normalize(user.email) === normalize(adminRaw);
     },
     async session({ session }) {
       return session;
