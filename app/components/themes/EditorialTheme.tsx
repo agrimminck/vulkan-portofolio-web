@@ -2,8 +2,14 @@
 
 import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
+import { useLang } from "../../lib/lang-context";
+import { EDITORIAL_T, PROJECT_ES, SHARED } from "../../lib/i18n";
 
 export default function EditorialTheme() {
+  const { lang } = useLang();
+  const t = EDITORIAL_T[lang];
+  const sh = SHARED[lang];
+
   return (
     <div className="t-editorial min-h-screen relative overflow-hidden grain">
       {/* Paper texture */}
@@ -18,14 +24,14 @@ export default function EditorialTheme() {
       <div className="relative z-10 max-w-[1500px] mx-auto px-10 py-12">
         {/* Masthead */}
         <header className="border-y-[3px] border-[var(--ink)] py-4 mb-12 flex items-center justify-between">
-          <span className="text-xs tracking-widest uppercase">Vol. I · No. 01</span>
+          <span className="text-xs tracking-widest uppercase">{t.vol}</span>
           <h1
             className="text-3xl font-black uppercase tracking-[0.15em]"
             style={{ fontFamily: "var(--font-display-editorial)" }}
           >
             The Idyllic Review
           </h1>
-          <span className="text-xs tracking-widest uppercase">Tuesday, May 5, 2026</span>
+          <span className="text-xs tracking-widest uppercase">{t.date}</span>
         </header>
 
         {/* Front-page splash */}
@@ -50,7 +56,7 @@ export default function EditorialTheme() {
             </h2>
             <div className="flex items-center gap-3 text-sm">
               <span className="block w-12 h-px bg-[var(--ink)]" />
-              <span className="uppercase tracking-[0.25em] text-xs">By Idyllic Entertainment</span>
+              <span className="uppercase tracking-[0.25em] text-xs">{t.byline}</span>
             </div>
           </div>
           <aside
@@ -60,17 +66,14 @@ export default function EditorialTheme() {
             <div className="mb-4">
               <ThemedPortrait variant="editorial" size={150} shape="square" />
               <div className="mt-2 text-[10px] tracking-[0.3em] uppercase font-bold" style={{ fontFamily: "var(--font-body-editorial)", color: "var(--red)" }}>
-                ↳ The author, photographed in studio
+                {t.photoCaption}
               </div>
             </div>
             <p className="mb-4 first-letter:text-6xl first-letter:font-black first-letter:float-left first-letter:mr-2 first-letter:leading-[0.85] first-letter:text-[var(--red)]">
-              The portfolio you are reading is intentionally heterogeneous. An MMORPG built ground-up
-              shares a column with a forex algorithm, a pharmacy-shift marketplace, and a humble
-              affiliate site for home appliances.
+              {t.body1}
             </p>
             <p className="italic">
-              This is not a contradiction — it is the working method. Build small, ship often, and
-              hold one ambitious thing on the long horizon.
+              {t.body2}
             </p>
           </aside>
         </section>
@@ -82,14 +85,17 @@ export default function EditorialTheme() {
               className="text-3xl uppercase font-black tracking-tight"
               style={{ fontFamily: "var(--font-display-editorial)" }}
             >
-              The Catalogue
+              {t.catalogTitle}
             </h3>
-            <span className="text-xs tracking-[0.3em] uppercase">Continued from cover →</span>
+            <span className="text-xs tracking-[0.3em] uppercase">{t.continued}</span>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
             {projects.map((p, i) => {
               const sizes = ["lg:col-span-2", "", "", "", "lg:col-span-2", "", "", "", "", "", ""];
+              const tagline = lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline;
+              const description = lang === "es" ? (PROJECT_ES[p.id]?.description ?? p.description) : p.description;
+              const statusLabel = p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby;
               return (
                 <article
                   key={p.id}
@@ -110,7 +116,7 @@ export default function EditorialTheme() {
                         border: p.status === "live" ? "none" : "1px solid var(--ink)",
                       }}
                     >
-                      {p.status}
+                      {statusLabel}
                     </span>
                   </div>
                   <a
@@ -129,7 +135,7 @@ export default function EditorialTheme() {
                       className="italic text-lg mb-4 opacity-80"
                       style={{ fontFamily: "var(--font-display-editorial)" }}
                     >
-                      {p.tagline}
+                      {tagline}
                     </p>
                     <p
                       className={`text-base leading-relaxed mb-4 ${i % 3 === 1 ? "columns-2 gap-4" : ""}`}
@@ -138,7 +144,7 @@ export default function EditorialTheme() {
                       <span className="font-bold uppercase tracking-wider mr-1">
                         {p.category === "idyllic" ? "Santiago —" : p.category === "social" ? "Worldwide —" : "Chile —"}
                       </span>
-                      {p.description}
+                      {description}
                     </p>
                     <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.2em] opacity-70">
                       {p.tags.map((tag, j) => (
@@ -156,8 +162,8 @@ export default function EditorialTheme() {
         </section>
 
         <footer className="mt-24 pt-6 border-t-[3px] border-[var(--ink)] flex justify-between text-xs uppercase tracking-[0.3em]">
-          <span>The Idyllic Review © MMXXVI</span>
-          <span className="italic">— continued indefinitely —</span>
+          <span>{t.footer}</span>
+          <span className="italic">{t.end}</span>
         </footer>
       </div>
     </div>

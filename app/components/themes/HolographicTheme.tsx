@@ -2,8 +2,14 @@
 
 import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
+import { useLang } from "../../lib/lang-context";
+import { HOLOGRAPHIC_T, PROJECT_ES, SHARED } from "../../lib/i18n";
 
 export default function HolographicTheme() {
+  const { lang } = useLang();
+  const t = HOLOGRAPHIC_T[lang];
+  const sh = SHARED[lang];
+
   return (
     <div className="t-holo holo-mesh min-h-screen relative overflow-hidden">
       {/* Floating orbs */}
@@ -44,7 +50,7 @@ export default function HolographicTheme() {
         <header className="mb-20 grid md:grid-cols-12 gap-8 items-center">
           <div className="md:col-span-9">
             <div className="text-[10px] tracking-[0.5em] uppercase opacity-70 mb-4 iridescent inline-block">
-              ✦ a portfolio of impossible objects ✦
+              {t.title}
             </div>
             <h1
               className="text-7xl md:text-[9rem] leading-[0.9] font-normal"
@@ -60,9 +66,7 @@ export default function HolographicTheme() {
               className="mt-6 text-lg max-w-2xl opacity-80 leading-relaxed font-mono"
               style={{ fontFamily: "var(--font-body-holo)" }}
             >
-              // {projects.length} projects rendered through a chrome lens. some live, some still loading,
-              <br />
-              // all built by one engineer & a small library of tools.
+              {t.body(projects.length)}
             </p>
           </div>
           <div className="md:col-span-3 flex md:justify-end">
@@ -73,10 +77,10 @@ export default function HolographicTheme() {
         {/* Stats holo */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
           {[
-            { k: "PROJECTS", v: projects.length },
-            { k: "LIVE", v: projects.filter((p) => p.status === "live").length },
-            { k: "WIP", v: projects.filter((p) => p.status === "wip").length },
-            { k: "STAND BY", v: projects.filter((p) => p.status === "standby").length },
+            { k: t.sProjects, v: projects.length },
+            { k: t.sLive, v: projects.filter((p) => p.status === "live").length },
+            { k: t.sWip, v: projects.filter((p) => p.status === "wip").length },
+            { k: t.sStandby, v: projects.filter((p) => p.status === "standby").length },
           ].map((s) => (
             <div key={s.k} className="glass-card rounded-2xl p-5">
               <div className="text-[10px] tracking-[0.3em] opacity-60 mb-1 font-mono">{s.k}</div>
@@ -92,76 +96,81 @@ export default function HolographicTheme() {
 
         {/* Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {projects.map((p, i) => (
-            <a
-              key={p.id}
-              href={p.url ?? "#"}
-              target={p.url ? "_blank" : undefined}
-              rel="noreferrer"
-              className="group glass-card rounded-3xl p-6 relative overflow-hidden transition-all duration-500 hover:-translate-y-2"
-              style={{ minHeight: 300 }}
-            >
-              {/* Per-card gradient blob */}
-              <div
-                className="absolute -top-20 -right-20 w-60 h-60 rounded-full opacity-50 group-hover:opacity-90 transition-opacity duration-500"
-                style={{
-                  background: `radial-gradient(circle, ${p.accent}, transparent 70%)`,
-                  filter: "blur(30px)",
-                }}
-              />
-              <div className="relative">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[10px] tracking-[0.3em] opacity-60 font-mono">
-                    №{String(i + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
-                  </span>
-                  <span
-                    className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full font-mono"
-                    style={{
-                      background: `${p.accent}33`,
-                      color: p.accent,
-                      border: `1px solid ${p.accent}66`,
-                    }}
-                  >
-                    {p.status}
-                  </span>
-                </div>
-                <h3
-                  className="text-3xl mb-2 leading-tight"
-                  style={{ fontFamily: "var(--font-display-holo)" }}
-                >
-                  <span className="iridescent">{p.name}</span>
-                </h3>
-                <p
-                  className="text-sm italic mb-4 opacity-90"
-                  style={{ fontFamily: "var(--font-display-holo)", color: p.accent }}
-                >
-                  {p.tagline}
-                </p>
-                <p className="text-sm leading-relaxed opacity-75 mb-5 font-mono">
-                  {p.description}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {p.tags.map((tag) => (
+          {projects.map((p, i) => {
+            const tagline = lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline;
+            const description = lang === "es" ? (PROJECT_ES[p.id]?.description ?? p.description) : p.description;
+            const statusLabel = p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby;
+            return (
+              <a
+                key={p.id}
+                href={p.url ?? "#"}
+                target={p.url ? "_blank" : undefined}
+                rel="noreferrer"
+                className="group glass-card rounded-3xl p-6 relative overflow-hidden transition-all duration-500 hover:-translate-y-2"
+                style={{ minHeight: 300 }}
+              >
+                {/* Per-card gradient blob */}
+                <div
+                  className="absolute -top-20 -right-20 w-60 h-60 rounded-full opacity-50 group-hover:opacity-90 transition-opacity duration-500"
+                  style={{
+                    background: `radial-gradient(circle, ${p.accent}, transparent 70%)`,
+                    filter: "blur(30px)",
+                  }}
+                />
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] tracking-[0.3em] opacity-60 font-mono">
+                      №{String(i + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
+                    </span>
                     <span
-                      key={tag}
-                      className="text-[10px] px-2 py-0.5 rounded-full font-mono"
+                      className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full font-mono"
                       style={{
-                        background: "rgba(255,255,255,0.08)",
-                        border: "1px solid rgba(255,255,255,0.18)",
+                        background: `${p.accent}33`,
+                        color: p.accent,
+                        border: `1px solid ${p.accent}66`,
                       }}
                     >
-                      {tag}
+                      {statusLabel}
                     </span>
-                  ))}
+                  </div>
+                  <h3
+                    className="text-3xl mb-2 leading-tight"
+                    style={{ fontFamily: "var(--font-display-holo)" }}
+                  >
+                    <span className="iridescent">{p.name}</span>
+                  </h3>
+                  <p
+                    className="text-sm italic mb-4 opacity-90"
+                    style={{ fontFamily: "var(--font-display-holo)", color: p.accent }}
+                  >
+                    {tagline}
+                  </p>
+                  <p className="text-sm leading-relaxed opacity-75 mb-5 font-mono">
+                    {description}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {p.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] px-2 py-0.5 rounded-full font-mono"
+                        style={{
+                          background: "rgba(255,255,255,0.08)",
+                          border: "1px solid rgba(255,255,255,0.18)",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </a>
-          ))}
+              </a>
+            );
+          })}
         </div>
 
         <footer className="mt-24 glass-card rounded-2xl p-6 flex justify-between items-center">
           <span className="text-xs tracking-[0.3em] uppercase opacity-70 font-mono">
-            // signal stable · channel open · MMXXVI
+            {t.footer}
           </span>
           <span className="iridescent text-2xl" style={{ fontFamily: "var(--font-display-holo)" }}>
             ✦

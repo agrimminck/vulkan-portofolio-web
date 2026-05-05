@@ -2,6 +2,8 @@
 
 import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
+import { useLang } from "../../lib/lang-context";
+import { ORGANIC_T, PROJECT_ES, SHARED } from "../../lib/i18n";
 
 function Blob({
   className,
@@ -29,6 +31,12 @@ const palettes = [
 ];
 
 export default function OrganicTheme() {
+  const { lang } = useLang();
+  const t = ORGANIC_T[lang];
+  const sh = SHARED[lang];
+
+  const tags = [t.tag1, t.tag2, t.tag3, t.tag4, t.tag5];
+
   return (
     <div className="t-organic min-h-screen relative overflow-hidden grain">
       {/* Floating blobs background */}
@@ -59,7 +67,7 @@ export default function OrganicTheme() {
               className="mt-2 text-center text-lg italic"
               style={{ fontFamily: "var(--font-body-organic)", color: "var(--terra)" }}
             >
-              ✿ the gardener
+              {t.role}
             </div>
           </div>
           <div className="inline-block transform -rotate-2 mb-6">
@@ -72,7 +80,7 @@ export default function OrganicTheme() {
                 border: "2px solid var(--ink)",
               }}
             >
-              ✦ a portfolio garden ✦
+              {t.title}
             </span>
           </div>
           <h1
@@ -89,14 +97,13 @@ export default function OrganicTheme() {
             className="text-3xl max-w-2xl"
             style={{ fontFamily: "var(--font-body-organic)", color: "var(--moss)" }}
           >
-            eleven projects, one gardener. an MMO that takes years, an affiliate site that took
-            weekends. each one watered when it asked for water.
+            {t.body}
           </p>
         </header>
 
         {/* Big sticker decorations */}
         <div className="flex flex-wrap gap-3 mb-12 items-center">
-          {["✿ chile", "✦ santiago", "❀ since 2026", "✺ open source", "❁ slow software"].map((s, i) => (
+          {tags.map((s, i) => (
             <span
               key={s}
               className="inline-block px-4 py-2 text-sm font-bold border-2 border-[var(--ink)]"
@@ -118,6 +125,9 @@ export default function OrganicTheme() {
           {projects.map((p, i) => {
             const pal = palettes[i % palettes.length];
             const rot = [-2, 1.5, -1, 2, -1.5, 1, -2, 1, -1, 2, 0][i];
+            const tagline = lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline;
+            const description = lang === "es" ? (PROJECT_ES[p.id]?.description ?? p.description) : p.description;
+            const statusLabel = p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby;
             return (
               <a
                 key={p.id}
@@ -151,7 +161,7 @@ export default function OrganicTheme() {
                     className="inline-block px-2 py-0.5 text-[10px] uppercase font-bold tracking-widest"
                     style={{ background: pal.accent, color: pal.bg, borderRadius: "999px" }}
                   >
-                    {p.status}
+                    {statusLabel}
                   </span>
                   <span className="text-xs opacity-60 font-bold">·{String(i + 1).padStart(2, "0")}·</span>
                 </div>
@@ -168,10 +178,10 @@ export default function OrganicTheme() {
                     color: pal.accent,
                   }}
                 >
-                  ✿ {p.tagline}
+                  ✿ {tagline}
                 </p>
                 <p className="text-sm leading-relaxed mb-4" style={{ fontFamily: "system-ui" }}>
-                  {p.description}
+                  {description}
                 </p>
                 <div className="flex flex-wrap gap-1.5 mt-auto">
                   {p.tags.slice(0, 4).map((tag) => (
@@ -198,7 +208,7 @@ export default function OrganicTheme() {
             className="text-2xl"
             style={{ fontFamily: "var(--font-body-organic)", color: "var(--moss)" }}
           >
-            keep growing ✿ keep shipping ✦ keep going
+            {t.footer}
           </p>
         </footer>
       </div>
