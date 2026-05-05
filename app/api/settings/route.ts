@@ -2,6 +2,8 @@ import { neon } from "@neondatabase/serverless";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 const db = neon(process.env.DATABASE_URL!);
 
 export async function GET() {

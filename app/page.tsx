@@ -36,7 +36,7 @@ export default function Home() {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("/api/settings")
+    fetch("/api/settings", { cache: "no-store" })
       .then((r) => r.json())
       .then((d: Partial<PortfolioSettings>) => {
         const merged = { ...DEFAULT_SETTINGS, ...d };
