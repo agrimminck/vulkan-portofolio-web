@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useContext } from "react";
+import { SettingsContext } from "../page";
 
 type Variant =
   | "refined"
@@ -26,6 +28,9 @@ export default function ThemedPortrait({
   className = "",
   ringColor,
 }: Props) {
+  const settings = useContext(SettingsContext);
+  const portraitSrc = (settings[`portrait_${variant}` as keyof typeof settings] as string) || "/me.jpg";
+
   const radius = shape === "circle" ? "9999px" : "8px";
   const filterClass = `portrait-${variant === "cyberpunk" ? "cyber" : variant === "holographic" ? "holo" : variant}`;
   const frameClass =
@@ -55,7 +60,7 @@ export default function ThemedPortrait({
         }}
       >
         <Image
-          src="/me.jpg"
+          src={portraitSrc}
           alt="Portrait"
           fill
           sizes={`${size}px`}

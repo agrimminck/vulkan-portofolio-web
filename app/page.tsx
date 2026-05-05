@@ -1,7 +1,11 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, createContext, useContext } from "react";
 import { type ThemeId } from "./lib/projects";
+import type { PortfolioSettings } from "./lib/settings";
+import { DEFAULT_SETTINGS } from "./lib/settings";
+
+export const SettingsContext = createContext<PortfolioSettings>(DEFAULT_SETTINGS);
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import RefinedTheme from "./components/themes/RefinedTheme";
 import MetropolisTheme from "./components/themes/MetropolisTheme";
@@ -22,9 +26,21 @@ const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
 };
 
 export default function Home() {
-  const [theme, setTheme] = useState<ThemeId>("refined");
+  const [settings, setSettings] = useState<PortfolioSettings>(DEFAULT_SETTINGS);
+  const [theme, setTheme] = useState<ThemeId>("metropolis");
   const [revealing, setRevealing] = useState<{ theme: ThemeId; x: number; y: number } | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((d: Partial<PortfolioSettings>) => {
+        const merged = { ...DEFAULT_SETTINGS, ...d };
+        setSettings(merged);
+        if (merged.default_theme) setTheme(merged.default_theme as ThemeId);
+      })
+      .catch(() => {});
+  }, []);
 
   const handleThemeChange = useCallback(
     (newTheme: ThemeId, x: number, y: number) => {
@@ -47,6 +63,7 @@ export default function Home() {
   const Next = revealing ? THEMES_MAP[revealing.theme] : null;
 
   return (
+    <SettingsContext.Provider value={settings}>
     <main className="relative min-h-screen overflow-x-hidden">
       <div className="relative z-0">
         <Current />
@@ -69,5 +86,6 @@ export default function Home() {
 
       <ThemeSwitcher current={revealing?.theme ?? theme} onChange={handleThemeChange} />
     </main>
+    </SettingsContext.Provider>
   );
 }

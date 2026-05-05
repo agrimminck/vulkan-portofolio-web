@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Providers from "./components/Providers";
+import AdminKeyListener from "./components/AdminKeyListener";
 
 export const metadata: Metadata = {
   title: "Portfolio — Multiverse",
@@ -10,7 +12,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>
+          <AdminKeyListener />
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
