@@ -77,13 +77,21 @@ Cambios en admin → POST `/api/settings` → DB → visitantes ven el nuevo val
 
 ## i18n
 
-`useLang()` hook disponible en todos los temas. `LangProvider` en `page.tsx` acepta `defaultLang` desde DB. Toggle siempre visible top-left. Traducciones: `SHARED` (labels comunes), `REFINED_T`, `METROPOLIS_T`, `CORPORATE_T`, `CYBERPUNK_T`, `EDITORIAL_T`, `ORGANIC_T`, `HOLOGRAPHIC_T`, `PROJECT_ES` (tagline + description por proyecto).
+`useLang()` hook disponible en todos los temas. `LangProvider` en `page.tsx` acepta `defaultLang` desde DB. Toggle top-left muestra idioma actual (EN/ES), click cambia.
+
+**CRÍTICO — circular dep:** `SettingsContext` vive en `app/lib/settings-context.tsx` (NO en `page.tsx`). `ThemedPortrait` importa de ahí. `page.tsx` re-exporta para compatibilidad. Si se mueve de vuelta a `page.tsx`, el toggle de idioma rompe (circular dep corrompe el contexto).
+
+Traducciones: `SHARED`, `REFINED_T`, `METROPOLIS_T`, `CORPORATE_T`, `CYBERPUNK_T`, `EDITORIAL_T`, `ORGANIC_T`, `HOLOGRAPHIC_T`, `PROJECT_ES`.
 
 ## Portrait dinámico
 
-`ThemedPortrait` lee `settings.portrait_{variant}` de `SettingsContext`. Admin puede cambiar el path por tema (ej: `/me-metropolis.jpg`). Imágenes deben estar en `/public/`.
+`ThemedPortrait` sirve imagen desde Neon DB (`/api/portrait/{theme}?v={version}`). Fallback: path estático de `SettingsContext`. Cache busting via columna `version` (timestamp) — cambia en cada upload.
 
-Prompts para generar portraits temáticos: **usar Gemini con la foto real como input** (no generación desde cero). Subir imagen → pedir solo cambios de ropa/iluminación/fondo manteniendo persona idéntica.
+Crop data almacenada como JSON en columna `position`: `{"x":50,"y":50,"zoom":1.2}`. `ThemedPortrait` aplica `objectPosition: x% y%` + `transform: scale(zoom)` + `transformOrigin: x% y%`.
+
+Admin: "Choose photo" → abre CropEditor (drag reposicionar + zoom slider estilo LinkedIn) → "Save crop" → upload a Neon + actualiza version.
+
+Prompts Gemini: usar foto real como input, pedir cambios de ropa/iluminación/fondo manteniendo persona idéntica.
 
 ## Switcher — mecánica
 
@@ -98,10 +106,21 @@ Prompts para generar portraits temáticos: **usar Gemini con la foto real como i
 ```bash
 vercel link --scope agrimmincks-projects --project agrimminck-portofolio
 vercel --prod --yes
-# Alias manual necesario cada deploy (Vercel no lo auto-asigna aún):
-# POST /v2/deployments/{id}/aliases → agrimminck-portofolio.vercel.app
 ```
+
+Vercel Deployment Protection: **deshabilitado** (visitors públicos, sin login requerido).
+Alias `agrimminck-portofolio.vercel.app` se asigna automáticamente en cada prod deploy.
 
 ## Datos — projects.ts
 
-Sin mencionar MMORPG — referir a Idyllic como "large-scale online video game" / "videojuego online a gran escala". 8 proyectos: Idyllic, Trading, Mercado Libre Electrodomésticos, Car Shop App, Inversionistas, Boti Finder, Free Pickup, GitHub.
+Sin mencionar MMORPG — referir a Idyllic como "large-scale online video game" / "videojuego online a gran escala". 7 proyectos activos (Trading removido):
+
+| Proyecto | URL | Status |
+|---|---|---|
+| Idyllic | https://idyllic-web.vercel.app | wip |
+| Mercado Libre Electrodomésticos | https://topelectrohogar.com | live |
+| Car Shop App | https://basilisk-car-shop-app.vercel.app | live |
+| Inversionistas | https://basilisk-inversionistas.vercel.app | standby |
+| Boti Finder | https://basilisk-boti-finder.vercel.app | standby |
+| Free Pickup | (sin URL pública aún) | live |
+| GitHub | https://github.com/agrimminck | social |
