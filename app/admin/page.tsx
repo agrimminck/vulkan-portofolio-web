@@ -265,9 +265,9 @@ function PortraitUploader({ theme, color, label }: { theme: ThemeId; color: stri
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    e.target.value = ""; // reset so same file can be re-selected
     setPendingFile(file);
     setCropSrc(URL.createObjectURL(file));
-    // Reset crop for new image
     setCrop({ x: 50, y: 50, zoom: 1 });
   }
 
