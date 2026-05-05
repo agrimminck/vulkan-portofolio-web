@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Providers from "./components/Providers";
 import AdminKeyListener from "./components/AdminKeyListener";
 import LangToggle from "./components/LangToggle";
 
@@ -14,11 +13,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <AdminKeyListener />
-          <LangToggle />
-          {children}
-        </Providers>
+        <AdminKeyListener />
+        <LangToggle />
+        {children}
       </body>
     </html>
   );
