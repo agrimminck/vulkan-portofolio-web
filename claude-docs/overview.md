@@ -83,6 +83,16 @@ Cambios en admin → POST `/api/settings` → DB → visitantes ven el nuevo val
 
 Traducciones: `SHARED`, `REFINED_T`, `METROPOLIS_T`, `CORPORATE_T`, `CYBERPUNK_T`, `EDITORIAL_T`, `ORGANIC_T`, `HOLOGRAPHIC_T`, `PROJECT_ES`.
 
+## Crop modal — sistema de posicionamiento
+
+`CropModal` (fixed overlay, z-99999) se abre al subir foto o hacer "Adjust crop".
+- Canvas 540×420, crop frame 300×300 (rounded square, box-shadow punch-out)
+- `fitScale = max(CROP_FRAME/natural.w, CROP_FRAME/natural.h)` → zoom=1 = imagen llena el frame = `objectFit:cover` en ThemedPortrait
+- Drag mueve imagen bajo el frame fijo; zoom slider min=1 (nunca encoge)
+- Save → `{x,y,zoom}` JSON en columna `position`; imagen completa siempre guardada en bytea
+- ThemedPortrait: `objectFit:cover` + `objectPosition:x% y%` + `transform:scale(zoom)` + `transformOrigin:x% y%`
+- Cache bust: `?v={version}` en URL, version = timestamp incrementado en cada upload
+
 ## Portrait dinámico
 
 `ThemedPortrait` sirve imagen desde Neon DB (`/api/portrait/{theme}?v={version}`). Fallback: path estático de `SettingsContext`. Cache busting via columna `version` (timestamp) — cambia en cada upload.
@@ -122,5 +132,5 @@ Sin mencionar MMORPG — referir a Idyllic como "large-scale online video game" 
 | Car Shop App | https://basilisk-car-shop-app.vercel.app | live |
 | Inversionistas | https://basilisk-inversionistas.vercel.app | standby |
 | Boti Finder | https://basilisk-boti-finder.vercel.app | standby |
-| Free Pickup | (sin URL pública aún) | live |
+| Free Pickup | https://basilisk-free-pickup.vercel.app | live |
 | GitHub | https://github.com/agrimminck | social |
