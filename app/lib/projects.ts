@@ -57,6 +57,7 @@ export const projects: Project[] = [
     tagline: "Match investors w/ projects",
     description:
       "Web + mobile PWA. Document vault, interest signals, 1-to-1 chat after acceptance. Standby on R2 storage credentials.",
+    url: "https://basilisk-inversionistas.vercel.app",
     category: "basilisk",
     tags: ["Next.js 16", "Better Auth", "PWA", "Drizzle"],
     status: "standby",
