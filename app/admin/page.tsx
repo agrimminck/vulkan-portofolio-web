@@ -39,6 +39,9 @@ export default function AdminPage() {
   if (!session) {
     return (
       <Screen>
+        <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#666", fontSize: 13, textDecoration: "none", marginBottom: 32 }}>
+          ← Portfolio
+        </a>
         <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Admin</h1>
         <p style={{ color: "#888", marginBottom: 24, fontSize: 14 }}>Sign in with your Google account to continue.</p>
         <button onClick={() => signIn("google")} style={btnStyle("#4285F4")}>
@@ -52,9 +55,14 @@ export default function AdminPage() {
     <Screen>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
         <h1 style={{ fontSize: 22, fontWeight: 700 }}>Portfolio Admin</h1>
-        <button onClick={() => signOut({ callbackUrl: "/" })} style={btnStyle("#333", { fontSize: 12, padding: "6px 14px" })}>
-          Sign out
-        </button>
+        <div style={{ display: "flex", gap: 8 }}>
+          <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#aaa", fontSize: 12, textDecoration: "none", padding: "6px 14px", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8 }}>
+            ← Portfolio
+          </a>
+          <button onClick={() => signOut({ callbackUrl: "/" })} style={btnStyle("#333", { fontSize: 12, padding: "6px 14px" })}>
+            Sign out
+          </button>
+        </div>
       </div>
 
       {/* Default theme */}
