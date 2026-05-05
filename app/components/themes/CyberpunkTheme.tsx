@@ -3,6 +3,8 @@
 import { projects } from "../../lib/projects";
 import { useEffect, useState } from "react";
 import ThemedPortrait from "../ThemedPortrait";
+import { useLang } from "../../lib/lang-context";
+import { CYBERPUNK_T, PROJECT_ES, SHARED } from "../../lib/i18n";
 
 function GlitchText({ children, className }: { children: string; className?: string }) {
   return (
@@ -41,6 +43,10 @@ function Terminal() {
 }
 
 export default function CyberpunkTheme() {
+  const { lang } = useLang();
+  const t = CYBERPUNK_T[lang];
+  const sh = SHARED[lang];
+
   return (
     <div className="t-cyber min-h-screen relative overflow-hidden">
       {/* Vapor + grid */}
@@ -71,7 +77,7 @@ export default function CyberpunkTheme() {
           <div className="grid md:grid-cols-4 gap-6 items-end">
             <div className="md:col-span-2">
               <div className="text-[10px] tracking-[0.4em] text-[var(--neon-cyan)] mb-2">
-                NODE.LATAM // PORTFOLIO_v5.0 // 2026.05
+                {t.nodeTag}
               </div>
               <h1
                 className="text-7xl md:text-9xl font-normal leading-[0.85] uppercase"
@@ -99,10 +105,10 @@ export default function CyberpunkTheme() {
         {/* Stats bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           {[
-            { k: "PROJECTS", v: projects.length, c: "var(--neon-cyan)" },
-            { k: "STACKS", v: 12, c: "var(--neon-pink)" },
-            { k: "DEPLOYED", v: projects.filter((p) => p.status === "live").length, c: "var(--neon-violet)" },
-            { k: "UPTIME", v: "99.9%", c: "var(--neon-cyan)" },
+            { k: t.sProjects, v: projects.length, c: "var(--neon-cyan)" },
+            { k: t.sWip, v: 12, c: "var(--neon-pink)" },
+            { k: t.sLive, v: projects.filter((p) => p.status === "live").length, c: "var(--neon-violet)" },
+            { k: t.sStandby, v: "99.9%", c: "var(--neon-cyan)" },
           ].map((s) => (
             <div
               key={s.k}
@@ -120,7 +126,7 @@ export default function CyberpunkTheme() {
         {/* Projects */}
         <div className="mb-6 flex items-end justify-between">
           <h2 className="text-4xl uppercase tracking-wider" style={{ fontFamily: "var(--font-display-cyber)" }}>
-            <span className="text-[var(--neon-pink)]">[</span> MANIFEST <span className="text-[var(--neon-pink)]">]</span>
+            <span className="text-[var(--neon-pink)]">[</span> {t.manifest} <span className="text-[var(--neon-pink)]">]</span>
           </h2>
           <span className="text-xs text-[var(--neon-cyan)] opacity-60">
             ls -la /portfolio | wc -l = {projects.length}
@@ -169,7 +175,7 @@ export default function CyberpunkTheme() {
                       color: p.status === "standby" ? "var(--neon-cyan)" : "#fff",
                     }}
                   >
-                    {p.status.toUpperCase()}
+                    {p.status === "live" ? sh.live.toUpperCase() : p.status === "wip" ? sh.wip.toUpperCase() : sh.standby.toUpperCase()}
                   </span>
                 </div>
                 <h3
@@ -178,8 +184,12 @@ export default function CyberpunkTheme() {
                 >
                   {p.name}
                 </h3>
-                <div className="text-xs text-[var(--neon-pink)] mb-3 font-mono">// {p.tagline}</div>
-                <p className="text-sm opacity-80 leading-relaxed mb-4 font-mono">{p.description}</p>
+                <div className="text-xs text-[var(--neon-pink)] mb-3 font-mono">
+                  // {lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline}
+                </div>
+                <p className="text-sm opacity-80 leading-relaxed mb-4 font-mono">
+                  {lang === "es" ? (PROJECT_ES[p.id]?.description ?? p.description) : p.description}
+                </p>
                 <div className="flex flex-wrap gap-1">
                   {p.tags.map((tag) => (
                     <span
@@ -197,7 +207,7 @@ export default function CyberpunkTheme() {
         </div>
 
         <footer className="mt-16 border-t border-[var(--neon-pink)]/40 pt-6 flex justify-between text-xs font-mono opacity-60">
-          <span>EOF // session=alive // mem=98%</span>
+          <span>{t.eof}</span>
           <span className="text-[var(--neon-cyan)]">^C to disconnect</span>
         </footer>
       </div>

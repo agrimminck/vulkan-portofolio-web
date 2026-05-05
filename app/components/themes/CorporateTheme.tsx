@@ -2,6 +2,8 @@
 
 import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
+import { useLang } from "../../lib/lang-context";
+import { CORPORATE_T, PROJECT_ES, SHARED } from "../../lib/i18n";
 
 function PlaneSilhouette({ className, scale = 1 }: { className?: string; scale?: number }) {
   return (
@@ -35,6 +37,10 @@ function Contrail({ x, y, w }: { x: string; y: string; w: number }) {
 }
 
 export default function CorporateTheme() {
+  const { lang } = useLang();
+  const t = CORPORATE_T[lang];
+  const sh = SHARED[lang];
+
   return (
     <div className="t-corporate min-h-screen relative overflow-hidden">
       {/* Cloud-like radial wash */}
@@ -74,23 +80,23 @@ export default function CorporateTheme() {
         <header className="flex items-start justify-between border-b-2 border-[var(--ink)] pb-8 mb-16">
           <div>
             <div className="text-[11px] tracking-[0.4em] uppercase opacity-60 mb-2">
-              Established · 2026 · Santiago, Chile
+              {t.established}
             </div>
             <h1 className="text-7xl md:text-8xl font-black leading-[0.9]" style={{ fontFamily: "var(--font-display-corporate)" }}>
               Idyllic
               <span className="italic font-normal opacity-60"> & Co.</span>
             </h1>
             <div className="mt-2 text-base italic opacity-70" style={{ fontFamily: "var(--font-display-corporate)" }}>
-              software · games · infrastructure
+              {t.sub}
             </div>
           </div>
           <div className="hidden md:flex items-center gap-6">
             <div className="flex flex-col items-end text-right text-xs uppercase tracking-[0.25em] opacity-70 leading-relaxed">
-              <span>Reg. №&nbsp;CL-2026-MMXXVI</span>
-              <span>Volume I · Folio 01</span>
-              <span>Annual Report</span>
+              <span>{t.reg}</span>
+              <span>{t.volume}</span>
+              <span>{t.reportTitle}</span>
               <span className="mt-2 italic opacity-80" style={{ fontFamily: "var(--font-display-corporate)" }}>
-                Principal —
+                {t.principal}
               </span>
             </div>
             <ThemedPortrait variant="corporate" size={120} shape="circle" />
@@ -101,19 +107,18 @@ export default function CorporateTheme() {
         <section className="grid md:grid-cols-12 gap-12 mb-24">
           <div className="md:col-span-7">
             <p className="text-3xl md:text-4xl leading-snug italic" style={{ fontFamily: "var(--font-display-corporate)" }}>
-              "A boutique studio building MMOs from first principles, alongside a small portfolio of
-              public-facing software products serving Latin America."
+              &ldquo;{t.body}&rdquo;
             </p>
             <div className="gold-rule mt-8 mb-2" />
-            <div className="text-xs uppercase tracking-[0.3em] opacity-60">— Statement of Intent</div>
+            <div className="text-xs uppercase tracking-[0.3em] opacity-60">{t.intent}</div>
           </div>
           <aside className="md:col-span-4 md:col-start-9 border-l border-[var(--rule)] pl-6 text-sm leading-relaxed">
-            <div className="text-[10px] uppercase tracking-[0.3em] opacity-60 mb-3">Index</div>
+            <div className="text-[10px] uppercase tracking-[0.3em] opacity-60 mb-3">{t.indexTitle}</div>
             <ol className="space-y-2 text-base">
-              <li className="flex justify-between"><span>I. Flagship Project</span><span className="opacity-60">01</span></li>
-              <li className="flex justify-between"><span>II. Public Portfolio</span><span className="opacity-60">02</span></li>
-              <li className="flex justify-between"><span>III. Open Source</span><span className="opacity-60">03</span></li>
-              <li className="flex justify-between"><span>IV. Correspondence</span><span className="opacity-60">04</span></li>
+              <li className="flex justify-between"><span>{t.i1}</span><span className="opacity-60">01</span></li>
+              <li className="flex justify-between"><span>{t.i2}</span><span className="opacity-60">02</span></li>
+              <li className="flex justify-between"><span>{t.i3}</span><span className="opacity-60">03</span></li>
+              <li className="flex justify-between"><span>{t.i4}</span><span className="opacity-60">04</span></li>
             </ol>
           </aside>
         </section>
@@ -121,8 +126,8 @@ export default function CorporateTheme() {
         {/* Projects grid */}
         <section>
           <div className="flex items-baseline justify-between mb-10">
-            <h2 className="text-4xl font-bold">Portfolio</h2>
-            <span className="text-xs uppercase tracking-[0.3em] opacity-60">{projects.length} entries</span>
+            <h2 className="text-4xl font-bold">{t.portfolioLabel}</h2>
+            <span className="text-xs uppercase tracking-[0.3em] opacity-60">{projects.length} {t.entries}</span>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((p, i) => (
@@ -139,15 +144,17 @@ export default function CorporateTheme() {
                     №&nbsp;{String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="text-[10px] uppercase tracking-[0.25em] px-2 py-0.5 border border-current opacity-70">
-                    {p.status}
+                    {p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby}
                   </span>
                 </div>
                 <h3 className="text-2xl font-bold mb-1">{p.name}</h3>
                 <p className="text-sm italic mb-4 opacity-80" style={{ fontFamily: "var(--font-display-corporate)" }}>
-                  {p.tagline}
+                  {lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline}
                 </p>
                 <div className="gold-rule mb-3" />
-                <p className="text-sm opacity-80 leading-relaxed mb-4">{p.description}</p>
+                <p className="text-sm opacity-80 leading-relaxed mb-4">
+                  {lang === "es" ? (PROJECT_ES[p.id]?.description ?? p.description) : p.description}
+                </p>
                 <div className="flex flex-wrap gap-1.5 mt-auto">
                   {p.tags.map((tag) => (
                     <span
@@ -158,14 +165,17 @@ export default function CorporateTheme() {
                     </span>
                   ))}
                 </div>
+                {p.url && (
+                  <div className="mt-3 text-xs uppercase tracking-[0.2em] opacity-60">{sh.visit}</div>
+                )}
               </a>
             ))}
           </div>
         </section>
 
         <footer className="mt-24 pt-8 border-t-2 border-[var(--ink)] flex justify-between text-xs uppercase tracking-[0.3em] opacity-60">
-          <span>Idyllic Entertainment · MMXXVI</span>
-          <span>Crafted in Santiago · Latin America</span>
+          <span>{t.footer1}</span>
+          <span>{t.footer2}</span>
         </footer>
       </div>
     </div>
