@@ -148,9 +148,10 @@ export default function HolographicTheme() {
                           href={p.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-mono font-bold iridescent transition-opacity hover:opacity-80"
+                          className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-mono font-bold transition-opacity hover:opacity-80"
                           style={{
                             background: "rgba(255,255,255,0.18)",
+                            color: "rgba(255,255,255,0.95)",
                             border: "1px solid rgba(255,255,255,0.45)",
                             borderRadius: "8px",
                             backdropFilter: "blur(8px)",
