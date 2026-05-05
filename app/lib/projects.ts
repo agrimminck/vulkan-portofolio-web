@@ -15,9 +15,9 @@ export const projects: Project[] = [
   {
     id: "idyllic-mmo",
     name: "Idyllic",
-    tagline: "MMORPG world built ground-up",
+    tagline: "Large-scale online video game, built ground-up",
     description:
-      "Multiplayer online RPG. Custom Godot engine work, NestJS backend mesh, server meshing, multi-region. Player-driven economy, anti-P2W manifesto.",
+      "Massive online game. Custom Godot engine work, NestJS backend mesh, server meshing, multi-region. Player-driven economy, anti-P2W manifesto.",
     url: "https://idyllic-web.vercel.app",
     category: "idyllic",
     tags: ["Godot", "NestJS", "Postgres", "Server Mesh", "Game Design"],

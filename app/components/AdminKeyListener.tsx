@@ -1,20 +1,19 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 
-const SECRET = "adm";
+const SECRET = "idy";
 const TIMEOUT_MS = 2000;
 
 export default function AdminKeyListener() {
   const buffer = useRef("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      const tag = (e.target as HTMLElement)?.tagName?.toLowerCase();
+      if (tag === "input" || tag === "textarea") return;
 
       buffer.current += e.key.toLowerCase();
       if (timer.current) clearTimeout(timer.current);
@@ -22,12 +21,12 @@ export default function AdminKeyListener() {
 
       if (buffer.current.endsWith(SECRET)) {
         buffer.current = "";
-        router.push("/admin");
+        window.location.href = "/admin";
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [router]);
+  }, []);
 
   return null;
 }
