@@ -26,18 +26,6 @@ export const projects: Project[] = [
     accent: "#c8a86b",
   },
   {
-    id: "trading",
-    name: "Trading",
-    tagline: "Algorithmic forex w/ Claude in the loop",
-    description:
-      "Hybrid swing trader. Claude API decides 2x/day, FastAPI executor manages SL/TP autonomously. IBKR + Finnhub + ForexFactory.",
-    category: "basilisk",
-    tags: ["Next.js", "FastAPI", "Claude API", "IBKR", "Drizzle"],
-    status: "wip",
-    year: 2026,
-    accent: "#22c55e",
-  },
-  {
     id: "mercadolibre-electrodomesticos",
     name: "Mercado Libre Electrodomésticos",
     tagline: "Affiliate marketplace, MLC API",
