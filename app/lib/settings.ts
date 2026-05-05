@@ -1,5 +1,6 @@
 export type PortfolioSettings = {
   default_theme: string;
+  default_lang: string;
   portrait_refined: string;
   portrait_metropolis: string;
   portrait_corporate: string;
@@ -11,6 +12,7 @@ export type PortfolioSettings = {
 
 export const DEFAULT_SETTINGS: PortfolioSettings = {
   default_theme: "metropolis",
+  default_lang: "en",
   portrait_refined: "/me.jpg",
   portrait_metropolis: "/me.jpg",
   portrait_corporate: "/me.jpg",

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./components/Providers";
 import AdminKeyListener from "./components/AdminKeyListener";
-import { LangProvider } from "./lib/lang-context";
 import LangToggle from "./components/LangToggle";
 
 export const metadata: Metadata = {
@@ -16,11 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Providers>
-          <LangProvider>
-            <AdminKeyListener />
-            <LangToggle />
-            {children}
-          </LangProvider>
+          <AdminKeyListener />
+          <LangToggle />
+          {children}
         </Providers>
       </body>
     </html>

@@ -88,6 +88,35 @@ export default function AdminPage() {
         </div>
       </section>
 
+      {/* Default language */}
+      <section style={{ marginBottom: 40 }}>
+        <h2 style={{ fontSize: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.15em", color: "#888", marginBottom: 16 }}>
+          Default Language
+        </h2>
+        <div style={{ display: "flex", gap: 10 }}>
+          {(["en", "es"] as const).map((l) => {
+            const active = settings.default_lang === l;
+            return (
+              <button
+                key={l}
+                onClick={() => setSettings((s) => ({ ...s, default_lang: l }))}
+                style={{
+                  padding: "10px 28px", borderRadius: 999,
+                  border: active ? "2px solid #67e8f9" : "2px solid rgba(255,255,255,0.12)",
+                  background: active ? "rgba(103,232,249,0.15)" : "rgba(255,255,255,0.04)",
+                  color: active ? "#67e8f9" : "#aaa",
+                  cursor: "pointer", fontSize: 14, fontWeight: active ? 700 : 400,
+                  textTransform: "uppercase", letterSpacing: "0.15em",
+                }}
+              >
+                {l === "en" ? "English" : "Español"}
+                {active && <span style={{ fontSize: 10, opacity: 0.7, marginLeft: 8 }}>● Default</span>}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
       {/* Portrait per theme */}
       <section style={{ marginBottom: 40 }}>
         <h2 style={{ fontSize: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.15em", color: "#888", marginBottom: 16 }}>

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect, createContext, useContext } from "react";
+import { useState, useCallback, useRef, useEffect, createContext } from "react";
 import { type ThemeId } from "./lib/projects";
 import type { PortfolioSettings } from "./lib/settings";
 import { DEFAULT_SETTINGS } from "./lib/settings";
+import { LangProvider } from "./lib/lang-context";
+import type { Lang } from "./lib/i18n";
 
 export const SettingsContext = createContext<PortfolioSettings>(DEFAULT_SETTINGS);
 import ThemeSwitcher from "./components/ThemeSwitcher";
@@ -27,6 +29,7 @@ const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
 
 export default function Home() {
   const [settings, setSettings] = useState<PortfolioSettings>(DEFAULT_SETTINGS);
+  const [defaultLang, setDefaultLang] = useState<Lang>("en");
   const [theme, setTheme] = useState<ThemeId>("metropolis");
   const [revealing, setRevealing] = useState<{ theme: ThemeId; x: number; y: number } | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -38,6 +41,7 @@ export default function Home() {
         const merged = { ...DEFAULT_SETTINGS, ...d };
         setSettings(merged);
         if (merged.default_theme) setTheme(merged.default_theme as ThemeId);
+        if (merged.default_lang) setDefaultLang(merged.default_lang as Lang);
       })
       .catch(() => {});
   }, []);
@@ -63,6 +67,7 @@ export default function Home() {
   const Next = revealing ? THEMES_MAP[revealing.theme] : null;
 
   return (
+    <LangProvider defaultLang={defaultLang}>
     <SettingsContext.Provider value={settings}>
     <main className="relative min-h-screen overflow-x-hidden">
       <div className="relative z-0">
@@ -87,5 +92,6 @@ export default function Home() {
       <ThemeSwitcher current={revealing?.theme ?? theme} onChange={handleThemeChange} />
     </main>
     </SettingsContext.Provider>
+    </LangProvider>
   );
 }
