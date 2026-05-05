@@ -2,8 +2,14 @@
 
 import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
+import { useLang } from "../../lib/lang-context";
+import { REFINED_T, PROJECT_ES, SHARED } from "../../lib/i18n";
 
 export default function RefinedTheme() {
+  const { lang } = useLang();
+  const t = REFINED_T[lang];
+  const sh = SHARED[lang];
+
   return (
     <div className="t-refined min-h-screen relative overflow-hidden">
       {/* Subtle floating orbs (refined, very low opacity) */}
@@ -39,11 +45,11 @@ export default function RefinedTheme() {
           <div className="flex items-center gap-3">
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--accent)" }} />
             <span className="text-[11px] tracking-[0.3em] uppercase text-[var(--ink-muted)]">
-              Idyllic Entertainment · Est. 2026
+              {t.eyebrow}
             </span>
           </div>
           <span className="text-[11px] tracking-[0.3em] uppercase text-[var(--ink-muted)] hidden md:inline">
-            Santiago, CL · Available for selected work
+            {t.location}
           </span>
         </div>
 
@@ -54,23 +60,20 @@ export default function RefinedTheme() {
           </div>
           <div className="md:col-span-9 refined-rise" style={{ animationDelay: "0.25s" }}>
             <h1 className="text-5xl md:text-7xl leading-[1.05] mb-6">
-              <span style={{ fontStyle: "italic" }}>Software,</span> built carefully — by one
-              engineer based in Santiago, Chile.
+              <span style={{ fontStyle: "italic" }}>{t.headline}</span>
             </h1>
             <p className="text-lg md:text-xl text-[var(--ink-soft)] max-w-2xl leading-relaxed">
-              I run a small studio responsible for one ambitious long-running project — an
-              MMORPG built ground-up — alongside a handful of public products I ship for clients
-              and the open web. This page is a quiet index of what I keep on the shelf.
+              {t.body}
             </p>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-[var(--ink-muted)]">
               <span>
-                <span className="text-[var(--ink)] font-medium">{projects.filter((p) => p.status === "live").length}</span> in production
+                <span className="text-[var(--ink)] font-medium">{projects.filter((p) => p.status === "live").length}</span> {t.statLive}
               </span>
               <span>
-                <span className="text-[var(--ink)] font-medium">{projects.filter((p) => p.status === "wip").length}</span> in development
+                <span className="text-[var(--ink)] font-medium">{projects.filter((p) => p.status === "wip").length}</span> {t.statWip}
               </span>
               <span>
-                <span className="text-[var(--ink)] font-medium">{projects.length}</span> total
+                <span className="text-[var(--ink)] font-medium">{projects.length}</span> {t.statTotal}
               </span>
             </div>
           </div>
@@ -83,12 +86,12 @@ export default function RefinedTheme() {
           <div className="flex items-end justify-between mb-12 refined-rise">
             <div>
               <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--ink-muted)] mb-2">
-                ❶ &nbsp; Selected Work
+                {t.sectionTitle}
               </div>
-              <h2 className="text-3xl md:text-5xl">A working portfolio</h2>
+              <h2 className="text-3xl md:text-5xl">{t.colophon}</h2>
             </div>
             <span className="text-sm text-[var(--ink-muted)] italic hidden md:inline">
-              Updated continuously
+              {t.updated}
             </span>
           </div>
 
@@ -112,12 +115,12 @@ export default function RefinedTheme() {
                   <span className="text-[11px] tracking-[0.3em] uppercase text-[var(--ink-muted)]">
                     {String(i + 1).padStart(2, "0")} &nbsp;·&nbsp;{" "}
                     {p.category === "idyllic"
-                      ? "Studio Project"
+                      ? sh.studio
                       : p.category === "social"
-                        ? "Open Source"
-                        : "Public Product"}
+                        ? sh.openSource
+                        : sh.product}
                   </span>
-                  <StatusPill status={p.status} />
+                  <StatusPill status={p.status} labels={{ live: sh.live, wip: sh.wip, standby: sh.standby }} />
                 </div>
                 <h3 className="text-3xl md:text-4xl mb-2" style={{ fontFamily: "var(--font-display-refined)" }}>
                   {p.name}
@@ -126,10 +129,10 @@ export default function RefinedTheme() {
                   className="italic text-[var(--ink-soft)] mb-5"
                   style={{ fontFamily: "var(--font-display-refined)", fontSize: "1.1rem" }}
                 >
-                  {p.tagline}
+                  {lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline}
                 </p>
                 <p className="text-[15px] leading-relaxed text-[var(--ink-soft)] mb-6">
-                  {p.description}
+                  {lang === "es" ? (PROJECT_ES[p.id]?.description ?? p.description) : p.description}
                 </p>
                 <div className="flex items-end justify-between">
                   <div className="text-xs text-[var(--ink-muted)] tracking-wide flex flex-wrap gap-x-2 gap-y-1">
@@ -145,7 +148,7 @@ export default function RefinedTheme() {
                       className="ml-4 text-xs tracking-[0.2em] uppercase text-[var(--ink)] font-medium whitespace-nowrap transition-transform group-hover:translate-x-1"
                       style={{ fontFamily: "var(--font-body-refined)" }}
                     >
-                      Visit →
+                      {sh.visit}
                     </span>
                   )}
                 </div>
@@ -157,9 +160,9 @@ export default function RefinedTheme() {
         <div className="refined-divider mb-12" />
 
         <footer className="flex flex-wrap items-center justify-between gap-4 text-sm text-[var(--ink-muted)]">
-          <span>© 2026 Idyllic Entertainment · Crafted in Santiago, Chile</span>
+          <span>{t.footer}</span>
           <span className="italic" style={{ fontFamily: "var(--font-display-refined)" }}>
-            Quiet by design.
+            {t.tagline}
           </span>
         </footer>
       </div>
@@ -167,11 +170,17 @@ export default function RefinedTheme() {
   );
 }
 
-function StatusPill({ status }: { status: "live" | "wip" | "standby" }) {
+function StatusPill({
+  status,
+  labels,
+}: {
+  status: "live" | "wip" | "standby";
+  labels: { live: string; wip: string; standby: string };
+}) {
   const map = {
-    live: { label: "In production", color: "#16a34a", bg: "#dcfce7" },
-    wip: { label: "In progress", color: "#1e3a5f", bg: "#dbeafe" },
-    standby: { label: "Standby", color: "#a16207", bg: "#fef3c7" },
+    live: { color: "#16a34a", bg: "#dcfce7" },
+    wip: { color: "#1e3a5f", bg: "#dbeafe" },
+    standby: { color: "#a16207", bg: "#fef3c7" },
   } as const;
   const m = map[status];
   return (
@@ -179,7 +188,7 @@ function StatusPill({ status }: { status: "live" | "wip" | "standby" }) {
       className="text-[10px] tracking-[0.2em] uppercase px-2.5 py-1 font-medium"
       style={{ color: m.color, background: m.bg, borderRadius: "999px" }}
     >
-      {m.label}
+      {labels[status]}
     </span>
   );
 }

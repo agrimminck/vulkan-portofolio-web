@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
+import { useLang } from "../../lib/lang-context";
+import { METROPOLIS_T, PROJECT_ES, SHARED } from "../../lib/i18n";
 
 const PHOTO_URL =
   "https://images.unsplash.com/photo-1629443250630-f43487ca1e80?w=2400&q=80&auto=format&fit=crop";
@@ -38,6 +40,10 @@ function Satellite({ scale = 1 }: { scale?: number }) {
 }
 
 export default function MetropolisTheme() {
+  const { lang } = useLang();
+  const t = METROPOLIS_T[lang];
+  const sh = SHARED[lang];
+
   return (
     <div className="t-metropolis min-h-screen relative overflow-hidden" style={{ background: "#0b1320" }}>
       {/* PHOTO BACKGROUND — fixed sticky illusion via large image */}
@@ -86,7 +92,7 @@ export default function MetropolisTheme() {
                 className="text-[10px] tracking-[0.4em] uppercase text-white/90"
                 style={{ fontFamily: "var(--font-body-metro)" }}
               >
-                Live broadcast · 12.34°N · 103.84°E
+                {t.eyebrow}
               </span>
             </div>
             <h1
@@ -96,20 +102,19 @@ export default function MetropolisTheme() {
                 textShadow: "0 4px 30px rgba(10,20,40,0.35)",
               }}
             >
-              From the
+              {t.h1a}
               <br />
               <span className="italic font-normal" style={{ color: "#67e8f9" }}>
-                ground floor
+                {t.h1b}
               </span>
               <br />
-              to orbit.
+              {t.h1c}
             </h1>
             <p
               className="mt-6 text-xl text-white/90 max-w-2xl leading-relaxed"
               style={{ fontFamily: "var(--font-body-metro)", fontWeight: 300, textShadow: "0 2px 10px rgba(0,0,0,0.4)" }}
             >
-              Software shipped from a small studio in Santiago — an MMORPG with its own custom
-              backend mesh, alongside a handful of public products serving Latin America.
+              {t.body}
             </p>
           </div>
           <div className="md:col-span-4 flex md:justify-end">
@@ -127,10 +132,10 @@ export default function MetropolisTheme() {
           }}
         >
           {[
-            { k: "Active deploys", v: projects.filter((p) => p.status === "live").length },
-            { k: "In progress", v: projects.filter((p) => p.status === "wip").length },
-            { k: "Standing by", v: projects.filter((p) => p.status === "standby").length },
-            { k: "Total payload", v: projects.length },
+            { k: t.sActive, v: projects.filter((p) => p.status === "live").length },
+            { k: t.sWip, v: projects.filter((p) => p.status === "wip").length },
+            { k: t.sStandby, v: projects.filter((p) => p.status === "standby").length },
+            { k: t.sTotal, v: projects.length },
           ].map((s) => (
             <div key={s.k}>
               <div
@@ -156,10 +161,10 @@ export default function MetropolisTheme() {
               className="text-3xl md:text-5xl uppercase tracking-tight text-white"
               style={{ fontFamily: "var(--font-display-metro)", textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
             >
-              Selected Work
+              {t.sectionTitle}
             </h2>
             <span className="text-xs tracking-[0.3em] uppercase text-white/80">
-              Manifest · {projects.length} entries
+              {t.manifest} · {projects.length} {lang === "en" ? "entries" : "entradas"}
             </span>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -196,7 +201,7 @@ export default function MetropolisTheme() {
                       style={{ color: "#71717a" }}
                     >
                       {String(i + 1).padStart(2, "0")} ·{" "}
-                      {p.category === "idyllic" ? "Studio" : p.category === "social" ? "Open Source" : "Product"}
+                      {p.category === "idyllic" ? sh.studio : p.category === "social" ? sh.openSource : sh.product}
                     </span>
                     <span
                       className="text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full font-medium"
@@ -206,7 +211,7 @@ export default function MetropolisTheme() {
                         border: `1px solid ${p.accent}55`,
                       }}
                     >
-                      {p.status}
+                      {p.status === "live" ? sh.live : p.status === "wip" ? sh.wip : sh.standby}
                     </span>
                   </div>
                   <h3
@@ -219,10 +224,10 @@ export default function MetropolisTheme() {
                     className="text-base mb-4 italic"
                     style={{ color: p.accent, fontFamily: "var(--font-body-metro)", fontWeight: 500 }}
                   >
-                    {p.tagline}
+                    {lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline}
                   </p>
                   <p className="text-sm leading-relaxed mb-5" style={{ color: "#3f3f46", fontWeight: 400 }}>
-                    {p.description}
+                    {lang === "es" ? (PROJECT_ES[p.id]?.description ?? p.description) : p.description}
                   </p>
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="text-xs flex flex-wrap gap-x-2 gap-y-1" style={{ color: "#71717a" }}>
@@ -238,7 +243,7 @@ export default function MetropolisTheme() {
                         className="text-xs tracking-[0.2em] uppercase font-medium transition-transform group-hover:translate-x-1"
                         style={{ color: p.accent }}
                       >
-                        Visit →
+                        {sh.visit}
                       </span>
                     )}
                   </div>
@@ -249,8 +254,8 @@ export default function MetropolisTheme() {
         </section>
 
         <footer className="flex flex-wrap items-center justify-between gap-4 text-xs uppercase tracking-[0.3em] text-white/80">
-          <span>// SIGNAL.STABLE · TX 24/7 · MMXXVI</span>
-          <span style={{ color: "#67e8f9" }}>END_OF_FEED ✦</span>
+          <span>{t.footerL}</span>
+          <span style={{ color: "#67e8f9" }}>{t.footerR}</span>
         </footer>
       </div>
     </div>
