@@ -69,6 +69,7 @@ export const projects: Project[] = [
     tagline: "Discover liquor stores w/ live promos",
     description:
       "Map-driven discovery for botillerías y minimarkets. Google Places API (New). Standby on GCP billing.",
+    url: "https://basilisk-boti-finder.vercel.app",
     category: "basilisk",
     tags: ["Next.js 16", "Places API", "Drizzle"],
     status: "standby",
