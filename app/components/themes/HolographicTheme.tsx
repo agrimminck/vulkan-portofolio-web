@@ -1,0 +1,167 @@
+"use client";
+
+import { projects } from "../../lib/projects";
+
+export default function HolographicTheme() {
+  return (
+    <div className="t-holo holo-mesh min-h-screen relative overflow-hidden">
+      {/* Floating orbs */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute top-[10%] left-[15%] w-72 h-72 rounded-full orb-1"
+          style={{
+            background: "radial-gradient(circle at 30% 30%, #ff6ec7, transparent 70%)",
+            filter: "blur(40px)",
+          }}
+        />
+        <div
+          className="absolute top-[40%] right-[10%] w-96 h-96 rounded-full orb-2"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, #67e8f9, transparent 70%)",
+            filter: "blur(50px)",
+          }}
+        />
+        <div
+          className="absolute bottom-[10%] left-[40%] w-80 h-80 rounded-full orb-3"
+          style={{
+            background: "radial-gradient(circle at 60% 40%, #c084fc, transparent 70%)",
+            filter: "blur(45px)",
+          }}
+        />
+      </div>
+
+      {/* Noise overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-30"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>\")",
+        }}
+      />
+
+      <div className="relative z-10 max-w-[1400px] mx-auto px-10 py-16">
+        <header className="mb-20">
+          <div className="text-[10px] tracking-[0.5em] uppercase opacity-70 mb-4 iridescent inline-block">
+            ✦ a portfolio of impossible objects ✦
+          </div>
+          <h1
+            className="text-7xl md:text-[9rem] leading-[0.9] font-normal"
+            style={{ fontFamily: "var(--font-display-holo)" }}
+          >
+            <span className="iridescent">Soft</span>ware
+            <br />
+            from <span className="italic iridescent">a parallel</span>
+            <br />
+            <span className="iridescent">timeline</span>.
+          </h1>
+          <p
+            className="mt-6 text-lg max-w-2xl opacity-80 leading-relaxed font-mono"
+            style={{ fontFamily: "var(--font-body-holo)" }}
+          >
+            // eleven projects rendered through a chrome lens. some live, some still loading,
+            <br />
+            // all built by one engineer & a small library of tools.
+          </p>
+        </header>
+
+        {/* Stats holo */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+          {[
+            { k: "PROJECTS", v: projects.length },
+            { k: "LIVE", v: projects.filter((p) => p.status === "live").length },
+            { k: "WIP", v: projects.filter((p) => p.status === "wip").length },
+            { k: "STAND BY", v: projects.filter((p) => p.status === "standby").length },
+          ].map((s) => (
+            <div key={s.k} className="glass-card rounded-2xl p-5">
+              <div className="text-[10px] tracking-[0.3em] opacity-60 mb-1 font-mono">{s.k}</div>
+              <div
+                className="text-5xl font-normal iridescent"
+                style={{ fontFamily: "var(--font-display-holo)" }}
+              >
+                {s.v}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Cards */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {projects.map((p, i) => (
+            <a
+              key={p.id}
+              href={p.url ?? "#"}
+              target={p.url ? "_blank" : undefined}
+              rel="noreferrer"
+              className="group glass-card rounded-3xl p-6 relative overflow-hidden transition-all duration-500 hover:-translate-y-2"
+              style={{ minHeight: 300 }}
+            >
+              {/* Per-card gradient blob */}
+              <div
+                className="absolute -top-20 -right-20 w-60 h-60 rounded-full opacity-50 group-hover:opacity-90 transition-opacity duration-500"
+                style={{
+                  background: `radial-gradient(circle, ${p.accent}, transparent 70%)`,
+                  filter: "blur(30px)",
+                }}
+              />
+              <div className="relative">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[10px] tracking-[0.3em] opacity-60 font-mono">
+                    №{String(i + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
+                  </span>
+                  <span
+                    className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full font-mono"
+                    style={{
+                      background: `${p.accent}33`,
+                      color: p.accent,
+                      border: `1px solid ${p.accent}66`,
+                    }}
+                  >
+                    {p.status}
+                  </span>
+                </div>
+                <h3
+                  className="text-3xl mb-2 leading-tight"
+                  style={{ fontFamily: "var(--font-display-holo)" }}
+                >
+                  <span className="iridescent">{p.name}</span>
+                </h3>
+                <p
+                  className="text-sm italic mb-4 opacity-90"
+                  style={{ fontFamily: "var(--font-display-holo)", color: p.accent }}
+                >
+                  {p.tagline}
+                </p>
+                <p className="text-sm leading-relaxed opacity-75 mb-5 font-mono">
+                  {p.description}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {p.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[10px] px-2 py-0.5 rounded-full font-mono"
+                      style={{
+                        background: "rgba(255,255,255,0.08)",
+                        border: "1px solid rgba(255,255,255,0.18)",
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <footer className="mt-24 glass-card rounded-2xl p-6 flex justify-between items-center">
+          <span className="text-xs tracking-[0.3em] uppercase opacity-70 font-mono">
+            // signal stable · channel open · MMXXVI
+          </span>
+          <span className="iridescent text-2xl" style={{ fontFamily: "var(--font-display-holo)" }}>
+            ✦
+          </span>
+        </footer>
+      </div>
+    </div>
+  );
+}

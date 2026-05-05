@@ -1,0 +1,198 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&family=VT323&family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Space+Mono:wght@400;700&family=Caveat:wght@400;700&family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&family=Bricolage+Grotesque:wght@400;700;900&family=Bebas+Neue&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-display-corporate: "Playfair Display", serif;
+  --font-body-corporate: "Cormorant Garamond", serif;
+  --font-display-cyber: "VT323", monospace;
+  --font-body-cyber: "JetBrains Mono", monospace;
+  --font-display-editorial: "Fraunces", serif;
+  --font-body-editorial: "Instrument Serif", serif;
+  --font-display-organic: "Bricolage Grotesque", sans-serif;
+  --font-body-organic: "Caveat", cursive;
+  --font-display-holo: "DM Serif Display", serif;
+  --font-body-holo: "Space Mono", monospace;
+}
+
+html, body { background: #000; color: #fff; }
+body { margin: 0; overflow-x: hidden; }
+
+/* ============= GLOBAL UTILITIES ============= */
+.grain::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+}
+
+/* ============= CORPORATE THEME ============= */
+.t-corporate {
+  --bg: #f5f0e6;
+  --bg-deep: #ebe3d2;
+  --ink: #0a2540;
+  --ink-soft: #455570;
+  --gold: #b08a3e;
+  --gold-deep: #8a6822;
+  --rule: #c2b59b;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body-corporate);
+}
+.t-corporate h1, .t-corporate h2, .t-corporate h3 { font-family: var(--font-display-corporate); }
+
+@keyframes plane-fly-1 {
+  0% { transform: translate(-15vw, 30vh) rotate(8deg); }
+  100% { transform: translate(115vw, 22vh) rotate(8deg); }
+}
+@keyframes plane-fly-2 {
+  0% { transform: translate(110vw, 60vh) rotate(-6deg); }
+  100% { transform: translate(-15vw, 70vh) rotate(-6deg); }
+}
+@keyframes plane-fly-3 {
+  0% { transform: translate(-10vw, 80vh) rotate(4deg); }
+  100% { transform: translate(115vw, 50vh) rotate(4deg); }
+}
+@keyframes contrail-fade {
+  0% { opacity: 0; }
+  10% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+.plane-1 { animation: plane-fly-1 38s linear infinite; }
+.plane-2 { animation: plane-fly-2 52s linear infinite; }
+.plane-3 { animation: plane-fly-3 44s linear infinite; }
+.t-corporate .gold-rule { background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent); height: 1px; }
+
+/* ============= CYBERPUNK THEME ============= */
+.t-cyber {
+  --bg: #050010;
+  --ink: #e0fbff;
+  --neon-pink: #ff007a;
+  --neon-cyan: #00f0ff;
+  --neon-violet: #b300ff;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body-cyber);
+}
+.t-cyber h1, .t-cyber h2, .t-cyber h3 { font-family: var(--font-display-cyber); letter-spacing: 0.02em; }
+
+@keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
+@keyframes flicker { 0%,100% { opacity:.97 } 5% {opacity:.4} 6% {opacity:.95} 50%{opacity:.85} 51%{opacity:.55} }
+@keyframes glitch-text {
+  0%, 100% { text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-cyan); }
+  25% { text-shadow: -2px 0 var(--neon-pink), 2px 0 var(--neon-cyan); }
+  50% { text-shadow: 2px 0 var(--neon-cyan), -2px 0 var(--neon-pink); }
+  75% { text-shadow: -1px 1px var(--neon-violet), 1px -1px var(--neon-cyan); }
+}
+.glitch { animation: glitch-text 4s infinite; }
+.scanlines { background: repeating-linear-gradient(180deg, transparent 0 2px, rgba(0,255,255,0.04) 2px 3px); }
+.flicker { animation: flicker 6s infinite; }
+
+@keyframes grid-pan {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+.cyber-grid {
+  background-image:
+    linear-gradient(rgba(255,0,122,0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.18) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: grid-pan 12s linear infinite;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 60%, black 30%, transparent 90%);
+}
+
+/* ============= EDITORIAL THEME ============= */
+.t-editorial {
+  --bg: #f1ece1;
+  --paper: #e9e0cb;
+  --ink: #0c0c0c;
+  --red: #c8281e;
+  --rule: #1a1a1a;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body-editorial);
+}
+.t-editorial h1, .t-editorial h2, .t-editorial h3 { font-family: var(--font-display-editorial); font-feature-settings: "ss01", "ss02"; }
+.t-editorial .underline-rough { background-image: linear-gradient(var(--red), var(--red)); background-size: 100% 0.18em; background-position: 0 88%; background-repeat: no-repeat; }
+
+/* ============= ORGANIC THEME ============= */
+.t-organic {
+  --bg: #f4ead5;
+  --paper: #ead7b7;
+  --ink: #2b1d12;
+  --terra: #d97757;
+  --moss: #506b3d;
+  --plum: #6b3a5b;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body-organic);
+  font-size: 1.1rem;
+}
+.t-organic h1, .t-organic h2, .t-organic h3 { font-family: var(--font-display-organic); }
+
+@keyframes blob-drift-1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-20px) scale(1.08); } }
+@keyframes blob-drift-2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-25px,15px) scale(0.95); } }
+.blob-1 { animation: blob-drift-1 14s ease-in-out infinite; }
+.blob-2 { animation: blob-drift-2 18s ease-in-out infinite; }
+
+/* ============= HOLOGRAPHIC THEME ============= */
+.t-holo {
+  --bg: #0a0612;
+  --ink: #f8f6ff;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body-holo);
+}
+.t-holo h1, .t-holo h2, .t-holo h3 { font-family: var(--font-display-holo); }
+
+@keyframes mesh-shift {
+  0%,100% { background-position: 0% 0%, 100% 100%, 50% 50%; }
+  33% { background-position: 100% 0%, 0% 100%, 80% 20%; }
+  66% { background-position: 50% 100%, 100% 0%, 20% 80%; }
+}
+.holo-mesh {
+  background:
+    radial-gradient(circle at 20% 30%, #ff6ec7 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, #00f0ff 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, #a78bfa 0%, transparent 50%),
+    linear-gradient(135deg, #0a0612, #1a0a2e, #06121e);
+  background-size: 200% 200%, 200% 200%, 250% 250%, 100% 100%;
+  animation: mesh-shift 18s ease-in-out infinite;
+}
+
+@keyframes orb-float-1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px,-60px); } }
+@keyframes orb-float-2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px,40px); } }
+@keyframes orb-float-3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(30px,50px); } }
+.orb-1 { animation: orb-float-1 12s ease-in-out infinite; }
+.orb-2 { animation: orb-float-2 16s ease-in-out infinite; }
+.orb-3 { animation: orb-float-3 14s ease-in-out infinite; }
+
+@keyframes hue-rotate { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+.iridescent {
+  background: linear-gradient(115deg, #ff6ec7 0%, #c084fc 25%, #60a5fa 50%, #67e8f9 75%, #fef08a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hue-rotate 8s linear infinite;
+}
+
+.glass-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* ============= THEME TRANSITION ============= */
+@keyframes circle-reveal {
+  0% { clip-path: circle(0% at var(--reveal-x, 50%) var(--reveal-y, 50%)); }
+  100% { clip-path: circle(150% at var(--reveal-x, 50%) var(--reveal-y, 50%)); }
+}
+.theme-revealing { animation: circle-reveal 0.9s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
+
+/* ============= SCROLLBAR ============= */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(150,150,150,0.3); border-radius: 4px; }
