@@ -5,10 +5,9 @@ import { type ThemeId } from "./lib/projects";
 import type { PortfolioSettings } from "./lib/settings";
 import { DEFAULT_SETTINGS } from "./lib/settings";
 import { LangProvider } from "./lib/lang-context";
+import { SettingsContext } from "./lib/settings-context";
 import LangToggle from "./components/LangToggle";
 import type { Lang } from "./lib/i18n";
-
-export const SettingsContext = createContext<PortfolioSettings>(DEFAULT_SETTINGS);
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import RefinedTheme from "./components/themes/RefinedTheme";
 import MetropolisTheme from "./components/themes/MetropolisTheme";
@@ -17,6 +16,9 @@ import CyberpunkTheme from "./components/themes/CyberpunkTheme";
 import EditorialTheme from "./components/themes/EditorialTheme";
 import OrganicTheme from "./components/themes/OrganicTheme";
 import HolographicTheme from "./components/themes/HolographicTheme";
+
+// Keep export for any legacy imports (will be removed once all themes updated)
+export { SettingsContext };
 
 const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
   refined: RefinedTheme,
@@ -69,31 +71,27 @@ export default function Home() {
 
   return (
     <LangProvider defaultLang={defaultLang}>
-    <SettingsContext.Provider value={settings}>
-    <LangToggle />
-    <main className="relative min-h-screen overflow-x-hidden">
-      <div className="relative z-0">
-        <Current />
-      </div>
-
-      {Next && (
-        <div
-          ref={overlayRef}
-          className="fixed inset-0 z-40 theme-revealing"
-          style={
-            {
-              ["--reveal-x" as string]: `${revealing!.x}px`,
-              ["--reveal-y" as string]: `${revealing!.y}px`,
-            } as React.CSSProperties
-          }
-        >
-          <Next />
-        </div>
-      )}
-
-      <ThemeSwitcher current={revealing?.theme ?? theme} onChange={handleThemeChange} />
-    </main>
-    </SettingsContext.Provider>
+      <SettingsContext.Provider value={settings}>
+        <LangToggle />
+        <main className="relative min-h-screen overflow-x-hidden">
+          <div className="relative z-0">
+            <Current />
+          </div>
+          {Next && (
+            <div
+              ref={overlayRef}
+              className="fixed inset-0 z-40 theme-revealing"
+              style={{
+                ["--reveal-x" as string]: `${revealing!.x}px`,
+                ["--reveal-y" as string]: `${revealing!.y}px`,
+              } as React.CSSProperties}
+            >
+              <Next />
+            </div>
+          )}
+          <ThemeSwitcher current={revealing?.theme ?? theme} onChange={handleThemeChange} />
+        </main>
+      </SettingsContext.Provider>
     </LangProvider>
   );
 }

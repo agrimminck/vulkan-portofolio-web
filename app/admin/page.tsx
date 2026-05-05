@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { themes } from "../lib/projects";
 import type { ThemeId } from "../lib/projects";
 import type { PortfolioSettings } from "../lib/settings";
@@ -158,114 +158,191 @@ function Screen({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ── Position picker ────────────────────────────────────────────────────────
-const POSITIONS = [
-  ["top left",    "top center",    "top right"   ],
-  ["center left", "center center", "center right"],
-  ["bottom left", "bottom center", "bottom right"],
-] as const;
+// ── Crop editor ───────────────────────────────────────────────────────────
+const FRAME = 260;
 
-type Position = typeof POSITIONS[number][number];
+type Crop = { x: number; y: number; zoom: number };
 
-function PositionPicker({ value, onChange }: { value: Position; onChange: (v: Position) => void }) {
+function parseCropStr(raw: string): Crop {
+  try { const d = JSON.parse(raw); if (typeof d.x === "number") return d; } catch { /* */ }
+  return { x: 50, y: 50, zoom: 1 };
+}
+
+function CropEditor({ src, initial, onSave }: { src: string; initial: Crop; onSave: (c: Crop) => void }) {
+  const [crop, setCrop] = useState<Crop>(initial);
+  const dragging = useRef(false);
+  const lastMouse = useRef({ x: 0, y: 0 });
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    dragging.current = true;
+    lastMouse.current = { x: e.clientX, y: e.clientY };
+    e.preventDefault();
+  };
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!dragging.current) return;
+    const dx = e.clientX - lastMouse.current.x;
+    const dy = e.clientY - lastMouse.current.y;
+    lastMouse.current = { x: e.clientX, y: e.clientY };
+    const room = FRAME * (crop.zoom - 1);
+    if (room < 1) return;
+    setCrop(prev => ({
+      ...prev,
+      x: Math.max(0, Math.min(100, prev.x - (dx / room) * 100)),
+      y: Math.max(0, Math.min(100, prev.y - (dy / room) * 100)),
+    }));
+  };
+  const onMouseUp = () => { dragging.current = false; };
+
   return (
-    <div style={{ display: "inline-grid", gridTemplateColumns: "repeat(3, 28px)", gap: 3 }}>
-      {POSITIONS.flat().map((pos) => (
-        <button
-          key={pos}
-          title={pos}
-          onClick={() => onChange(pos)}
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+      {/* Crop frame */}
+      <div
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+        style={{
+          width: FRAME, height: FRAME, borderRadius: "22%",
+          overflow: "hidden", cursor: "grab", userSelect: "none",
+          background: "#111", border: "2px solid rgba(255,255,255,0.15)",
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          draggable={false}
+          alt=""
           style={{
-            width: 28, height: 28, borderRadius: 6, border: "none", cursor: "pointer",
-            background: value === pos ? "#67e8f9" : "rgba(255,255,255,0.1)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 10, transition: "background 0.15s",
+            width: "100%", height: "100%",
+            objectFit: "cover",
+            objectPosition: `${crop.x}% ${crop.y}%`,
+            transform: `scale(${crop.zoom})`,
+            transformOrigin: `${crop.x}% ${crop.y}%`,
+            pointerEvents: "none", userSelect: "none",
           }}
-        >
-          {value === pos ? "●" : "·"}
-        </button>
-      ))}
+        />
+      </div>
+      <p style={{ fontSize: 11, color: "#555", margin: 0 }}>Drag to reposition</p>
+
+      {/* Zoom slider */}
+      <div style={{ width: FRAME }}>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+          <span style={{ fontSize: 11, color: "#888" }}>Zoom</span>
+          <span style={{ fontSize: 11, color: "#ccc" }}>{crop.zoom.toFixed(1)}×</span>
+        </div>
+        <input
+          type="range" min="1" max="3" step="0.05"
+          value={crop.zoom}
+          onChange={e => setCrop(prev => ({ ...prev, zoom: Number(e.target.value) }))}
+          style={{ width: "100%", accentColor: "#67e8f9" }}
+        />
+      </div>
+
+      <button onClick={() => onSave(crop)} style={btnStyle("#4285F4", { width: FRAME + "px" })}>
+        Save crop
+      </button>
     </div>
   );
 }
 
 // ── Portrait uploader ──────────────────────────────────────────────────────
 function PortraitUploader({ theme, color, label }: { theme: ThemeId; color: string; label: string }) {
-  const [position, setPosition] = useState<Position>("center center");
+  const [crop, setCrop] = useState<Crop>({ x: 50, y: 50, zoom: 1 });
   const [preview, setPreview] = useState<string | null>(null);
+  const [cropSrc, setCropSrc] = useState<string | null>(null); // blob URL for crop editor
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState<"idle" | "ok" | "err">("idle");
 
   useEffect(() => {
     fetch(`/api/portrait/${theme}/meta`)
       .then((r) => r.ok ? r.json() : null)
-      .then((d) => { if (d?.position) setPosition(d.position as Position); })
+      .then((d) => { if (d?.position) setCrop(parseCropStr(d.position)); })
       .catch(() => {});
-    setPreview(`/api/portrait/${theme}?t=${Date.now()}`);
+    setPreview(`/api/portrait/${theme}?v=${Date.now()}`);
   }, [theme]);
 
-  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setPreview(URL.createObjectURL(file));
-
-    const fd = new FormData();
-    fd.append("file", file);
-    fd.append("theme", theme);
-    fd.append("position", position);
-
-    setUploading(true);
-    const res = await fetch("/api/portrait/upload", { method: "POST", body: fd });
-    setUploading(false);
-    setStatus(res.ok ? "ok" : "err");
-    setTimeout(() => setStatus("idle"), 2500);
+    setPendingFile(file);
+    setCropSrc(URL.createObjectURL(file));
+    // Reset crop for new image
+    setCrop({ x: 50, y: 50, zoom: 1 });
   }
 
-  async function updatePosition(pos: Position) {
-    setPosition(pos);
-    // If there's an existing portrait, update position immediately
-    if (preview) {
+  async function handleSaveCrop(newCrop: Crop) {
+    setCrop(newCrop);
+    const posJson = JSON.stringify(newCrop);
+
+    if (pendingFile) {
+      // Upload new file with crop
+      const fd = new FormData();
+      fd.append("file", pendingFile);
+      fd.append("theme", theme);
+      fd.append("position", posJson);
+      setUploading(true);
+      const res = await fetch("/api/portrait/upload", { method: "POST", body: fd });
+      setUploading(false);
+      if (res.ok) {
+        setStatus("ok");
+        setPendingFile(null);
+        setCropSrc(null);
+        setPreview(`/api/portrait/${theme}?v=${Date.now()}`);
+      } else {
+        setStatus("err");
+      }
+    } else {
+      // Update position only
       await fetch("/api/portrait/position", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ theme, position: pos }),
+        body: JSON.stringify({ theme, position: posJson }),
       });
+      setStatus("ok");
+      setCropSrc(null);
     }
+    setTimeout(() => setStatus("idle"), 2500);
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: 16, padding: "14px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-      {/* Preview */}
-      <div style={{ width: 72, height: 72, borderRadius: "22%", overflow: "hidden", background: "rgba(255,255,255,0.06)", flexShrink: 0, position: "relative", border: `2px solid ${color}55` }}>
-        {preview && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={preview} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: position }} onError={() => setPreview(null)} />
-        )}
-      </div>
-
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-          <span style={{ width: 8, height: 8, borderRadius: 999, background: color, flexShrink: 0 }} />
-          <span style={{ fontSize: 13, fontWeight: 600, color: "#ccc" }}>{label}</span>
-          {status === "ok" && <span style={{ fontSize: 11, color: "#4ade80" }}>✓ Uploaded</span>}
-          {status === "err" && <span style={{ fontSize: 11, color: "#f87171" }}>✗ Error</span>}
-          {uploading && <span style={{ fontSize: 11, color: "#67e8f9" }}>Uploading...</span>}
+    <div style={{ padding: "16px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+      {/* Header row */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+        <div style={{ width: 56, height: 56, borderRadius: "22%", overflow: "hidden", background: "#111", flexShrink: 0, border: `2px solid ${color}55` }}>
+          {preview && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={preview} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${crop.x}% ${crop.y}%`, transform: `scale(${crop.zoom})`, transformOrigin: `${crop.x}% ${crop.y}%` }} onError={() => setPreview(null)} />
+          )}
         </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ width: 8, height: 8, borderRadius: 999, background: color }} />
+            <span style={{ fontSize: 13, fontWeight: 600, color: "#ccc" }}>{label}</span>
+            {status === "ok" && <span style={{ fontSize: 11, color: "#4ade80" }}>✓ Saved</span>}
+            {status === "err" && <span style={{ fontSize: 11, color: "#f87171" }}>✗ Error</span>}
+            {uploading && <span style={{ fontSize: 11, color: "#67e8f9" }}>Uploading...</span>}
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
           <label style={{ cursor: "pointer" }}>
-            <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFile} style={{ display: "none" }} />
+            <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFileSelect} style={{ display: "none" }} />
             <span style={{ ...btnStyle("#333"), fontSize: 12, padding: "6px 14px", display: "inline-block" }}>
               Choose photo
             </span>
           </label>
-
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 11, color: "#666", whiteSpace: "nowrap" }}>Position</span>
-            <PositionPicker value={position} onChange={updatePosition} />
-          </div>
+          {!cropSrc && preview && (
+            <button onClick={() => setCropSrc(preview)} style={btnStyle("#1a1a2e", { fontSize: 12, padding: "6px 14px", border: "1px solid rgba(255,255,255,0.15)" })}>
+              Adjust crop
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Crop editor */}
+      {cropSrc && (
+        <CropEditor src={cropSrc} initial={crop} onSave={handleSaveCrop} />
+      )}
     </div>
   );
 }

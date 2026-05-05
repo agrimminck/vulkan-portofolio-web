@@ -25,10 +25,12 @@ export async function POST(req: Request) {
   const buf = Buffer.from(bytes);
   const hex = buf.toString("hex");
 
+  const ts = Date.now();
   await db`
-    INSERT INTO portfolio_settings.portraits (theme, data, content_type, position)
-    VALUES (${theme}, decode(${hex}, 'hex'), ${file.type}, ${position})
-    ON CONFLICT (theme) DO UPDATE SET data = decode(${hex}, 'hex'), content_type = ${file.type}, position = ${position}
+    INSERT INTO portfolio_settings.portraits (theme, data, content_type, position, version)
+    VALUES (${theme}, decode(${hex}, 'hex'), ${file.type}, ${position}, ${ts})
+    ON CONFLICT (theme) DO UPDATE
+      SET data = decode(${hex}, 'hex'), content_type = ${file.type}, position = ${position}, version = ${ts}
   `;
 
   return NextResponse.json({ url: `/api/portrait/${theme}`, position });

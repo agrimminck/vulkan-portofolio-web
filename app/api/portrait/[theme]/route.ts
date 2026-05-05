@@ -14,7 +14,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ theme: 
   return new Response(buf, {
     headers: {
       "Content-Type": row.content_type as string,
-      "Cache-Control": "public, max-age=31536000, immutable",
+      "Cache-Control": "public, max-age=0, must-revalidate",
     },
   });
 }
