@@ -13,7 +13,13 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  if (!token?.email || token.email !== process.env.ADMIN_EMAIL) {
+  const normalizeEmail = (e: string) => {
+    const parts = e.toLowerCase().trim().split("@");
+    return `${parts[0].replace(/\./g, "")}@${parts[1]}`;
+  };
+  const tokenEmail = token?.email ? normalizeEmail(token.email) : null;
+  const adminEmail = process.env.ADMIN_EMAIL ? normalizeEmail(process.env.ADMIN_EMAIL) : null;
+  if (!tokenEmail || tokenEmail !== adminEmail) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json() as Record<string, string>;
