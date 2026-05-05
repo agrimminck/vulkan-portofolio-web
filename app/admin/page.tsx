@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { themes } from "../lib/projects";
 import type { ThemeId } from "../lib/projects";
 import type { PortfolioSettings } from "../lib/settings";
@@ -130,29 +130,10 @@ export default function AdminPage() {
         <h2 style={{ fontSize: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.15em", color: "#888", marginBottom: 16 }}>
           Portrait per Theme
         </h2>
-        <p style={{ fontSize: 12, color: "#666", marginBottom: 16 }}>
-          Path relative to /public (e.g. /me.jpg or /me-metropolis.jpg). Image must be uploaded to the repo.
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {themes.map((t) => {
-            const key = `portrait_${t.id}` as keyof PortfolioSettings;
-            return (
-              <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ width: 10, height: 10, borderRadius: 999, background: t.color, flexShrink: 0 }} />
-                <span style={{ width: 120, fontSize: 13, color: "#ccc" }}>{t.label}</span>
-                <input
-                  value={settings[key] ?? "/me.jpg"}
-                  onChange={(e) => setSettings((s) => ({ ...s, [key]: e.target.value }))}
-                  style={{
-                    flex: 1, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.14)",
-                    borderRadius: 6, padding: "7px 12px", color: "#eee", fontSize: 13,
-                    fontFamily: "monospace",
-                  }}
-                  placeholder="/me.jpg"
-                />
-              </div>
-            );
-          })}
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          {themes.map((t) => (
+            <PortraitUploader key={t.id} theme={t.id as ThemeId} color={t.color} label={t.label} />
+          ))}
         </div>
       </section>
 
@@ -173,6 +154,118 @@ function Screen({ children }: { children: React.ReactNode }) {
       padding: 24,
     }}>
       <div style={{ width: "100%", maxWidth: 600 }}>{children}</div>
+    </div>
+  );
+}
+
+// ── Position picker ────────────────────────────────────────────────────────
+const POSITIONS = [
+  ["top left",    "top center",    "top right"   ],
+  ["center left", "center center", "center right"],
+  ["bottom left", "bottom center", "bottom right"],
+] as const;
+
+type Position = typeof POSITIONS[number][number];
+
+function PositionPicker({ value, onChange }: { value: Position; onChange: (v: Position) => void }) {
+  return (
+    <div style={{ display: "inline-grid", gridTemplateColumns: "repeat(3, 28px)", gap: 3 }}>
+      {POSITIONS.flat().map((pos) => (
+        <button
+          key={pos}
+          title={pos}
+          onClick={() => onChange(pos)}
+          style={{
+            width: 28, height: 28, borderRadius: 6, border: "none", cursor: "pointer",
+            background: value === pos ? "#67e8f9" : "rgba(255,255,255,0.1)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 10, transition: "background 0.15s",
+          }}
+        >
+          {value === pos ? "●" : "·"}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ── Portrait uploader ──────────────────────────────────────────────────────
+function PortraitUploader({ theme, color, label }: { theme: ThemeId; color: string; label: string }) {
+  const [position, setPosition] = useState<Position>("center center");
+  const [preview, setPreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [status, setStatus] = useState<"idle" | "ok" | "err">("idle");
+
+  useEffect(() => {
+    fetch(`/api/portrait/${theme}/meta`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d?.position) setPosition(d.position as Position); })
+      .catch(() => {});
+    setPreview(`/api/portrait/${theme}?t=${Date.now()}`);
+  }, [theme]);
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPreview(URL.createObjectURL(file));
+
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("theme", theme);
+    fd.append("position", position);
+
+    setUploading(true);
+    const res = await fetch("/api/portrait/upload", { method: "POST", body: fd });
+    setUploading(false);
+    setStatus(res.ok ? "ok" : "err");
+    setTimeout(() => setStatus("idle"), 2500);
+  }
+
+  async function updatePosition(pos: Position) {
+    setPosition(pos);
+    // If there's an existing portrait, update position immediately
+    if (preview) {
+      await fetch("/api/portrait/position", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ theme, position: pos }),
+      });
+    }
+  }
+
+  return (
+    <div style={{ display: "flex", alignItems: "flex-start", gap: 16, padding: "14px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+      {/* Preview */}
+      <div style={{ width: 72, height: 72, borderRadius: "22%", overflow: "hidden", background: "rgba(255,255,255,0.06)", flexShrink: 0, position: "relative", border: `2px solid ${color}55` }}>
+        {preview && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={preview} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: position }} onError={() => setPreview(null)} />
+        )}
+      </div>
+
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+          <span style={{ width: 8, height: 8, borderRadius: 999, background: color, flexShrink: 0 }} />
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#ccc" }}>{label}</span>
+          {status === "ok" && <span style={{ fontSize: 11, color: "#4ade80" }}>✓ Uploaded</span>}
+          {status === "err" && <span style={{ fontSize: 11, color: "#f87171" }}>✗ Error</span>}
+          {uploading && <span style={{ fontSize: 11, color: "#67e8f9" }}>Uploading...</span>}
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+          <label style={{ cursor: "pointer" }}>
+            <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFile} style={{ display: "none" }} />
+            <span style={{ ...btnStyle("#333"), fontSize: 12, padding: "6px 14px", display: "inline-block" }}>
+              Choose photo
+            </span>
+          </label>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 11, color: "#666", whiteSpace: "nowrap" }}>Position</span>
+            <PositionPicker value={position} onChange={updatePosition} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

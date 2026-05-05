@@ -70,7 +70,7 @@ export default function HolographicTheme() {
             </p>
           </div>
           <div className="md:col-span-3 flex md:justify-end">
-            <ThemedPortrait variant="holographic" size={200} shape="circle" />
+            <ThemedPortrait variant="holographic" size={200} />
           </div>
         </header>
 

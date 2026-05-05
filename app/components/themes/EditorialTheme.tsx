@@ -64,7 +64,7 @@ export default function EditorialTheme() {
             style={{ fontFamily: "var(--font-display-editorial)" }}
           >
             <div className="mb-4">
-              <ThemedPortrait variant="editorial" size={150} shape="square" />
+              <ThemedPortrait variant="editorial" size={150} />
               <div className="mt-2 text-[10px] tracking-[0.3em] uppercase font-bold" style={{ fontFamily: "var(--font-body-editorial)", color: "var(--red)" }}>
                 {t.photoCaption}
               </div>

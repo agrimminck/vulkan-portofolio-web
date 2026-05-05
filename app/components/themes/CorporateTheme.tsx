@@ -99,7 +99,7 @@ export default function CorporateTheme() {
                 {t.principal}
               </span>
             </div>
-            <ThemedPortrait variant="corporate" size={120} shape="circle" />
+            <ThemedPortrait variant="corporate" size={120} />
           </div>
         </header>
 

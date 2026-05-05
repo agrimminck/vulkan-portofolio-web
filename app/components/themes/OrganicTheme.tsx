@@ -62,7 +62,7 @@ export default function OrganicTheme() {
         {/* Sticker hero */}
         <header className="mb-16 relative">
           <div className="absolute top-0 right-0 hidden md:block" style={{ transform: "rotate(4deg)" }}>
-            <ThemedPortrait variant="organic" size={170} shape="square" />
+            <ThemedPortrait variant="organic" size={170} />
             <div
               className="mt-2 text-center text-lg italic"
               style={{ fontFamily: "var(--font-body-organic)", color: "var(--terra)" }}

@@ -94,7 +94,7 @@ export default function CyberpunkTheme() {
               <Terminal />
             </div>
             <div className="flex flex-col items-center md:items-end gap-2">
-              <ThemedPortrait variant="cyberpunk" size={140} shape="square" />
+              <ThemedPortrait variant="cyberpunk" size={140} />
               <span className="text-[10px] tracking-[0.3em] text-[var(--neon-pink)] font-mono">
                 ID:0xAGRM·LIVE
               </span>

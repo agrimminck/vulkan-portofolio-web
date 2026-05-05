@@ -56,7 +56,7 @@ export default function RefinedTheme() {
         {/* Hero — portrait + intro */}
         <section className="grid md:grid-cols-12 gap-10 md:gap-16 mb-28 items-center">
           <div className="md:col-span-3 flex md:justify-start refined-rise" style={{ animationDelay: "0.1s" }}>
-            <ThemedPortrait variant="refined" size={200} shape="circle" />
+            <ThemedPortrait variant="refined" size={200} />
           </div>
           <div className="md:col-span-9 refined-rise" style={{ animationDelay: "0.25s" }}>
             <h1 className="text-5xl md:text-7xl leading-[1.05] mb-6">

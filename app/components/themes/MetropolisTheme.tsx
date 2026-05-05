@@ -118,7 +118,7 @@ export default function MetropolisTheme() {
             </p>
           </div>
           <div className="md:col-span-4 flex md:justify-end">
-            <ThemedPortrait variant="metropolis" size={210} shape="circle" />
+            <ThemedPortrait variant="metropolis" size={210} />
           </div>
         </section>
 

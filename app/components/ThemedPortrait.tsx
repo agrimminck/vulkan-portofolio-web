@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { SettingsContext } from "../page";
 
 type Variant =
@@ -16,33 +16,43 @@ type Variant =
 type Props = {
   variant: Variant;
   size?: number;
-  shape?: "circle" | "square";
   className?: string;
   ringColor?: string;
 };
 
 export default function ThemedPortrait({
   variant,
-  size = 160,
-  shape = "circle",
+  size = 210,
   className = "",
   ringColor,
 }: Props) {
   const settings = useContext(SettingsContext);
-  const portraitSrc = (settings[`portrait_${variant}` as keyof typeof settings] as string) || "/me.jpg";
 
-  const radius = shape === "circle" ? "9999px" : "8px";
+  // Try DB portrait first, fall back to static path from settings, then /me.jpg
+  const [src, setSrc] = useState<string>(`/api/portrait/${variant}`);
+  const [position, setPosition] = useState("center center");
+
+  useEffect(() => {
+    // Fetch position from portrait API (header or separate endpoint)
+    fetch(`/api/portrait/${variant}/meta`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d?.position) setPosition(d.position); })
+      .catch(() => {});
+  }, [variant]);
+
+  const handleError = () => {
+    // Fall back to static path configured in settings
+    const staticPath = (settings[`portrait_${variant}` as keyof typeof settings] as string) || "/me.jpg";
+    setSrc(staticPath);
+  };
+
   const filterClass = `portrait-${variant === "cyberpunk" ? "cyber" : variant === "holographic" ? "holo" : variant}`;
   const frameClass =
-    variant === "cyberpunk"
-      ? "portrait-cyber-frame"
-      : variant === "editorial"
-        ? "portrait-editorial-frame"
-        : variant === "organic"
-          ? "portrait-organic-frame"
-          : variant === "holographic"
-            ? "portrait-holo-frame"
-            : "";
+    variant === "cyberpunk" ? "portrait-cyber-frame"
+    : variant === "editorial" ? "portrait-editorial-frame"
+    : variant === "organic" ? "portrait-organic-frame"
+    : variant === "holographic" ? "portrait-holo-frame"
+    : "";
 
   const ring = ringColor ?? defaultRing(variant);
 
@@ -54,18 +64,20 @@ export default function ThemedPortrait({
       <div
         className={`relative w-full h-full ${frameClass}`}
         style={{
-          borderRadius: radius,
+          borderRadius: "22%",
           overflow: "hidden",
           boxShadow: ring,
         }}
       >
         <Image
-          src={portraitSrc}
+          src={src}
           alt="Portrait"
           fill
           sizes={`${size}px`}
           className={`portrait-base ${filterClass}`}
-          priority={variant === "refined"}
+          style={{ objectPosition: position }}
+          priority={variant === "refined" || variant === "metropolis"}
+          onError={handleError}
         />
       </div>
     </div>
