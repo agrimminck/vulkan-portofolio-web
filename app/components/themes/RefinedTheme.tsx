@@ -139,14 +139,19 @@ export default function RefinedTheme() {
                       </span>
                     ))}
                   </div>
-                  <div className="ml-4 flex items-center gap-3">
+                  <div className="ml-4 flex items-center gap-2">
                     {p.url && (
                       <a
                         href={p.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs tracking-[0.2em] uppercase text-[var(--ink)] font-medium whitespace-nowrap hover:translate-x-1 transition-transform"
-                        style={{ fontFamily: "var(--font-body-refined)" }}
+                        className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-bold whitespace-nowrap transition-opacity hover:opacity-80"
+                        style={{
+                          fontFamily: "var(--font-body-refined)",
+                          background: "var(--ink)",
+                          color: "var(--bg)",
+                          borderRadius: "5px",
+                        }}
                       >
                         {sh.visit}
                       </a>
@@ -156,8 +161,14 @@ export default function RefinedTheme() {
                         href={p.github}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs tracking-[0.2em] uppercase text-[var(--ink-muted)] font-medium whitespace-nowrap"
-                        style={{ fontFamily: "var(--font-body-refined)" }}
+                        className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-bold whitespace-nowrap transition-opacity hover:opacity-80"
+                        style={{
+                          fontFamily: "var(--font-body-refined)",
+                          background: "transparent",
+                          color: "var(--ink)",
+                          borderRadius: "5px",
+                          border: "1px solid var(--ink-muted)",
+                        }}
                       >
                         {sh.github}
                       </a>

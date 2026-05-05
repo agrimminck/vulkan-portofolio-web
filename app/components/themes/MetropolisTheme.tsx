@@ -124,34 +124,33 @@ export default function MetropolisTheme() {
 
         {/* Frosted info panel */}
         <div
-          className="backdrop-blur-xl rounded-2xl p-6 md:p-7 mb-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+          className="backdrop-blur-xl rounded-2xl p-6 md:p-7 mb-16 flex items-center gap-6"
           style={{
             background: "rgba(255,255,255,0.55)",
             border: "1px solid rgba(255,255,255,0.7)",
             boxShadow: "0 24px 60px -20px rgba(10,20,40,0.4)",
           }}
         >
-          {[
-            { k: t.sActive, v: projects.filter((p) => p.status === "live").length },
-            { k: t.sWip, v: projects.filter((p) => p.status === "wip").length },
-            { k: t.sStandby, v: projects.filter((p) => p.status === "standby").length },
-            { k: t.sTotal, v: projects.length },
-          ].map((s) => (
-            <div key={s.k}>
-              <div
-                className="text-[10px] tracking-[0.3em] uppercase mb-1"
-                style={{ color: "#1e3a5f", fontFamily: "var(--font-body-metro)" }}
-              >
-                {s.k}
-              </div>
-              <div
-                className="text-4xl font-black"
-                style={{ fontFamily: "var(--font-display-metro)", color: "#0b1320" }}
-              >
-                {s.v}
-              </div>
+          <div
+            className="text-6xl font-black"
+            style={{ fontFamily: "var(--font-display-metro)", color: "#0b1320" }}
+          >
+            {projects.length}
+          </div>
+          <div>
+            <div
+              className="text-[10px] tracking-[0.3em] uppercase mb-1"
+              style={{ color: "#1e3a5f", fontFamily: "var(--font-body-metro)" }}
+            >
+              {t.sTotal}
             </div>
-          ))}
+            <div
+              className="text-sm"
+              style={{ color: "#3f3f46", fontFamily: "var(--font-body-metro)" }}
+            >
+              {lang === "en" ? "projects shipped" : "proyectos lanzados"}
+            </div>
+          </div>
         </div>
 
         {/* Cards */}
@@ -225,14 +224,18 @@ export default function MetropolisTheme() {
                         </span>
                       ))}
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       {p.url && (
                         <a
                           href={p.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-xs tracking-[0.2em] uppercase font-medium hover:translate-x-1 transition-transform"
-                          style={{ color: p.accent }}
+                          className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-bold transition-opacity hover:opacity-80"
+                          style={{
+                            background: "#0b1320",
+                            color: "white",
+                            borderRadius: "6px",
+                          }}
                         >
                           {sh.visit}
                         </a>
@@ -242,8 +245,13 @@ export default function MetropolisTheme() {
                           href={p.github}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-xs tracking-[0.2em] uppercase font-medium"
-                          style={{ color: "#71717a" }}
+                          className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-bold transition-opacity hover:opacity-80"
+                          style={{
+                            background: "transparent",
+                            color: "#0b1320",
+                            borderRadius: "6px",
+                            border: "1.5px solid rgba(11,19,32,0.35)",
+                          }}
                         >
                           {sh.github}
                         </a>

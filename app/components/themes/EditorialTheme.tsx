@@ -144,17 +144,39 @@ export default function EditorialTheme() {
                       ))}
                     </div>
                   </a>
-                  {p.github && (
-                    <div className="flex items-center gap-4 mt-3">
-                      <a
-                        href={p.github}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[11px] uppercase tracking-[0.25em] opacity-70 hover:opacity-100 transition-opacity"
-                        style={{ fontFamily: "var(--font-body-editorial)" }}
-                      >
-                        {sh.github}
-                      </a>
+                  {(p.url || p.github) && (
+                    <div className="flex items-center gap-2 mt-4">
+                      {p.url && (
+                        <a
+                          href={p.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center px-3 py-1.5 text-[10px] uppercase tracking-[0.25em] font-bold transition-opacity hover:opacity-80"
+                          style={{
+                            fontFamily: "var(--font-body-editorial)",
+                            background: "var(--ink)",
+                            color: "var(--bg)",
+                          }}
+                        >
+                          {sh.visit}
+                        </a>
+                      )}
+                      {p.github && (
+                        <a
+                          href={p.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center px-3 py-1.5 text-[10px] uppercase tracking-[0.25em] font-bold transition-opacity hover:opacity-80"
+                          style={{
+                            fontFamily: "var(--font-body-editorial)",
+                            background: "transparent",
+                            color: "var(--ink)",
+                            border: "1px solid var(--ink)",
+                          }}
+                        >
+                          {sh.github}
+                        </a>
+                      )}
                     </div>
                   )}
                 </article>

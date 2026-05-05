@@ -189,18 +189,18 @@ export default function OrganicTheme() {
                   ))}
                 </div>
                 {(p.url || p.github) && (
-                  <div className="flex items-center gap-3 mt-4">
+                  <div className="flex items-center gap-2 mt-4">
                     {p.url && (
                       <a
                         href={p.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[10px] px-3 py-1 font-bold uppercase tracking-wider hover:opacity-80 transition-opacity"
+                        className="inline-flex items-center px-4 py-2 text-[11px] font-black uppercase tracking-wider hover:opacity-80 transition-opacity"
                         style={{
-                          background: pal.accent,
+                          background: pal.ink,
                           color: pal.bg,
                           borderRadius: "999px",
-                          border: `1.5px solid ${pal.ink}`,
+                          fontFamily: "var(--font-display-organic)",
                         }}
                       >
                         {sh.visit}
@@ -211,12 +211,13 @@ export default function OrganicTheme() {
                         href={p.github}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[10px] px-3 py-1 font-bold uppercase tracking-wider hover:opacity-80 transition-opacity"
+                        className="inline-flex items-center px-4 py-2 text-[11px] font-black uppercase tracking-wider hover:opacity-80 transition-opacity"
                         style={{
                           background: "transparent",
                           color: pal.ink,
                           borderRadius: "999px",
-                          border: `1.5px dashed ${pal.ink}`,
+                          border: `2px solid ${pal.ink}`,
+                          fontFamily: "var(--font-display-organic)",
                         }}
                       >
                         {sh.github}

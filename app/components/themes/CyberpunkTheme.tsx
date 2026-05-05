@@ -184,14 +184,17 @@ export default function CyberpunkTheme() {
                   ))}
                 </div>
                 {(p.url || p.github) && (
-                  <div className="flex items-center gap-3 mt-3">
+                  <div className="flex items-center gap-2 mt-4">
                     {p.url && (
                       <a
                         href={p.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[10px] tracking-[0.2em] uppercase font-mono hover:opacity-100 transition-opacity"
-                        style={{ color: "var(--neon-cyan)", opacity: 0.8 }}
+                        className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-mono font-bold transition-opacity hover:opacity-80"
+                        style={{
+                          background: "var(--neon-cyan)",
+                          color: "#000",
+                        }}
                       >
                         {sh.visit}
                       </a>
@@ -201,8 +204,12 @@ export default function CyberpunkTheme() {
                         href={p.github}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[10px] tracking-[0.2em] uppercase font-mono hover:opacity-100 transition-opacity"
-                        style={{ color: "var(--neon-pink)", opacity: 0.8 }}
+                        className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-mono font-bold transition-opacity hover:opacity-80"
+                        style={{
+                          background: "transparent",
+                          color: "var(--neon-pink)",
+                          border: "1px solid var(--neon-pink)",
+                        }}
                       >
                         {sh.github}
                       </a>

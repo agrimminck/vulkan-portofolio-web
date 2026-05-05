@@ -149,14 +149,19 @@ export default function HolographicTheme() {
                     ))}
                   </div>
                   {(p.url || p.github) && (
-                    <div className="flex items-center gap-4 mt-4">
+                    <div className="flex items-center gap-2 mt-4">
                       {p.url && (
                         <a
                           href={p.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-[10px] tracking-[0.25em] uppercase font-mono iridescent hover:opacity-100 transition-opacity"
-                          style={{ opacity: 0.8 }}
+                          className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-mono font-bold iridescent transition-opacity hover:opacity-80"
+                          style={{
+                            background: "rgba(255,255,255,0.18)",
+                            border: "1px solid rgba(255,255,255,0.45)",
+                            borderRadius: "8px",
+                            backdropFilter: "blur(8px)",
+                          }}
                         >
                           {sh.visit}
                         </a>
@@ -166,8 +171,13 @@ export default function HolographicTheme() {
                           href={p.github}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-[10px] tracking-[0.25em] uppercase font-mono hover:opacity-100 transition-opacity"
-                          style={{ opacity: 0.6, color: "rgba(255,255,255,0.8)" }}
+                          className="inline-flex items-center px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase font-mono font-bold transition-opacity hover:opacity-80"
+                          style={{
+                            background: "transparent",
+                            color: "rgba(255,255,255,0.7)",
+                            border: "1px solid rgba(255,255,255,0.25)",
+                            borderRadius: "8px",
+                          }}
                         >
                           {sh.github}
                         </a>

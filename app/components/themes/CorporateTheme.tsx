@@ -160,13 +160,17 @@ export default function CorporateTheme() {
                   ))}
                 </div>
                 {(p.url || p.github) && (
-                  <div className="mt-3 flex items-center gap-4">
+                  <div className="mt-4 flex items-center gap-2">
                     {p.url && (
                       <a
                         href={p.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs uppercase tracking-[0.2em] opacity-60 hover:opacity-100 transition-opacity"
+                        className="inline-flex items-center px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] font-bold transition-opacity hover:opacity-80"
+                        style={{
+                          background: "var(--ink)",
+                          color: "var(--bg)",
+                        }}
                       >
                         {sh.visit}
                       </a>
@@ -176,7 +180,12 @@ export default function CorporateTheme() {
                         href={p.github}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs uppercase tracking-[0.2em] opacity-60 hover:opacity-100 transition-opacity"
+                        className="inline-flex items-center px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] font-bold transition-opacity hover:opacity-80"
+                        style={{
+                          background: "transparent",
+                          color: "var(--ink)",
+                          border: "1px solid var(--ink)",
+                        }}
                       >
                         {sh.github}
                       </a>
