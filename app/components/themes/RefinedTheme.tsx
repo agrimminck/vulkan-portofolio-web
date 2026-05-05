@@ -67,12 +67,6 @@ export default function RefinedTheme() {
             </p>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-[var(--ink-muted)]">
               <span>
-                <span className="text-[var(--ink)] font-medium">{projects.filter((p) => p.status === "live").length}</span> {t.statLive}
-              </span>
-              <span>
-                <span className="text-[var(--ink)] font-medium">{projects.filter((p) => p.status === "wip").length}</span> {t.statWip}
-              </span>
-              <span>
                 <span className="text-[var(--ink)] font-medium">{projects.length}</span> {t.statTotal}
               </span>
             </div>

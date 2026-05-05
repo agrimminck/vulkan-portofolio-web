@@ -75,23 +75,16 @@ export default function HolographicTheme() {
         </header>
 
         {/* Stats holo */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { k: t.sProjects, v: projects.length },
-            { k: t.sLive, v: projects.filter((p) => p.status === "live").length },
-            { k: t.sWip, v: projects.filter((p) => p.status === "wip").length },
-            { k: t.sStandby, v: projects.filter((p) => p.status === "standby").length },
-          ].map((s) => (
-            <div key={s.k} className="glass-card rounded-2xl p-5">
-              <div className="text-[10px] tracking-[0.3em] opacity-60 mb-1 font-mono">{s.k}</div>
-              <div
-                className="text-5xl font-normal iridescent"
-                style={{ fontFamily: "var(--font-display-holo)" }}
-              >
-                {s.v}
-              </div>
+        <div className="mb-16">
+          <div className="glass-card rounded-2xl p-5 inline-block">
+            <div className="text-[10px] tracking-[0.3em] opacity-60 mb-1 font-mono">{t.sProjects}</div>
+            <div
+              className="text-5xl font-normal iridescent"
+              style={{ fontFamily: "var(--font-display-holo)" }}
+            >
+              {projects.length}
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Cards */}
