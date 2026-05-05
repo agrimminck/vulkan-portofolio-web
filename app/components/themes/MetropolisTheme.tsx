@@ -123,16 +123,17 @@ export default function MetropolisTheme() {
         </section>
 
         {/* Frosted info panel */}
+        <div className="mb-16">
         <div
-          className="backdrop-blur-xl rounded-2xl p-6 md:p-7 mb-16 flex items-center gap-6"
+          className="backdrop-blur-xl rounded-2xl px-6 py-4 inline-flex items-center gap-5"
           style={{
             background: "rgba(255,255,255,0.55)",
             border: "1px solid rgba(255,255,255,0.7)",
-            boxShadow: "0 24px 60px -20px rgba(10,20,40,0.4)",
+            boxShadow: "0 16px 40px -16px rgba(10,20,40,0.4)",
           }}
         >
           <div
-            className="text-6xl font-black"
+            className="text-4xl font-black"
             style={{ fontFamily: "var(--font-display-metro)", color: "#0b1320" }}
           >
             {projects.length}
@@ -151,6 +152,7 @@ export default function MetropolisTheme() {
               {lang === "en" ? "projects shipped" : "proyectos lanzados"}
             </div>
           </div>
+        </div>
         </div>
 
         {/* Cards */}
