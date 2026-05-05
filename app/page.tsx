@@ -4,7 +4,7 @@ import { useState, useCallback, useRef, useEffect, createContext } from "react";
 import { type ThemeId } from "./lib/projects";
 import type { PortfolioSettings } from "./lib/settings";
 import { DEFAULT_SETTINGS } from "./lib/settings";
-import { LangProvider } from "./lib/lang-context";
+import { LangContext } from "./lib/lang-context";
 import { SettingsContext } from "./lib/settings-context";
 import LangToggle from "./components/LangToggle";
 import type { Lang } from "./lib/i18n";
@@ -17,8 +17,6 @@ import EditorialTheme from "./components/themes/EditorialTheme";
 import OrganicTheme from "./components/themes/OrganicTheme";
 import HolographicTheme from "./components/themes/HolographicTheme";
 
-// Keep export for any legacy imports (will be removed once all themes updated)
-export { SettingsContext };
 
 const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
   refined: RefinedTheme,
@@ -32,7 +30,7 @@ const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
 
 export default function Home() {
   const [settings, setSettings] = useState<PortfolioSettings>(DEFAULT_SETTINGS);
-  const [defaultLang, setDefaultLang] = useState<Lang>("en");
+  const [lang, setLang] = useState<Lang>("en");
   const [theme, setTheme] = useState<ThemeId>("metropolis");
   const [revealing, setRevealing] = useState<{ theme: ThemeId; x: number; y: number } | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -44,7 +42,7 @@ export default function Home() {
         const merged = { ...DEFAULT_SETTINGS, ...d };
         setSettings(merged);
         if (merged.default_theme) setTheme(merged.default_theme as ThemeId);
-        if (merged.default_lang) setDefaultLang(merged.default_lang as Lang);
+        if (merged.default_lang) setLang(merged.default_lang as Lang);
       })
       .catch(() => {});
   }, []);
@@ -69,8 +67,10 @@ export default function Home() {
   const Current = THEMES_MAP[theme];
   const Next = revealing ? THEMES_MAP[revealing.theme] : null;
 
+  const toggleLang = () => setLang((l) => (l === "en" ? "es" : "en"));
+
   return (
-    <LangProvider defaultLang={defaultLang}>
+    <LangContext.Provider value={{ lang, toggle: toggleLang }}>
       <SettingsContext.Provider value={settings}>
         <LangToggle />
         <main className="relative min-h-screen overflow-x-hidden">
@@ -92,6 +92,6 @@ export default function Home() {
           <ThemeSwitcher current={revealing?.theme ?? theme} onChange={handleThemeChange} />
         </main>
       </SettingsContext.Provider>
-    </LangProvider>
+    </LangContext.Provider>
   );
 }
