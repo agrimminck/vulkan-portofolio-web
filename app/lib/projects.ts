@@ -83,6 +83,7 @@ export const projects: Project[] = [
     tagline: "Give away items locally for free",
     description:
       "Geolocated free-item exchange. Better Auth, Drizzle ORM, Neon. Schema-isolated multi-tenant.",
+    url: "https://basilisk-free-pickup.vercel.app",
     category: "basilisk",
     tags: ["Next.js 16", "Better Auth", "Geolocation"],
     status: "live",

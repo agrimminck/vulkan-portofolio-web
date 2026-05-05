@@ -180,8 +180,8 @@ function CropModal({ src, initial, onSave, onCancel }: {
   const dragging = useRef(false);
   const lastMouse = useRef({ x: 0, y: 0 });
 
-  // Fit scale: make image fill canvas at zoom=1
-  const fitScale = Math.max(CANVAS_W / natural.w, CANVAS_H / natural.h);
+  // Fit scale: at zoom=1 image fills the crop frame exactly (maps 1:1 to objectFit:cover in portrait)
+  const fitScale = Math.max(CROP_FRAME / natural.w, CROP_FRAME / natural.h);
   const dispW = natural.w * fitScale * zoom;
   const dispH = natural.h * fitScale * zoom;
 
@@ -230,12 +230,8 @@ function CropModal({ src, initial, onSave, onCancel }: {
     onSave({ x, y, zoom });
   };
 
-  // Min zoom: image must cover crop frame
-  const minZoom = Math.max(
-    CROP_FRAME / (natural.w * fitScale),
-    CROP_FRAME / (natural.h * fitScale),
-    0.5,
-  );
+  // Min zoom = 1 (image fills crop frame = fills portrait container at objectFit:cover)
+  const minZoom = 1;
 
   return (
     <div
