@@ -9,6 +9,16 @@ import { METROPOLIS_T, PROJECT_ES, SHARED } from "../../lib/i18n";
 const PHOTO_URL =
   "https://images.unsplash.com/photo-1629443250630-f43487ca1e80?w=2400&q=80&auto=format&fit=crop";
 
+// Light accents → darkened for readability on frosted white cards
+const ACCENT_ON_WHITE: Record<string, string> = {
+  "#ffe600": "#7c6400",
+  "#f59e0b": "#92400e",
+  "#84cc16": "#3a5c0a",
+  "#c8a86b": "#6b4e1f",
+  "#fafafa": "#52525b",
+};
+const taglineColor = (accent: string) => ACCENT_ON_WHITE[accent] ?? accent;
+
 function Plane({ scale = 1 }: { scale?: number }) {
   return (
     <svg viewBox="0 0 100 30" style={{ width: 70 * scale, height: 21 * scale }} fill="none">
@@ -210,7 +220,7 @@ export default function MetropolisTheme() {
                   </h3>
                   <p
                     className="text-base mb-4 italic"
-                    style={{ color: p.accent, fontFamily: "var(--font-body-metro)", fontWeight: 500 }}
+                    style={{ color: taglineColor(p.accent), fontFamily: "var(--font-body-metro)", fontWeight: 500 }}
                   >
                     {lang === "es" ? (PROJECT_ES[p.id]?.tagline ?? p.tagline) : p.tagline}
                   </p>
