@@ -30,9 +30,9 @@ export const projects: Project[] = [
   {
     id: "mercadolibre-electrodomesticos",
     name: "Mercado Libre Electrodomésticos",
-    tagline: "Affiliate marketplace, MLC API",
+    tagline: "Affiliate prototype, MLC API",
     description:
-      "Next.js 15 affiliate site for home appliances in Chile. Full SEO pipeline, JSON-LD, sitemap, Mercado Libre OAuth integration.",
+      "Next.js 15 affiliate prototype for home appliances in Chile. SEO pipeline, JSON-LD, sitemap, Mercado Libre OAuth integration.",
     url: "https://topelectrohogar.com",
     category: "basilisk",
     tags: ["Next.js 15", "MLC API", "SEO", "Affiliate"],
@@ -43,9 +43,9 @@ export const projects: Project[] = [
   {
     id: "car-shop-app",
     name: "Car Shop App",
-    tagline: "POS + inventory for auto workshop",
+    tagline: "POS + inventory prototype for auto workshops",
     description:
-      "Sales, inventory, customers, vehicles, services. Transbank POS Integrado. pnpm monorepo, Vercel deploy.",
+      "Sales, inventory, customers, vehicles, services. Transbank POS Integrado. pnpm monorepo.",
     url: "https://basilisk-car-shop-app.vercel.app",
     github: "https://github.com/agrimminck/basilisk-car-shop-app",
     category: "basilisk",
@@ -57,9 +57,9 @@ export const projects: Project[] = [
   {
     id: "inversionistas",
     name: "Inversionistas",
-    tagline: "Match investors w/ projects",
+    tagline: "Match investors w/ projects — prototype",
     description:
-      "Web + mobile PWA. Document vault, interest signals, 1-to-1 chat after acceptance. Standby on R2 storage credentials.",
+      "Web + mobile PWA prototype. Document vault, interest signals, 1-to-1 chat after acceptance. Paused on cloud storage setup.",
     url: "https://basilisk-inversionistas.vercel.app",
     github: "https://github.com/agrimminck/basilisk-inversionistas",
     category: "basilisk",
@@ -71,9 +71,9 @@ export const projects: Project[] = [
   {
     id: "boti-finder",
     name: "Boti Finder",
-    tagline: "Discover liquor stores w/ live promos",
+    tagline: "Discover liquor stores w/ promos — prototype",
     description:
-      "Map-driven discovery for botillerías y minimarkets. Google Places API (New). Standby on GCP billing.",
+      "Map-driven discovery prototype for botillerías y minimarkets. Google Places API (New). Paused on GCP billing.",
     url: "https://basilisk-boti-finder.vercel.app",
     github: "https://github.com/agrimminck/basilisk-boti-finder",
     category: "basilisk",
@@ -85,9 +85,9 @@ export const projects: Project[] = [
   {
     id: "free-pickup",
     name: "Free Pickup",
-    tagline: "Give away items locally for free",
+    tagline: "Give away items locally — prototype",
     description:
-      "Geolocated free-item exchange. Better Auth, Drizzle ORM, Neon. Schema-isolated multi-tenant.",
+      "Geolocated free-item exchange prototype. Better Auth, Drizzle ORM, Neon. Schema-isolated multi-tenant.",
     url: "https://basilisk-free-pickup.vercel.app",
     github: "https://github.com/agrimminck/basilisk-free-pickup",
     category: "basilisk",
