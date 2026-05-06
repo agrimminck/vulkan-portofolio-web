@@ -1,14 +1,24 @@
 # vulkan-portofolio-web — Overview
 
-Portfolio personal. **Producción:** `agrimminck-portofolio.vercel.app`. Next.js App Router + Tailwind. 7 temas (default = `metropolis`), switcher con clip-path circular reveal. Admin secreto + i18n EN/ES + portrait dinámico por tema.
+Portfolio personal. **Producción:** `agrimminck-portofolio.vercel.app`. Next.js App Router + Tailwind. **10 temas** (default = `metropolis`), switcher con clip-path circular reveal. Admin secreto + i18n EN/ES + portrait dinámico por tema + arquitectura diagram per-theme.
+
+## ⚠️ Nota crítica para entrevistas (vibecoding disclosure)
+
+**Todo este portfolio fue construido por vibecoding** (con Claude Code, sin escribir código frontend manualmente). En entrevistas técnicas frontend (React/Next.js/CSS profundo) **NO** debe presentarse como evidencia de experiencia frontend deep. Lo que demuestra honestamente:
+- Capacidad de dirección creativa y diseño visual
+- Capacidad de coordinar agentes y arquitectura de proyecto
+- Conocimiento de stack y decisiones técnicas a alto nivel
+- Visión de producto
+
+Para frontend deep usar idyllic-mmo1-game (Godot, no React) o trabajos universitarios documentados. Mencionar el portfolio como "AI-assisted development project" si se pregunta por la implementación.
 
 ## Stack
 
 | Capa | Tech |
 |---|---|
-| Framework | Next.js App Router + React |
-| Lenguaje | TypeScript |
-| Styles | Tailwind CSS v4 |
+| Framework | Next.js App Router (16.x) + React |
+| Lenguaje | TypeScript estricto |
+| Styles | Tailwind CSS v4 + globals.css custom |
 | Auth | next-auth v4 + Google OAuth |
 | DB | Neon Postgres (`portfolio_settings` schema) |
 | Deploy | Vercel (`agrimminck-portofolio`) |
@@ -18,119 +28,160 @@ Portfolio personal. **Producción:** `agrimminck-portofolio.vercel.app`. Next.js
 | Var | Valor/Fuente |
 |---|---|
 | `DATABASE_URL` | Neon `basilisk-prod`, schema `portfolio_settings` |
-| `GOOGLE_CLIENT_ID` | Google Cloud Console (OAuth separado del de idyllic-web) |
+| `GOOGLE_CLIENT_ID` | Google Cloud Console |
 | `GOOGLE_CLIENT_SECRET` | ídem |
 | `NEXTAUTH_SECRET` | `openssl rand -base64 32` |
 | `NEXTAUTH_URL` | `http://localhost:3000` local / `https://agrimminck-portofolio.vercel.app` prod |
-| `ADMIN_EMAIL` | `agrimminck.94@gmail.com` (sin newline — copiarlo con cuidado) |
+| `ADMIN_EMAIL` | `agrimminck.94@gmail.com` (sin newline) |
 
-Google OAuth redirect URI: `{NEXTAUTH_URL}/api/auth/callback/google`
+## 10 temas
+
+| ID | Label | Estética | Fuente |
+|---|---|---|---|
+| `metropolis` | Metropolis | DEFAULT — ciudad futurista + foto Singapore | propio |
+| `ice-citadel` | Ice Citadel | Cinzel + frost + Canvas particles + aurora | port basilisk-hub ice-gothic |
+| `tron` | Tron Grid | Orbitron + Matrix rain + RGB glitch + perimeter laser | port basilisk-hub tron |
+| `netflix` | Netflix | Bebas Neue + black/red, hero + thumbnail row | propio |
+| `cyberpunk` | Cyberpunk | VT323 + neon pink/cyan + scanlines | propio |
+| `holographic` | Holographic | DM Serif + iridescent + glass orbs | propio |
+| `refined` | Refined | EB Garamond + cream + minimal | propio |
+| `corporate` | Corporate | Playfair + boardroom + gold rule | propio |
+| `editorial` | Editorial | Fraunces + newspaper brutalism | propio |
+| `organic` | Organic | Bricolage + Caveat + risograph stickers | propio |
 
 ## Estructura archivos
 
 ```
 app/
   layout.tsx                  # root: Providers + AdminKeyListener + LangToggle
-  page.tsx                    # theme state + settings fetch (no-store) + LangProvider + SettingsContext
-  globals.css                 # tokens 7 temas + fonts + keyframes
+  page.tsx                    # theme state + 3 contexts (Lang/Settings/NextTheme) + ArchitectureDiagram
+  globals.css                 # tokens 10 temas + ALL keyframes (incluye t-ice-citadel/t-tron/t-netflix completos)
   lib/
-    projects.ts               # projects[] + themes[] (source of truth)
-    settings.ts               # PortfolioSettings type + DEFAULT_SETTINGS + fetchSettings()
-    auth.ts                   # authOptions NextAuth exportado (importar desde aquí, NO desde [...nextauth]/route)
-    i18n.ts                   # traducciones EN/ES por tema + PROJECT_ES + SHARED
-    lang-context.tsx          # LangProvider (acepta defaultLang) + useLang() hook
-    settings-context.tsx      # SettingsContext (NO mover a page.tsx — rompe circular dep)
+    projects.ts               # projects[] + themes[] (10 entries)
+    settings.ts               # PortfolioSettings type + DEFAULT_SETTINGS
+    auth.ts                   # authOptions NextAuth
+    i18n.ts                   # 10 theme T objects EN/ES + NETFLIX_T + ICE_CITADEL_T + TRON_T + SHARED.next/nextHint
+    lang-context.tsx          # LangProvider + useLang
+    settings-context.tsx      # SettingsContext (NO mover — circular dep)
+    next-theme-context.tsx    # ★ NUEVO: NextThemeContext + useNextTheme hook
   components/
-    ThemeSwitcher.tsx         # dial top-right, chips → emite (id, x, y)
-    ThemedPortrait.tsx        # portrait dinámico: lee portrait_{variant} de SettingsContext
-    AdminKeyListener.tsx      # escucha 'idy' en keydown → window.location '/admin'
-    LangToggle.tsx            # botón fixed top-left: muestra idioma opuesto, toggle al click
-    Providers.tsx             # SessionProvider de next-auth
+    ThemeSwitcher.tsx         # ★ collapse-on-hover: dot pulsante → expand "SWITCH WORLD" en hover
+    ThemedPortrait.tsx        # portrait dinámico
+    AdminKeyListener.tsx      # 'idy' keydown → /admin
+    LangToggle.tsx
+    ArchitectureDiagram.tsx   # ★ REFACTORED: theme prop + 10 skins distintos
     themes/
-      MetropolisTheme.tsx     # DEFAULT: ciudad futurista + espacio. ACCENT_ON_WHITE map para taglines en cards blancas
+      MetropolisTheme.tsx     # DEFAULT
       RefinedTheme.tsx
       CorporateTheme.tsx
       CyberpunkTheme.tsx
       EditorialTheme.tsx
       OrganicTheme.tsx
       HolographicTheme.tsx
-  admin/
-    page.tsx                  # panel admin: theme default + lang default + portrait por tema
+      NetflixTheme.tsx        # ★ NUEVO
+      IceCitadelTheme.tsx     # ★ NUEVO (incluye MagicCanvas inline)
+      TronTheme.tsx           # ★ NUEVO (incluye MatrixRain inline)
+  admin/page.tsx              # admin: theme default + lang default + portrait por tema
   api/
-    auth/[...nextauth]/       # next-auth Google handler (importa authOptions de lib/auth.ts)
-    settings/route.ts         # GET (público, force-dynamic) + POST (getToken jwt, normaliza email)
-    portrait/[theme]/         # GET imagen desde Neon DB
-    portrait/[theme]/meta/    # GET position JSON
-    portrait/position/        # POST update position only
-    portrait/upload/          # POST upload + crop
+    auth/[...nextauth]/       # next-auth (importa authOptions de lib/auth.ts)
+    settings/route.ts         # GET force-dynamic + POST getToken JWT
+    portrait/[theme]/         # portrait CRUD
 ```
 
-## Acceso admin (secreto)
+## Sistema "Next theme button"
 
-Tipear `idy` en cualquier página (sin foco en input) → navega a `/admin`. El admin requiere login Google con `agrimminck.94@gmail.com`. Nadie más puede entrar.
+- `lib/next-theme-context.tsx` provee `{ nextThemeId, nextLabel, onNext(x, y) }`
+- `page.tsx` calcula next theme cíclicamente desde `themes[]` y wraps en `NextThemeContext.Provider`
+- Cada theme implementa su propio botón con estética matching:
+  - Refined → arrow tipográfica italic
+  - Metropolis → panel HUD frosted
+  - Corporate → footnote gold-rule "TURN PAGE"
+  - Cyberpunk → terminal command + blinking cursor
+  - Editorial → brutalist "TURN THE PAGE" + tilt hover
+  - Organic → blob orgánico con flor
+  - Holographic → glass-card + iridescent + chrome arrow
+  - Netflix → "Up Next" pop-up bottom-right con countdown bar
+  - IceCitadel → ig-frame-card + compass icon
+  - Tron → tn-card + hexagon "JUMP_NODE"
 
-## Auth — pitfalls conocidos
+## Sistema "Architecture diagram per-theme"
 
-- `authOptions` vive en `app/lib/auth.ts` — exportarlo desde `[...nextauth]/route.ts` causaba import failure en runtime (path con brackets)
-- POST `/api/settings` usa `getToken({ req, secret })` de `next-auth/jwt` — NO `getServerSession` (falla en App Router route handlers)
-- `ADMIN_EMAIL` en Vercel env vars: NO pegar con newline al final. El token de Google retorna email sin punto (`agrimminck94@gmail.com`); el handler normaliza ambos (trim + strip dots en parte local) antes de comparar
+`ArchitectureDiagram` recibe `theme: ThemeId` prop y renderiza 10 versiones visualmente distintas:
 
-## Settings en DB
+| Tema | Diagrama |
+|---|---|
+| Metropolis | Frosted glass cards sobre gradiente nocturno |
+| IceCitadel | Boxes obsidiana + frost-blue stroke + aurora detrás |
+| Tron | Cyan grid + tn-glitch + perimeter laser + matrix rain |
+| Netflix | Cards Netflix #181818 + red borders en game layer |
+| Cyberpunk | Cyber-grid + neon pink/cyan + scanlines |
+| Holographic | Glass cards + iridescent text + floating orbs |
+| Refined | Cream bg + boxes blancos + thin gold rule |
+| Corporate | Parchment + gold borders + Playfair italic |
+| Editorial | Paper texture + thick black borders + red game layer |
+| Organic | Cream + boxes con rotación + 8px_8px_0 shadow |
+
+Implementación: `Skin` type con todos los colores/fonts customizables + `SKINS: Record<ThemeId, Skin>` + decoraciones por tema vía `bgDecor` ReactNode.
+
+## ThemeSwitcher (collapse-on-hover)
+
+- Default: círculo 40x40px con dot pulsante en color del tema actual + ring expansion animation
+- Hover: expand a 168px wide pill con label "SWITCH WORLD"
+- Click: abre chip list (10 temas)
+- Mantiene sistema clip-path circular reveal de transiciones
+
+## Auth — pitfalls (sin cambios)
+
+- `authOptions` vive en `lib/auth.ts` — NO importar desde `[...nextauth]/route.ts` (path con brackets falla)
+- POST `/api/settings` usa `getToken({ req, secret })` de `next-auth/jwt` — NO `getServerSession`
+- `ADMIN_EMAIL` en Vercel: SIN newline. Token Google retorna sin punto; handler normaliza ambos (trim + strip dots)
+
+## Settings DB
 
 Tabla `portfolio_settings.settings (key text PK, value text)`:
 
 | key | default | descripción |
 |---|---|---|
-| `default_theme` | `metropolis` | tema que ven los visitantes al entrar |
-| `default_lang` | `en` | idioma por defecto para visitantes |
-| `portrait_<theme>` | `/me.jpg` | path imagen en `/public` por tema |
+| `default_theme` | `metropolis` | tema visitor inicial |
+| `default_lang` | `en` | idioma visitor inicial |
+| `portrait_<theme>` | `/me.jpg` | path imagen por tema |
 
-Cambios en admin → POST `/api/settings` → DB → visitantes ven el nuevo valor inmediatamente (GET es `force-dynamic`, fetch en page.tsx usa `cache: 'no-store'`).
+GET `force-dynamic`, fetch `cache: 'no-store'` → no caching CDN/browser.
 
 ## i18n
 
-`useLang()` hook disponible en todos los temas. `LangProvider` en `page.tsx` acepta `defaultLang` desde DB. Toggle top-left muestra idioma actual (EN/ES), click cambia.
+Hook `useLang()` en todos los temas. `LangContext` accepta `defaultLang` desde DB. Toggle top-left.
 
-**CRÍTICO — circular dep:** `SettingsContext` vive en `app/lib/settings-context.tsx` (NO en `page.tsx`). Si se mueve de vuelta a `page.tsx`, el toggle de idioma rompe.
+**CRÍTICO — circular dep:** `SettingsContext` vive en `lib/settings-context.tsx` (NO mover a page.tsx).
 
-Traducciones: `SHARED`, `REFINED_T`, `METROPOLIS_T`, `CORPORATE_T`, `CYBERPUNK_T`, `EDITORIAL_T`, `ORGANIC_T`, `HOLOGRAPHIC_T`, `PROJECT_ES`.
+Traducciones T objects: `SHARED`, `REFINED_T`, `METROPOLIS_T`, `CORPORATE_T`, `CYBERPUNK_T`, `EDITORIAL_T`, `ORGANIC_T`, `HOLOGRAPHIC_T`, `NETFLIX_T`, `ICE_CITADEL_T`, `TRON_T`, `PROJECT_ES`.
 
-## Botones Visit/GitHub en tarjetas
+## Botones Visit/GitHub
 
-Todos los temas tienen botones pill explícitos (no `<a>` wrapper en card — HTML no permite `<a>` anidado). Cada tema tiene su propio estilo matching:
-- Metropolis: navy `#0b1320` fill + outlined
-- Refined: `var(--ink)` fill + outlined
-- Corporate: `var(--ink)` fill + outlined
-- Cyberpunk: cyan fill + pink outlined
-- Editorial: ink fill + outlined (inner `<a>` sigue existiendo para click en título)
-- Organic: ink fill + outlined pill grande
-- Holographic: glassy backdrop-blur + outlined
+Todos los temas usan pills explícitos (no `<a>` wrapper en card — HTML inválido). Estilos por tema documentados en código.
 
-**MetropolisTheme — ACCENT_ON_WHITE:** las tarjetas frosted glass son casi blancas → colores accent claros (amarillo, lima, blanco) invisibles. `taglineColor(accent)` mapea a versiones oscurecidas para el tagline.
+**MetropolisTheme — ACCENT_ON_WHITE:** map de accents claros (yellow/lime/white) → versiones oscuras para tagline en cards frosted-white.
 
-## Framing de contenido (decisión 2026-05-05)
+## Framing de contenido
 
-- **No es un estudio** — un desarrollador solo, una pieza en Santiago
-- **Nada en producción** — todos los proyectos son prototipos
-- **Framing** → "prototipos para posible inserción en América Latina"
-- `SHARED.product` = "Prototype" / "Prototipo"
-- Textos hero de todos los temas actualizados en EN+ES para reflejar esto
+- Un desarrollador solo, una pieza en Santiago
+- Nada en producción — todos prototipos
+- Framing: "prototipos para posible inserción en América Latina"
+- `SHARED.product` = "Prototype"
 
 ## Stats bars por tema
 
-- **Metropolis**: panel inline con total de proyectos únicamente
-- **Refined**: inline total de proyectos
-- **Holographic**: glass card con total de proyectos
-- **Cyberpunk**: 2 stats — PROJECTS + UPTIME (99.9%)
-- **Corporate, Editorial, Organic**: sin stats bar separada
+- Metropolis/Refined/Holographic: total proyectos
+- Cyberpunk: PROJECTS + UPTIME (99.9%)
+- Corporate/Editorial/Organic/Netflix/IceCitadel/Tron: sin stats bar (incluyen counts en otras secciones)
 
-## Switcher — mecánica
+## Switcher mecánica
 
-1. Click chip → `(themeId, clientX, clientY)`
+1. Click chip → `(themeId, clientX, clientY)` o `onNext(x, y)` desde NextThemeContext
 2. `page.tsx` setea `revealing`
-3. Nuevo tema en overlay `z-40` con clase `theme-revealing`
-4. Keyframe `circle-reveal`: `clip-path: circle(0% → 150%)` desde `(--reveal-x, --reveal-y)`
-5. `setTimeout(900ms)` → commit + desmonta overlay
+3. Nuevo tema en overlay z-40 con `theme-revealing`
+4. Keyframe `circle-reveal`: clip-path circle 0% → 150% desde (--reveal-x, --reveal-y)
+5. setTimeout 900ms → commit + desmonta overlay
 
 ## Deploy
 
@@ -139,9 +190,9 @@ vercel link --scope agrimmincks-projects --project agrimminck-portofolio
 vercel --prod --yes
 ```
 
-Vercel Deployment Protection: **deshabilitado** (visitors públicos, sin login requerido).
+Vercel Deployment Protection: deshabilitado.
 
-**Alias post-deploy** (asignar manualmente — Vercel CLI no lo hace solo en este proyecto):
+**Alias post-deploy:**
 ```bash
 TOKEN=$(python3 -c "import json; print(json.load(open('/home/agrim/.local/share/com.vercel.cli/auth.json'))['token'])")
 TEAM="team_x509LqbXHosCqV1elhJ8DVhc"
@@ -149,27 +200,54 @@ DEPLOY_UID=$(curl -s "https://api.vercel.com/v6/deployments?teamId=$TEAM&app=agr
   -H "Authorization: Bearer $TOKEN" | python3 -c "import json,sys; deps=json.load(sys.stdin).get('deployments',[]); print(deps[0]['uid'] if deps else 'none')")
 curl -s -X POST "https://api.vercel.com/v2/deployments/$DEPLOY_UID/aliases?teamId=$TEAM" \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
-  -d '{"alias":"agrimminck-portofolio.vercel.app"}' | python3 -c "import json,sys; d=json.load(sys.stdin); print('✓' if d.get('alias') else d)"
+  -d '{"alias":"agrimminck-portofolio.vercel.app"}'
 ```
 
 ## Datos — projects.ts
 
-Sin mencionar MMORPG — referir a Idyllic como "large-scale online video game" / "videojuego online a gran escala". 7 proyectos activos:
+Sin mencionar MMORPG — referir Idyllic como "large-scale online video game". 7 proyectos:
 
 | Proyecto | URL | GitHub | Status |
 |---|---|---|---|
-| Idyllic | https://idyllic-web.vercel.app | https://github.com/agrimminck/idyllic-web | wip |
+| Idyllic | https://idyllic-web.vercel.app | github.com/agrimminck/idyllic-web | wip |
 | Mercado Libre Electrodomésticos | https://topelectrohogar.com | — | prototipo |
-| Car Shop App | https://basilisk-car-shop-app.vercel.app | https://github.com/agrimminck/basilisk-car-shop-app | prototipo |
-| Inversionistas | https://basilisk-inversionistas.vercel.app | https://github.com/agrimminck/basilisk-inversionistas | prototipo |
-| Boti Finder | https://basilisk-boti-finder.vercel.app | https://github.com/agrimminck/basilisk-boti-finder | prototipo |
-| Free Pickup | https://basilisk-free-pickup.vercel.app | https://github.com/agrimminck/basilisk-free-pickup | prototipo |
+| Car Shop App | https://basilisk-car-shop-app.vercel.app | github.com/agrimminck/basilisk-car-shop-app | prototipo |
+| Inversionistas | https://basilisk-inversionistas.vercel.app | github.com/agrimminck/basilisk-inversionistas | prototipo |
+| Boti Finder | https://basilisk-boti-finder.vercel.app | github.com/agrimminck/basilisk-boti-finder | prototipo |
+| Free Pickup | https://basilisk-free-pickup.vercel.app | github.com/agrimminck/basilisk-free-pickup | prototipo |
 | GitHub | https://github.com/agrimminck | — | social |
+
+## Efectos especiales port basilisk-hub
+
+Para Ice Citadel y Tron, se portó código directo desde `/home/agrim/github/idyllic/repos/basilisk-hub/themes/{ice-gothic,tron}/`:
+
+**ice-gothic → IceCitadelTheme:**
+- MagicCanvas (~426 líneas) inline: 140 stars + 120 snow + mouse trail + click shards (28) + embers + rings + aurora
+- ig-frame-card hover lift + inset glow
+- ig-aurora-layer breathing background
+- ig-bg-noise + ig-bg-cracks SVG patterns
+- ig-rune-pulse-slow animations
+- CornerOrnament + IcicleRow + GothicArchSilhouette + SigilDivider sub-components
+
+**tron → TronTheme:**
+- MatrixRain (~85 líneas) inline: japanese katakana + ASCII rain
+- tn-glitch-strong RGB shift on h1
+- tn-perimeter laser stroke on cards
+- tn-card scanline + load bar
+- tn-hbeam horizontal data beams
+- PerspectiveGrid SVG (perspective lines bottom)
+- LogoFX rotating rings + scanbar + RGB layered images (adaptado: usamos texto SVG en vez de logo image)
+- HeaderCircuits animated traces
+
+Selectores reescritos de `[data-theme="ice-gothic"]` → `.t-ice-citadel`, `[data-theme="tron"]` → `.t-tron`.
 
 ## Portrait dinámico
 
-`ThemedPortrait` sirve imagen desde Neon DB (`/api/portrait/{theme}?v={version}`). Fallback: path estático de `SettingsContext`. Cache busting via columna `version` (timestamp).
+`ThemedPortrait` sirve imagen desde Neon DB. Variants: refined/metropolis/corporate/cyberpunk/editorial/organic/holographic. **Pendiente:** agregar variants para `netflix`/`ice-citadel`/`tron` si se quiere portrait personalizado en esos temas (actualmente fallback inline-text).
 
-Crop data: JSON `{"x":50,"y":50,"zoom":1.2}` en columna `position`. `ThemedPortrait` aplica `objectPosition: x% y%` + `transform: scale(zoom)` + `transformOrigin: x% y%`.
+## Pendientes / mejoras futuras
 
-Admin: "Choose photo" → CropEditor → "Save crop" → upload a Neon + actualiza version.
+- [ ] ThemedPortrait variants para netflix/ice-citadel/tron
+- [ ] Test A/B framing actual ("solo dev prototypes") vs versión más confiada
+- [ ] Mobile responsive review en los 10 temas (especialmente IceCitadel + Tron con muchos efectos)
+- [ ] Lighthouse audit — Canvas pesado puede afectar performance score
