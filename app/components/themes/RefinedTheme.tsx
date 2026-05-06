@@ -4,11 +4,13 @@ import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
 import { useLang } from "../../lib/lang-context";
 import { REFINED_T, PROJECT_ES, SHARED } from "../../lib/i18n";
+import { useNextTheme } from "../../lib/next-theme-context";
 
 export default function RefinedTheme() {
   const { lang } = useLang();
   const t = REFINED_T[lang];
   const sh = SHARED[lang];
+  const { onNext, nextLabel } = useNextTheme();
 
   return (
     <div className="t-refined min-h-screen relative overflow-hidden">
@@ -175,6 +177,39 @@ export default function RefinedTheme() {
         </section>
 
         <div className="refined-divider mb-12" />
+
+        {/* Next design — typographic arrow */}
+        <div className="mb-16 flex flex-col items-center text-center">
+          <span
+            className="text-[10px] tracking-[0.4em] uppercase text-[var(--ink-muted)] mb-3"
+            style={{ fontFamily: "var(--font-body-refined)" }}
+          >
+            {sh.next}
+          </span>
+          <button
+            aria-label={`Switch to ${nextLabel} theme`}
+            onClick={(e) => onNext(e.clientX, e.clientY)}
+            className="group flex flex-col items-center cursor-pointer bg-transparent border-none p-0"
+            style={{ fontFamily: "var(--font-display-refined)" }}
+          >
+            <h2
+              className="text-4xl md:text-6xl italic transition-transform duration-500 group-hover:translate-x-3"
+              style={{ color: "var(--ink)" }}
+            >
+              {nextLabel} &rarr;
+            </h2>
+            <span
+              className="block mt-3 w-16 h-px transition-all duration-500 group-hover:w-28"
+              style={{ background: "var(--ink)", opacity: 0.35 }}
+            />
+          </button>
+          <span
+            className="mt-3 text-[11px] tracking-[0.25em] uppercase text-[var(--ink-muted)] opacity-60"
+            style={{ fontFamily: "var(--font-body-refined)" }}
+          >
+            {sh.nextHint}
+          </span>
+        </div>
 
         <footer className="flex flex-wrap items-center justify-between gap-4 text-sm text-[var(--ink-muted)]">
           <span>{t.footer}</span>

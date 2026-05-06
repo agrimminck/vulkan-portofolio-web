@@ -4,6 +4,7 @@ import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
 import { useLang } from "../../lib/lang-context";
 import { ORGANIC_T, PROJECT_ES, SHARED } from "../../lib/i18n";
+import { useNextTheme } from "../../lib/next-theme-context";
 
 function Blob({
   className,
@@ -34,6 +35,7 @@ export default function OrganicTheme() {
   const { lang } = useLang();
   const t = ORGANIC_T[lang];
   const sh = SHARED[lang];
+  const { onNext, nextLabel } = useNextTheme();
 
   const tags = [t.tag1, t.tag2, t.tag3, t.tag4, t.tag5];
 
@@ -230,7 +232,58 @@ export default function OrganicTheme() {
           })}
         </section>
 
-        <footer className="mt-24 text-center">
+        {/* Next design — floral blob button */}
+        <div className="mt-20 mb-10 flex justify-center">
+          <button
+            aria-label={`Switch to ${nextLabel} theme`}
+            onClick={(e) => onNext(e.clientX, e.clientY)}
+            className="group cursor-pointer bg-transparent border-none p-0"
+          >
+            <div
+              className="relative flex flex-col items-center justify-center px-12 py-8 transition-transform duration-500 group-hover:scale-105"
+              style={{
+                background: "var(--terra)",
+                borderRadius: "62% 38% 54% 46% / 48% 52% 48% 52%",
+                border: "3px solid var(--ink)",
+                boxShadow: "6px 6px 0 var(--ink)",
+                transform: "rotate(-2deg)",
+                minWidth: 240,
+              }}
+            >
+              <span
+                className="text-sm mb-1 transition-transform duration-300 group-hover:scale-110 inline-block"
+                style={{
+                  fontFamily: "var(--font-body-organic)",
+                  color: "var(--bg)",
+                }}
+              >
+                ✿ {sh.next} ✿
+              </span>
+              <span
+                className="text-4xl md:text-5xl font-black leading-none"
+                style={{
+                  fontFamily: "var(--font-display-organic)",
+                  color: "var(--bg)",
+                }}
+              >
+                {nextLabel.toLowerCase()}
+              </span>
+              <span
+                className="mt-2 text-2xl transition-transform duration-400 group-hover:rotate-12 inline-block"
+              >
+                ❀
+              </span>
+            </div>
+            <div
+              className="mt-3 text-center text-xs opacity-60"
+              style={{ fontFamily: "var(--font-body-organic)", color: "var(--moss)" }}
+            >
+              {sh.nextHint}
+            </div>
+          </button>
+        </div>
+
+        <footer className="mt-8 text-center">
           <p
             className="text-2xl"
             style={{ fontFamily: "var(--font-body-organic)", color: "var(--moss)" }}

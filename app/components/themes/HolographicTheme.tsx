@@ -4,11 +4,13 @@ import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
 import { useLang } from "../../lib/lang-context";
 import { HOLOGRAPHIC_T, PROJECT_ES, SHARED } from "../../lib/i18n";
+import { useNextTheme } from "../../lib/next-theme-context";
 
 export default function HolographicTheme() {
   const { lang } = useLang();
   const t = HOLOGRAPHIC_T[lang];
   const sh = SHARED[lang];
+  const { onNext, nextLabel } = useNextTheme();
 
   return (
     <div className="t-holo holo-mesh min-h-screen relative overflow-hidden">
@@ -184,7 +186,79 @@ export default function HolographicTheme() {
           })}
         </div>
 
-        <footer className="mt-24 glass-card rounded-2xl p-6 flex justify-between items-center">
+        {/* Next design — orb portal glass card */}
+        <div className="mt-20 mb-10 flex justify-center">
+          <button
+            aria-label={`Switch to ${nextLabel} theme`}
+            onClick={(e) => onNext(e.clientX, e.clientY)}
+            className="group cursor-pointer bg-transparent border-none p-0"
+          >
+            <div
+              className="glass-card relative rounded-3xl px-12 py-8 flex flex-col items-center overflow-hidden transition-all duration-500"
+              style={{ minWidth: 280 }}
+              onMouseEnter={(e) => {
+                const orb = e.currentTarget.querySelector<HTMLDivElement>(".holo-portal-orb");
+                if (orb) orb.style.opacity = "0.85";
+              }}
+              onMouseLeave={(e) => {
+                const orb = e.currentTarget.querySelector<HTMLDivElement>(".holo-portal-orb");
+                if (orb) orb.style.opacity = "0.45";
+              }}
+            >
+              {/* Decorative floating orb inside the card */}
+              <div
+                className="holo-portal-orb absolute -top-10 -right-10 w-40 h-40 rounded-full transition-opacity duration-500"
+                style={{
+                  opacity: 0.45,
+                  background:
+                    "radial-gradient(circle at 35% 35%, rgba(200,80,200,0.7), rgba(0,100,200,0.5) 50%, transparent 75%)",
+                  filter: "blur(25px)",
+                  animation: "orb-float-1 8s ease-in-out infinite",
+                }}
+              />
+              <div
+                className="relative text-[9px] tracking-[0.5em] uppercase mb-3 opacity-60 font-mono"
+              >
+                // PORTAL.OPEN
+              </div>
+              <div
+                className="relative text-4xl md:text-5xl font-normal iridescent mb-2 transition-all duration-400 group-hover:tracking-wider"
+                style={{ fontFamily: "var(--font-display-holo)" }}
+              >
+                <em>{nextLabel}</em>
+              </div>
+              {/* Chrome arrow SVG with hue-rotate */}
+              <svg
+                viewBox="0 0 48 24"
+                width="48"
+                height="24"
+                className="mt-2 transition-transform duration-400 group-hover:translate-x-2"
+                style={{ filter: "hue-rotate(0deg)", animation: "hue-rotate 6s linear infinite" }}
+              >
+                <defs>
+                  <linearGradient id="holo-arrow-grad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="rgba(160,80,220,0.9)" />
+                    <stop offset="50%" stopColor="rgba(0,180,255,0.9)" />
+                    <stop offset="100%" stopColor="rgba(220,80,160,0.9)" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M2 12 L36 12 M30 5 L42 12 L30 19"
+                  stroke="url(#holo-arrow-grad)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+              <div className="relative mt-3 text-[10px] tracking-[0.3em] uppercase opacity-50 font-mono">
+                {sh.nextHint}
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <footer className="glass-card rounded-2xl p-6 flex justify-between items-center">
           <span className="text-xs tracking-[0.3em] uppercase opacity-70 font-mono">
             {t.footer}
           </span>

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ThemedPortrait from "../ThemedPortrait";
 import { useLang } from "../../lib/lang-context";
 import { CYBERPUNK_T, PROJECT_ES, SHARED } from "../../lib/i18n";
+import { useNextTheme } from "../../lib/next-theme-context";
 
 function GlitchText({ children, className }: { children: string; className?: string }) {
   return (
@@ -46,6 +47,7 @@ export default function CyberpunkTheme() {
   const { lang } = useLang();
   const t = CYBERPUNK_T[lang];
   const sh = SHARED[lang];
+  const { onNext, nextLabel } = useNextTheme();
 
   return (
     <div className="t-cyber min-h-screen relative overflow-hidden">
@@ -219,7 +221,63 @@ export default function CyberpunkTheme() {
           ))}
         </div>
 
-        <footer className="mt-16 border-t border-[var(--neon-pink)]/40 pt-6 flex justify-between text-xs font-mono opacity-60">
+        {/* Next design — terminal command */}
+        <div
+          className="mt-16 mb-8 border border-[var(--neon-cyan)]/60 p-6 relative"
+          style={{
+            background: "rgba(0,0,0,0.7)",
+            boxShadow: "0 0 30px rgba(0,240,255,0.25), inset 0 0 20px rgba(0,240,255,0.05)",
+          }}
+        >
+          <div className="absolute -top-3 left-6 px-2 bg-[var(--bg)] text-[10px] tracking-[0.3em] text-[var(--neon-cyan)]">
+            // NEXT_DESIGN.SH
+          </div>
+          <button
+            aria-label={`Switch to ${nextLabel} theme`}
+            onClick={(e) => onNext(e.clientX, e.clientY)}
+            className="group w-full cursor-pointer bg-transparent border-none p-0 text-left"
+            onMouseEnter={(e) => {
+              const el = e.currentTarget.querySelector<HTMLSpanElement>(".cyber-next-label");
+              if (el) {
+                el.style.textShadow = "0 0 18px var(--neon-cyan), 0 0 40px var(--neon-pink)";
+                el.style.color = "var(--neon-cyan)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget.querySelector<HTMLSpanElement>(".cyber-next-label");
+              if (el) {
+                el.style.textShadow = "0 0 10px var(--neon-pink)";
+                el.style.color = "var(--neon-pink)";
+              }
+            }}
+          >
+            <div className="text-xs font-mono text-[var(--neon-cyan)] opacity-80 mb-2">
+              $ ./next-design.sh
+            </div>
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-[10px] font-mono text-[var(--neon-cyan)]/70">loading:</span>
+              <span
+                className="cyber-next-label text-3xl md:text-4xl font-normal uppercase transition-all duration-200"
+                style={{
+                  fontFamily: "var(--font-display-cyber)",
+                  color: "var(--neon-pink)",
+                  textShadow: "0 0 10px var(--neon-pink)",
+                }}
+              >
+                {nextLabel}_
+              </span>
+              <span
+                className="inline-block w-3 h-5 bg-[var(--neon-pink)] animate-pulse"
+                style={{ boxShadow: "0 0 10px var(--neon-pink)" }}
+              />
+            </div>
+            <div className="mt-2 text-[10px] font-mono text-[var(--neon-cyan)]/60">
+              # {sh.nextHint}
+            </div>
+          </button>
+        </div>
+
+        <footer className="border-t border-[var(--neon-pink)]/40 pt-6 flex justify-between text-xs font-mono opacity-60">
           <span>{t.eof}</span>
           <span className="text-[var(--neon-cyan)]">^C to disconnect</span>
         </footer>

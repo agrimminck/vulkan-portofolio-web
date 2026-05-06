@@ -4,6 +4,7 @@ import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
 import { useLang } from "../../lib/lang-context";
 import { CORPORATE_T, PROJECT_ES, SHARED } from "../../lib/i18n";
+import { useNextTheme } from "../../lib/next-theme-context";
 
 function PlaneSilhouette({ className, scale = 1 }: { className?: string; scale?: number }) {
   return (
@@ -40,6 +41,7 @@ export default function CorporateTheme() {
   const { lang } = useLang();
   const t = CORPORATE_T[lang];
   const sh = SHARED[lang];
+  const { onNext, nextLabel } = useNextTheme();
 
   return (
     <div className="t-corporate min-h-screen relative overflow-hidden">
@@ -197,7 +199,46 @@ export default function CorporateTheme() {
           </div>
         </section>
 
-        <footer className="mt-24 pt-8 border-t-2 border-[var(--ink)] flex justify-between text-xs uppercase tracking-[0.3em] opacity-60">
+        {/* Next design — page-turn footnote */}
+        <div className="mt-20 mb-8">
+          <button
+            aria-label={`Switch to ${nextLabel} theme`}
+            onClick={(e) => onNext(e.clientX, e.clientY)}
+            className="group w-full cursor-pointer bg-transparent border-none p-0 text-left"
+          >
+            <div
+              className="w-full transition-all duration-500 group-hover:w-4/5"
+              style={{
+                height: "2px",
+                background: "linear-gradient(90deg, var(--gold, #b0893e), transparent)",
+                marginBottom: "1.5rem",
+              }}
+            />
+            <div
+              className="text-[10px] tracking-[0.4em] uppercase opacity-60 mb-2"
+              style={{ fontFamily: "var(--font-body-corporate, serif)" }}
+            >
+              TURN PAGE &rarr; &nbsp;&nbsp; {sh.next.toUpperCase()}
+            </div>
+            <div
+              className="text-2xl md:text-4xl italic transition-all duration-400 group-hover:tracking-wide"
+              style={{
+                fontFamily: "var(--font-display-corporate)",
+                color: "var(--ink)",
+              }}
+            >
+              Volume II — {nextLabel}
+            </div>
+            <div
+              className="mt-2 text-[10px] tracking-[0.3em] uppercase opacity-50"
+              style={{ fontFamily: "var(--font-body-corporate, serif)" }}
+            >
+              {sh.nextHint}
+            </div>
+          </button>
+        </div>
+
+        <footer className="mt-8 pt-8 border-t-2 border-[var(--ink)] flex justify-between text-xs uppercase tracking-[0.3em] opacity-60">
           <span>{t.footer1}</span>
           <span>{t.footer2}</span>
         </footer>

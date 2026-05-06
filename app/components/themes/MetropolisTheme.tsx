@@ -5,6 +5,7 @@ import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
 import { useLang } from "../../lib/lang-context";
 import { METROPOLIS_T, PROJECT_ES, SHARED } from "../../lib/i18n";
+import { useNextTheme } from "../../lib/next-theme-context";
 
 const PHOTO_URL =
   "https://images.unsplash.com/photo-1629443250630-f43487ca1e80?w=2400&q=80&auto=format&fit=crop";
@@ -53,6 +54,7 @@ export default function MetropolisTheme() {
   const { lang } = useLang();
   const t = METROPOLIS_T[lang];
   const sh = SHARED[lang];
+  const { onNext, nextLabel } = useNextTheme();
 
   return (
     <div className="t-metropolis min-h-screen relative overflow-hidden" style={{ background: "#0b1320" }}>
@@ -275,6 +277,58 @@ export default function MetropolisTheme() {
             ))}
           </div>
         </section>
+
+        {/* Next design — HUD next-broadcast panel */}
+        <div className="mb-12 flex justify-end">
+          <button
+            aria-label={`Switch to ${nextLabel} theme`}
+            onClick={(e) => onNext(e.clientX, e.clientY)}
+            className="group cursor-pointer border-none bg-transparent p-0"
+          >
+            <div
+              className="relative rounded-2xl px-8 py-5 transition-all duration-400"
+              style={{
+                background: "rgba(255,255,255,0.08)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid rgba(103,232,249,0.55)",
+                boxShadow: "0 0 18px rgba(103,232,249,0.2), inset 0 0 18px rgba(103,232,249,0.04)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLDivElement).style.boxShadow =
+                  "0 0 40px rgba(103,232,249,0.55), inset 0 0 30px rgba(103,232,249,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLDivElement).style.boxShadow =
+                  "0 0 18px rgba(103,232,249,0.2), inset 0 0 18px rgba(103,232,249,0.04)";
+              }}
+            >
+              <div
+                className="text-[9px] tracking-[0.45em] uppercase mb-1"
+                style={{ color: "rgba(103,232,249,0.7)", fontFamily: "var(--font-body-metro)" }}
+              >
+                // CHANNEL.NEXT
+              </div>
+              <div
+                className="text-3xl font-black tracking-tight flex items-center gap-3"
+                style={{ fontFamily: "var(--font-display-metro)", color: "#67e8f9" }}
+              >
+                {nextLabel.toUpperCase()}
+                <span
+                  className="text-2xl transition-transform duration-300 group-hover:translate-x-2"
+                  style={{ display: "inline-block" }}
+                >
+                  &#8594;
+                </span>
+              </div>
+              <div
+                className="text-[9px] tracking-[0.3em] mt-1 opacity-60"
+                style={{ fontFamily: "var(--font-body-metro)", color: "rgba(103,232,249,0.8)" }}
+              >
+                {sh.nextHint.toUpperCase()}
+              </div>
+            </div>
+          </button>
+        </div>
 
         <footer className="flex flex-wrap items-center justify-between gap-4 text-xs uppercase tracking-[0.3em] text-white/80">
           <span>{t.footerL}</span>

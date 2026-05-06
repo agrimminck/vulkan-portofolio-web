@@ -4,11 +4,13 @@ import { projects } from "../../lib/projects";
 import ThemedPortrait from "../ThemedPortrait";
 import { useLang } from "../../lib/lang-context";
 import { EDITORIAL_T, PROJECT_ES, SHARED } from "../../lib/i18n";
+import { useNextTheme } from "../../lib/next-theme-context";
 
 export default function EditorialTheme() {
   const { lang } = useLang();
   const t = EDITORIAL_T[lang];
   const sh = SHARED[lang];
+  const { onNext, nextLabel } = useNextTheme();
 
   return (
     <div className="t-editorial min-h-screen relative overflow-hidden grain">
@@ -185,7 +187,47 @@ export default function EditorialTheme() {
           </div>
         </section>
 
-        <footer className="mt-24 pt-6 border-t-[3px] border-[var(--ink)] flex justify-between text-xs uppercase tracking-[0.3em]">
+        {/* Next design — newspaper TURN THE PAGE */}
+        <div className="mt-20 mb-8">
+          <button
+            aria-label={`Switch to ${nextLabel} theme`}
+            onClick={(e) => onNext(e.clientX, e.clientY)}
+            className="group w-full cursor-pointer bg-transparent border-none p-0 text-left"
+          >
+            <div className="border-t-[5px] border-[var(--ink)] pt-4 mb-2" />
+            <div
+              className="text-[10px] tracking-[0.5em] uppercase mb-3 opacity-70"
+              style={{ fontFamily: "var(--font-body-editorial)" }}
+            >
+              PAGE 02 &rarr; &nbsp; {sh.next.toUpperCase()}
+            </div>
+            <h2
+              className="text-[clamp(2.5rem,7vw,6rem)] font-black uppercase leading-[0.88] mb-4 transition-transform duration-300 group-hover:-rotate-1 origin-left"
+              style={{ fontFamily: "var(--font-display-editorial)" }}
+            >
+              <span className="italic font-normal">Turn</span> the
+              <br />
+              Page.
+            </h2>
+            <div
+              className="text-lg italic font-normal group-hover:underline-rough inline-block"
+              style={{
+                fontFamily: "var(--font-display-editorial)",
+                color: "var(--red)",
+              }}
+            >
+              {nextLabel}
+            </div>
+            <div
+              className="mt-2 text-[10px] tracking-[0.3em] uppercase opacity-50"
+              style={{ fontFamily: "var(--font-body-editorial)" }}
+            >
+              {sh.nextHint}
+            </div>
+          </button>
+        </div>
+
+        <footer className="pt-6 border-t-[3px] border-[var(--ink)] flex justify-between text-xs uppercase tracking-[0.3em]">
           <span>{t.footer}</span>
           <span className="italic">{t.end}</span>
         </footer>
