@@ -56,6 +56,8 @@ export const SHARED: Record<Lang, {
   live: string;
   wip: string;
   standby: string;
+  next: string;
+  nextHint: string;
 }> = {
   en: {
     visit: "Visit →",
@@ -66,6 +68,8 @@ export const SHARED: Record<Lang, {
     live: "In production",
     wip: "In progress",
     standby: "Standby",
+    next: "Next design",
+    nextHint: "See another universe",
   },
   es: {
     visit: "Visitar →",
@@ -76,6 +80,8 @@ export const SHARED: Record<Lang, {
     live: "En producción",
     wip: "En progreso",
     standby: "En espera",
+    next: "Siguiente diseño",
+    nextHint: "Ver otro universo",
   },
 };
 
@@ -284,5 +290,120 @@ export const HOLOGRAPHIC_T: Record<Lang, {
     body: (n) => `// ${n} proyectos renderizados a través de un lente cromado. todos prototipos, todos en movimiento, // todos construidos por un desarrollador y un puñado de herramientas.`,
     sProjects: "PROYECTOS", sLive: "EN VIVO", sWip: "EN DESARROLLO", sStandby: "EN ESPERA",
     footer: "// señal estable · canal abierto · MMXXVI",
+  },
+};
+
+export const NETFLIX_T: Record<Lang, {
+  brand: string; topNav: string;
+  heroTag: string; heroTitle: string; heroDesc: string; heroPlay: string; heroGithub: string;
+  rowFeatured: string; rowAll: string;
+  matchScore: string; year: string; rating: string;
+  totalLabel: string;
+  footer: string;
+}> = {
+  en: {
+    brand: "AGRIMFLIX",
+    topNav: "PORTFOLIO · MMXXVI",
+    heroTag: "FLAGSHIP · ONE OF A KIND",
+    heroTitle: "Idyllic",
+    heroDesc: "A large-scale online video game built ground-up. Custom Godot engine work, NestJS backend mesh, server meshing, multi-region. The headline project.",
+    heroPlay: "Play",
+    heroGithub: "GitHub",
+    rowFeatured: "Featured",
+    rowAll: "All Projects",
+    matchScore: "Match",
+    year: "2026",
+    rating: "WIP",
+    totalLabel: "in the catalogue",
+    footer: "© MMXXVI · Built by one person in Santiago · Streaming since today",
+  },
+  es: {
+    brand: "AGRIMFLIX",
+    topNav: "PORTFOLIO · MMXXVI",
+    heroTag: "PROYECTO INSIGNIA · ÚNICO",
+    heroTitle: "Idyllic",
+    heroDesc: "Videojuego online a gran escala construido desde cero. Motor Godot personalizado, backend NestJS con server meshing, múltiples regiones. El proyecto principal.",
+    heroPlay: "Reproducir",
+    heroGithub: "GitHub",
+    rowFeatured: "Destacados",
+    rowAll: "Todos los proyectos",
+    matchScore: "Match",
+    year: "2026",
+    rating: "WIP",
+    totalLabel: "en el catálogo",
+    footer: "© MMXXVI · Hecho por una persona en Santiago · Streaming desde hoy",
+  },
+};
+
+export const ICE_CITADEL_T: Record<Lang, {
+  prologue: string; chapterLabel: string;
+  heroEyebrow: string; heroTitle: string; heroSubtitle: string;
+  heroBody: string;
+  portalsLabel: string;
+  enterPortal: string;
+  finis: string; subtitleFinis: string;
+  body: (n: number) => string;
+}> = {
+  en: {
+    prologue: "✦ Codex Septima ✦ Anno Glaciei ✦",
+    chapterLabel: "Prologus",
+    heroEyebrow: "Idyllic Codex · MMXXVI",
+    heroTitle: "Frozen Citadel",
+    heroSubtitle: "◇ Halls of the Solo Builder ◇",
+    heroBody: "\"Let the traveler cross the seven portals of the citadel. Each one guards a domain of the ecosystem, forged in ice and obsidian, sealed with the ancient sigils of the lone developer.\"",
+    portalsLabel: "Portae Vigentes · The Active Portals",
+    enterPortal: "Cross the Threshold",
+    finis: "Finis",
+    subtitleFinis: "◇ Forged in Eternal Ice ◇",
+    body: (n) => `${n} portals · One developer · Anno Domini MMXXVI`,
+  },
+  es: {
+    prologue: "✦ Códice Séptimo ✦ Año de Hielo ✦",
+    chapterLabel: "Prólogo",
+    heroEyebrow: "Códice Idyllic · MMXXVI",
+    heroTitle: "Ciudadela de Hielo",
+    heroSubtitle: "◇ Salones del Constructor Solitario ◇",
+    heroBody: "\"Que el viajero atraviese los siete portales de la ciudadela. Cada uno custodia un dominio del ecosistema, forjado en hielo y obsidiana, sellado con los antiguos sigilos del desarrollador solitario.\"",
+    portalsLabel: "Portae Vigentes · Los Portales Activos",
+    enterPortal: "Cruzar el Umbral",
+    finis: "Finis",
+    subtitleFinis: "◇ Forjado en Hielo Eterno ◇",
+    body: (n) => `${n} portales · Un desarrollador · Anno Domini MMXXVI`,
+  },
+};
+
+export const TRON_T: Record<Lang, {
+  systemTag: string; bootLabel: string;
+  heroTitle: string; subtitle: string;
+  heroBody: string;
+  activePrograms: string;
+  enterGrid: string;
+  vector: string;
+  footer: string;
+  totalNodes: (n: number) => string;
+}> = {
+  en: {
+    systemTag: "[ SYSTEM/GRID v.MMXXVI ]",
+    bootLabel: "BOOT",
+    heroTitle: "IDYLLIC GRID",
+    subtitle: "> DIGITAL GRID INTERFACE <",
+    heroBody: "User program initialized. Active subroutines on the grid. Select an entry vector to access the corresponding ecosystem node.",
+    activePrograms: "ACTIVE_PROGRAMS",
+    enterGrid: "ENTER_GRID",
+    vector: "VECTOR",
+    footer: "© MMXXVI / IDYLLIC ENTERTAINMENT / SYSTEM_USER",
+    totalNodes: (n) => `[ ${n}_NODES // GRID_ONLINE ]`,
+  },
+  es: {
+    systemTag: "[ SISTEMA/GRID v.MMXXVI ]",
+    bootLabel: "BOOT",
+    heroTitle: "IDYLLIC GRID",
+    subtitle: "> INTERFAZ DE LA GRILLA DIGITAL <",
+    heroBody: "Programa de usuario inicializado. Subrutinas activas en la grilla. Selecciona un vector de entrada para acceder al nodo correspondiente del ecosistema.",
+    activePrograms: "PROGRAMAS_ACTIVOS",
+    enterGrid: "ACCEDER",
+    vector: "VECTOR",
+    footer: "© MMXXVI / IDYLLIC ENTERTAINMENT / SYSTEM_USER",
+    totalNodes: (n) => `[ ${n}_NODOS // GRID_ONLINE ]`,
   },
 };

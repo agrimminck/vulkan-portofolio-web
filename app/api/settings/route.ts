@@ -10,6 +10,7 @@ export async function GET() {
   const rows = await db`SELECT key, value FROM portfolio_settings.settings`;
   const map: Record<string, string> = {};
   for (const r of rows) map[r.key as string] = r.value as string;
+  console.log("[settings GET] returning:", JSON.stringify(map));
   return NextResponse.json(map);
 }
 
@@ -25,9 +26,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json() as Record<string, string>;
+  console.log("[settings POST] saving keys:", Object.keys(body));
+  console.log("[settings POST] default_lang value:", body.default_lang);
   for (const [key, value] of Object.entries(body)) {
     await db`INSERT INTO portfolio_settings.settings (key, value) VALUES (${key}, ${value})
              ON CONFLICT (key) DO UPDATE SET value = ${value}`;
   }
+  const verify = await db`SELECT value FROM portfolio_settings.settings WHERE key = 'default_lang'`;
+  console.log("[settings POST] DB after save default_lang:", verify[0]?.value);
   return NextResponse.json({ ok: true });
 }

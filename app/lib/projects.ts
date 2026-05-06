@@ -112,13 +112,16 @@ export const projects: Project[] = [
 ];
 
 export const themes = [
-  { id: "refined", label: "Refined", subtitle: "Quiet · Considered", color: "#1e3a5f" },
   { id: "metropolis", label: "Metropolis", subtitle: "Future City + Orbit", color: "#67e8f9" },
-  { id: "corporate", label: "Corporate", subtitle: "Boardroom", color: "#0a2540" },
+  { id: "ice-citadel", label: "Ice Citadel", subtitle: "Frost + Aurora", color: "#6fc3ff" },
+  { id: "tron", label: "Tron Grid", subtitle: "Neon Wireframe", color: "#00f0ff" },
+  { id: "netflix", label: "Netflix", subtitle: "Streaming UI", color: "#e50914" },
   { id: "cyberpunk", label: "Cyberpunk", subtitle: "Terminal/Neon", color: "#ff007a" },
+  { id: "holographic", label: "Holographic", subtitle: "Y2K Aurora", color: "#a78bfa" },
+  { id: "refined", label: "Refined", subtitle: "Quiet · Considered", color: "#1e3a5f" },
+  { id: "corporate", label: "Corporate", subtitle: "Boardroom", color: "#0a2540" },
   { id: "editorial", label: "Editorial", subtitle: "Print Brutalism", color: "#1a1a1a" },
   { id: "organic", label: "Organic", subtitle: "Risograph", color: "#d97757" },
-  { id: "holographic", label: "Holographic", subtitle: "Y2K Aurora", color: "#a78bfa" },
 ] as const;
 
 export type ThemeId = (typeof themes)[number]["id"];

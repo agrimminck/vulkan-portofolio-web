@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect, createContext } from "react";
-import { type ThemeId } from "./lib/projects";
+import { useState, useCallback, useRef, useEffect } from "react";
+import { themes, type ThemeId } from "./lib/projects";
 import type { PortfolioSettings } from "./lib/settings";
 import { DEFAULT_SETTINGS } from "./lib/settings";
 import { LangContext } from "./lib/lang-context";
 import { SettingsContext } from "./lib/settings-context";
+import { NextThemeContext } from "./lib/next-theme-context";
 import LangToggle from "./components/LangToggle";
 import type { Lang } from "./lib/i18n";
 import ThemeSwitcher from "./components/ThemeSwitcher";
@@ -16,6 +17,9 @@ import CyberpunkTheme from "./components/themes/CyberpunkTheme";
 import EditorialTheme from "./components/themes/EditorialTheme";
 import OrganicTheme from "./components/themes/OrganicTheme";
 import HolographicTheme from "./components/themes/HolographicTheme";
+import NetflixTheme from "./components/themes/NetflixTheme";
+import IceCitadelTheme from "./components/themes/IceCitadelTheme";
+import TronTheme from "./components/themes/TronTheme";
 import ArchitectureDiagram from "./components/ArchitectureDiagram";
 
 
@@ -27,6 +31,9 @@ const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
   editorial: EditorialTheme,
   organic: OrganicTheme,
   holographic: HolographicTheme,
+  netflix: NetflixTheme,
+  "ice-citadel": IceCitadelTheme,
+  tron: TronTheme,
 };
 
 export default function Home() {
@@ -70,42 +77,42 @@ export default function Home() {
 
   const toggleLang = () => setLang((l) => (l === "en" ? "es" : "en"));
 
+  // compute next theme in cycle
+  const themeIds = themes.map((t) => t.id);
+  const currentIdx = themeIds.indexOf(theme);
+  const nextThemeId = themeIds[(currentIdx + 1) % themeIds.length] as ThemeId;
+  const nextLabel = themes.find((t) => t.id === nextThemeId)?.label ?? "";
+  const onNext = useCallback(
+    (x: number, y: number) => handleThemeChange(nextThemeId, x, y),
+    [nextThemeId, handleThemeChange],
+  );
+
   return (
     <LangContext.Provider value={{ lang, toggle: toggleLang }}>
       <SettingsContext.Provider value={settings}>
-        <LangToggle />
-        <main className="relative min-h-screen overflow-x-hidden">
-          <div className="relative z-0">
-            <Current />
-            {/* Gradient bridge: any theme color → diagram dark */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: 220,
-                background: "linear-gradient(to bottom, transparent 0%, #050c1a 100%)",
-                pointerEvents: "none",
-                zIndex: 10,
-              }}
-            />
-          </div>
-          {Next && (
-            <div
-              ref={overlayRef}
-              className="fixed inset-0 z-40 theme-revealing"
-              style={{
-                ["--reveal-x" as string]: `${revealing!.x}px`,
-                ["--reveal-y" as string]: `${revealing!.y}px`,
-              } as React.CSSProperties}
-            >
-              <Next />
+        <NextThemeContext.Provider value={{ nextThemeId, nextLabel, onNext }}>
+          <LangToggle />
+          <main className="relative min-h-screen overflow-x-hidden">
+            <div className="relative z-0">
+              <Current />
+              <ArchitectureDiagram theme={theme} />
             </div>
-          )}
-          <ThemeSwitcher current={revealing?.theme ?? theme} onChange={handleThemeChange} />
-          <ArchitectureDiagram />
-        </main>
+            {Next && (
+              <div
+                ref={overlayRef}
+                className="fixed inset-0 z-40 theme-revealing overflow-y-auto"
+                style={{
+                  ["--reveal-x" as string]: `${revealing!.x}px`,
+                  ["--reveal-y" as string]: `${revealing!.y}px`,
+                } as React.CSSProperties}
+              >
+                <Next />
+                <ArchitectureDiagram theme={revealing!.theme} />
+              </div>
+            )}
+            <ThemeSwitcher current={revealing?.theme ?? theme} onChange={handleThemeChange} />
+          </main>
+        </NextThemeContext.Provider>
       </SettingsContext.Provider>
     </LangContext.Provider>
   );
