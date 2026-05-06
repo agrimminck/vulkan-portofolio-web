@@ -1,6 +1,6 @@
 "use client";
 
-import { themes, type ThemeId } from "../lib/projects";
+import { themes, visibleThemes, type ThemeId } from "../lib/projects";
 import { useState } from "react";
 
 type Props = {
@@ -89,7 +89,7 @@ export default function ThemeSwitcher({ current, onChange }: Props) {
           transition: "opacity 0.4s ease, transform 0.4s ease",
         }}
       >
-        {themes.map((t, i) => {
+        {visibleThemes.map((t, i) => {
           const isCurrent = t.id === current;
           const isHover = hovered === t.id;
           return (

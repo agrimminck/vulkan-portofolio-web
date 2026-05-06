@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
-import { themes, type ThemeId } from "./lib/projects";
+import { visibleThemes, type ThemeId } from "./lib/projects";
 import type { PortfolioSettings } from "./lib/settings";
 import { DEFAULT_SETTINGS } from "./lib/settings";
 import { LangContext } from "./lib/lang-context";
@@ -77,11 +77,12 @@ export default function Home() {
 
   const toggleLang = () => setLang((l) => (l === "en" ? "es" : "en"));
 
-  // compute next theme in cycle
-  const themeIds = themes.map((t) => t.id);
+  // compute next theme in cycle (only visible themes — WIP hidden in prod)
+  const themeIds = visibleThemes.map((t) => t.id);
   const currentIdx = themeIds.indexOf(theme);
-  const nextThemeId = themeIds[(currentIdx + 1) % themeIds.length] as ThemeId;
-  const nextLabel = themes.find((t) => t.id === nextThemeId)?.label ?? "";
+  const safeIdx = currentIdx === -1 ? 0 : currentIdx;
+  const nextThemeId = themeIds[(safeIdx + 1) % themeIds.length] as ThemeId;
+  const nextLabel = visibleThemes.find((t) => t.id === nextThemeId)?.label ?? "";
   const onNext = useCallback(
     (x: number, y: number) => handleThemeChange(nextThemeId, x, y),
     [nextThemeId, handleThemeChange],

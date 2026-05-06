@@ -112,16 +112,20 @@ export const projects: Project[] = [
 ];
 
 export const themes = [
-  { id: "metropolis", label: "Metropolis", subtitle: "Future City + Orbit", color: "#67e8f9" },
-  { id: "ice-citadel", label: "Ice Citadel", subtitle: "Frost + Aurora", color: "#6fc3ff" },
-  { id: "tron", label: "Tron Grid", subtitle: "Neon Wireframe", color: "#00f0ff" },
-  { id: "netflix", label: "Netflix", subtitle: "Streaming UI", color: "#e50914" },
-  { id: "cyberpunk", label: "Cyberpunk", subtitle: "Terminal/Neon", color: "#ff007a" },
-  { id: "holographic", label: "Holographic", subtitle: "Y2K Aurora", color: "#a78bfa" },
-  { id: "refined", label: "Refined", subtitle: "Quiet · Considered", color: "#1e3a5f" },
-  { id: "corporate", label: "Corporate", subtitle: "Boardroom", color: "#0a2540" },
-  { id: "editorial", label: "Editorial", subtitle: "Print Brutalism", color: "#1a1a1a" },
-  { id: "organic", label: "Organic", subtitle: "Risograph", color: "#d97757" },
+  { id: "metropolis", label: "Metropolis", subtitle: "Future City + Orbit", color: "#67e8f9", wip: false },
+  { id: "ice-citadel", label: "Ice Citadel", subtitle: "Frost + Aurora", color: "#6fc3ff", wip: true },
+  { id: "tron", label: "Tron Grid", subtitle: "Neon Wireframe", color: "#00f0ff", wip: true },
+  { id: "netflix", label: "Netflix", subtitle: "Streaming UI", color: "#e50914", wip: true },
+  { id: "cyberpunk", label: "Cyberpunk", subtitle: "Terminal/Neon", color: "#ff007a", wip: false },
+  { id: "holographic", label: "Holographic", subtitle: "Y2K Aurora", color: "#a78bfa", wip: false },
+  { id: "refined", label: "Refined", subtitle: "Quiet · Considered", color: "#1e3a5f", wip: false },
+  { id: "corporate", label: "Corporate", subtitle: "Boardroom", color: "#0a2540", wip: false },
+  { id: "editorial", label: "Editorial", subtitle: "Print Brutalism", color: "#1a1a1a", wip: false },
+  { id: "organic", label: "Organic", subtitle: "Risograph", color: "#d97757", wip: false },
 ] as const;
 
 export type ThemeId = (typeof themes)[number]["id"];
+
+// Hide WIP themes in prod (Vercel). Local dev shows all.
+export const isDev = process.env.NODE_ENV !== "production";
+export const visibleThemes = themes.filter((t) => isDev || !t.wip);
