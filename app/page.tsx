@@ -77,6 +77,19 @@ export default function Home() {
         <main className="relative min-h-screen overflow-x-hidden">
           <div className="relative z-0">
             <Current />
+            {/* Gradient bridge: any theme color → diagram dark */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: 220,
+                background: "linear-gradient(to bottom, transparent 0%, #050c1a 100%)",
+                pointerEvents: "none",
+                zIndex: 10,
+              }}
+            />
           </div>
           {Next && (
             <div

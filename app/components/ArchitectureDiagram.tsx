@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 
 const C = {
   player: "#cbd5e1",
@@ -92,28 +93,112 @@ function Arr({ d, color, id, dashed = false, opacity = 0.72 }: {
 }
 
 export default function ArchitectureDiagram() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.04 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section style={{
-      background: "#050c1a",
-      padding: "72px 24px 80px",
-      borderTop: "1px solid rgba(255,255,255,0.06)",
-    }}>
-      <div style={{ maxWidth: 1240, margin: "0 auto" }}>
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 36 }}>
-          <div style={{ width: 28, height: 1.5, background: "#67e8f9", opacity: 0.5 }} />
-          <span style={{
-            color: "rgba(255,255,255,0.45)", fontSize: 10,
-            letterSpacing: "0.4em", textTransform: "uppercase",
+    <section ref={sectionRef} style={{ background: "#050c1a", paddingBottom: 96 }}>
+      {/* Section intro — full-width dramatic header */}
+      <div style={{
+        position: "relative",
+        overflow: "hidden",
+        paddingTop: 80,
+        paddingBottom: 72,
+        paddingLeft: 24,
+        paddingRight: 24,
+        marginBottom: 0,
+      }}>
+        {/* Giant faded background label */}
+        <div style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          fontSize: "clamp(80px, 18vw, 200px)",
+          fontFamily: "monospace",
+          fontWeight: 900,
+          color: "rgba(103,232,249,0.04)",
+          letterSpacing: "-0.05em",
+          whiteSpace: "nowrap",
+          pointerEvents: "none",
+          userSelect: "none",
+          lineHeight: 1,
+        }}>// SYS</div>
+
+        {/* Thin top rule */}
+        <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.2) 30%, rgba(103,232,249,0.2) 70%, transparent)", marginBottom: 40 }} />
+
+        {/* Center content */}
+        <div style={{
+          textAlign: "center",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(16px)",
+          transition: "opacity 0.9s ease, transform 0.9s ease",
+        }}>
+          <div style={{
+            fontSize: 10,
+            letterSpacing: "0.5em",
+            textTransform: "uppercase" as const,
+            color: "rgba(103,232,249,0.5)",
             fontFamily: "monospace",
+            marginBottom: 14,
           }}>
-            Idyllic Entertainment — System Architecture
-          </span>
-          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
-          <span style={{ color: "rgba(255,255,255,0.18)", fontSize: 9, fontFamily: "monospace" }}>
-            NestJS · Godot · Postgres
-          </span>
+            // Idyllic Entertainment · 2026
+          </div>
+          <div style={{
+            fontSize: "clamp(28px, 4vw, 52px)",
+            fontWeight: 700,
+            color: "rgba(255,255,255,0.88)",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase" as const,
+            fontFamily: "monospace",
+            lineHeight: 1,
+          }}>
+            System Architecture
+          </div>
+          <div style={{
+            marginTop: 16,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 20,
+          }}>
+            {["NestJS", "Godot", "PostgreSQL", "Redis"].map((t, i) => (
+              <span key={t} style={{
+                fontSize: 9,
+                letterSpacing: "0.3em",
+                textTransform: "uppercase" as const,
+                color: "rgba(255,255,255,0.25)",
+                fontFamily: "monospace",
+                opacity: visible ? 1 : 0,
+                transition: `opacity 0.6s ease ${0.3 + i * 0.1}s`,
+              }}>{t}</span>
+            ))}
+          </div>
         </div>
+
+        {/* Thin bottom rule */}
+        <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.2) 30%, rgba(103,232,249,0.2) 70%, transparent)", marginTop: 40 }} />
+      </div>
+
+      <div style={{
+        maxWidth: 1240,
+        margin: "0 auto",
+        paddingLeft: 24,
+        paddingRight: 24,
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: "opacity 1s ease 0.2s, transform 1s ease 0.2s",
+      }}>
 
         <svg viewBox="0 0 1200 710" style={{ width: "100%", display: "block" }}>
           <defs>
@@ -279,3 +364,4 @@ export default function ArchitectureDiagram() {
     </section>
   );
 }
+
