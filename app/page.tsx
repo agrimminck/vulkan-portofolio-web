@@ -16,6 +16,7 @@ import CyberpunkTheme from "./components/themes/CyberpunkTheme";
 import EditorialTheme from "./components/themes/EditorialTheme";
 import OrganicTheme from "./components/themes/OrganicTheme";
 import HolographicTheme from "./components/themes/HolographicTheme";
+import ArchitectureDiagram from "./components/ArchitectureDiagram";
 
 
 const THEMES_MAP: Record<ThemeId, React.ComponentType> = {
@@ -90,6 +91,7 @@ export default function Home() {
             </div>
           )}
           <ThemeSwitcher current={revealing?.theme ?? theme} onChange={handleThemeChange} />
+          <ArchitectureDiagram />
         </main>
       </SettingsContext.Provider>
     </LangContext.Provider>
