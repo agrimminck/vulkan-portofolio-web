@@ -2,7 +2,10 @@ export type Lang = "en" | "es";
 
 // ── Project translations ──────────────────────────────────────────────────────
 
-export const PROJECT_ES: Record<string, { tagline: string; description: string }> = {
+export const PROJECT_ES: Record<
+  string,
+  { tagline: string; description: string }
+> = {
   "idyllic-mmo": {
     tagline: "Videojuego online a gran escala, construido desde cero",
     description:
@@ -47,25 +50,28 @@ export const PROJECT_ES: Record<string, { tagline: string; description: string }
 
 // ── Shared labels ─────────────────────────────────────────────────────────────
 
-export const SHARED: Record<Lang, {
-  visit: string;
-  github: string;
-  studio: string;
-  openSource: string;
-  product: string;
-  live: string;
-  wip: string;
-  standby: string;
-  next: string;
-  nextHint: string;
-}> = {
+export const SHARED: Record<
+  Lang,
+  {
+    visit: string;
+    github: string;
+    studio: string;
+    openSource: string;
+    product: string;
+    live: string;
+    wip: string;
+    standby: string;
+    next: string;
+    nextHint: string;
+  }
+> = {
   en: {
     visit: "Visit →",
     github: "GitHub →",
     studio: "Studio Project",
     openSource: "Open Source",
     product: "Prototype",
-    live: "In production",
+    live: "Deployed",
     wip: "In progress",
     standby: "Standby",
     next: "Next design",
@@ -77,7 +83,7 @@ export const SHARED: Record<Lang, {
     studio: "Proyecto de Estudio",
     openSource: "Open Source",
     product: "Prototipo",
-    live: "En producción",
+    live: "Deployed",
     wip: "En progreso",
     standby: "En espera",
     next: "Siguiente diseño",
@@ -87,19 +93,33 @@ export const SHARED: Record<Lang, {
 
 // ── Per-theme strings ─────────────────────────────────────────────────────────
 
-export const REFINED_T: Record<Lang, {
-  eyebrow: string; location: string; headline: string; body: string;
-  statLive: string; statWip: string; statTotal: string;
-  sectionTitle: string; colophon: string; updated: string;
-  catStudio: string; catOSS: string; catProduct: string;
-  footer: string; tagline: string;
-}> = {
+export const REFINED_T: Record<
+  Lang,
+  {
+    eyebrow: string;
+    location: string;
+    headline: string;
+    body: string;
+    statLive: string;
+    statWip: string;
+    statTotal: string;
+    sectionTitle: string;
+    colophon: string;
+    updated: string;
+    catStudio: string;
+    catOSS: string;
+    catProduct: string;
+    footer: string;
+    tagline: string;
+  }
+> = {
   en: {
     eyebrow: "Idyllic Entertainment · Est. 2026",
     location: "Santiago, CL · Available for selected work",
-    headline: "Software, built carefully — by one engineer based in Santiago, Chile.",
-    body: "One developer, one bedroom in Santiago. One ambitious long-running project — a large-scale online video game built from scratch — alongside a handful of prototypes aimed at Latin America. This page is a quiet index of what I'm building.",
-    statLive: "in production",
+    headline:
+      "Software, built carefully — by one engineer based in Santiago, Chile.",
+    body: "Software built with purpose — robust backend systems, active platforms and large-scale projects. This page shows what I'm building.",
+    statLive: "deployed",
     statWip: "in development",
     statTotal: "total",
     sectionTitle: "❶   Selected Work",
@@ -114,9 +134,10 @@ export const REFINED_T: Record<Lang, {
   es: {
     eyebrow: "Idyllic Entertainment · Est. 2026",
     location: "Santiago, CL · Disponible para proyectos seleccionados",
-    headline: "Software, construido con cuidado — por un ingeniero en Santiago, Chile.",
-    body: "Un desarrollador, una pieza en Santiago. Un proyecto ambicioso de largo plazo — un videojuego online a gran escala construido desde cero — junto a un puñado de prototipos apuntando a América Latina. Esta página es un índice tranquilo de lo que estoy construyendo.",
-    statLive: "en producción",
+    headline:
+      "Software, construido con cuidado — por un ingeniero en Santiago, Chile.",
+    body: "Software construido con propósito — backend robusto, plataformas activas y proyectos a gran escala. Esta página muestra lo que estoy construyendo.",
+    statLive: "desplegado",
     statWip: "en desarrollo",
     statTotal: "total",
     sectionTitle: "❶   Trabajo Selecto",
@@ -130,40 +151,87 @@ export const REFINED_T: Record<Lang, {
   },
 };
 
-export const METROPOLIS_T: Record<Lang, {
-  eyebrow: string; h1a: string; h1b: string; h1c: string; body: string;
-  sActive: string; sWip: string; sStandby: string; sTotal: string;
-  sectionTitle: string; manifest: string;
-  catStudio: string; catOSS: string; catProduct: string;
-  footerL: string; footerR: string;
-}> = {
+export const METROPOLIS_T: Record<
+  Lang,
+  {
+    eyebrow: string;
+    h1a: string;
+    h1b: string;
+    h1c: string;
+    body: string;
+    sActive: string;
+    sWip: string;
+    sStandby: string;
+    sTotal: string;
+    sectionTitle: string;
+    manifest: string;
+    catStudio: string;
+    catOSS: string;
+    catProduct: string;
+    footerL: string;
+    footerR: string;
+  }
+> = {
   en: {
     eyebrow: "Live broadcast · 12.34°N · 103.84°E",
-    h1a: "From the", h1b: "ground floor", h1c: "to orbit.",
-    body: "Software built by one developer in Santiago — a large-scale online video game with custom backend mesh, alongside prototypes targeting Latin America.",
-    sActive: "Active deploys", sWip: "In progress", sStandby: "Standing by", sTotal: "Total payload",
-    sectionTitle: "Selected Work", manifest: "Manifest",
-    catStudio: "Studio", catOSS: "Open Source", catProduct: "Product",
-    footerL: "// SIGNAL.STABLE · TX 24/7 · MMXXVI", footerR: "END_OF_FEED ✦",
+    h1a: "From the",
+    h1b: "ground floor",
+    h1c: "to orbit.",
+    body: "Software built with purpose — robust backend, active platforms and large-scale projects targeting Latin America.",
+    sActive: "Active deploys",
+    sWip: "In progress",
+    sStandby: "Standing by",
+    sTotal: "Total payload",
+    sectionTitle: "Selected Work",
+    manifest: "Manifest",
+    catStudio: "Studio",
+    catOSS: "Open Source",
+    catProduct: "Product",
+    footerL: "// SIGNAL.STABLE · TX 24/7 · MMXXVI",
+    footerR: "END_OF_FEED ✦",
   },
   es: {
     eyebrow: "Transmisión en vivo · 12.34°N · 103.84°E",
-    h1a: "Del piso", h1b: "cero", h1c: "a la órbita.",
-    body: "Software construido por un desarrollador en Santiago — un videojuego online a gran escala con malla de servidores personalizada, junto a prototipos apuntando a América Latina.",
-    sActive: "Deploys activos", sWip: "En progreso", sStandby: "En espera", sTotal: "Carga total",
-    sectionTitle: "Trabajo Selecto", manifest: "Manifiesto",
-    catStudio: "Estudio", catOSS: "Open Source", catProduct: "Producto",
-    footerL: "// SEÑAL.ESTABLE · TX 24/7 · MMXXVI", footerR: "FIN_DE_TRANSMISIÓN ✦",
+    h1a: "Del piso",
+    h1b: "cero",
+    h1c: "a la órbita.",
+    body: "Software construido con propósito — backend robusto, plataformas activas y proyectos a gran escala apuntando a América Latina.",
+    sActive: "Deploys activos",
+    sWip: "En progreso",
+    sStandby: "En espera",
+    sTotal: "Carga total",
+    sectionTitle: "Trabajo Selecto",
+    manifest: "Manifiesto",
+    catStudio: "Estudio",
+    catOSS: "Open Source",
+    catProduct: "Producto",
+    footerL: "// SEÑAL.ESTABLE · TX 24/7 · MMXXVI",
+    footerR: "FIN_DE_TRANSMISIÓN ✦",
   },
 };
 
-export const CORPORATE_T: Record<Lang, {
-  established: string; sub: string; reg: string; volume: string;
-  reportTitle: string; principal: string; body: string; intent: string;
-  indexTitle: string; i1: string; i2: string; i3: string; i4: string;
-  portfolioLabel: string; entries: string;
-  footer1: string; footer2: string;
-}> = {
+export const CORPORATE_T: Record<
+  Lang,
+  {
+    established: string;
+    sub: string;
+    reg: string;
+    volume: string;
+    reportTitle: string;
+    principal: string;
+    body: string;
+    intent: string;
+    indexTitle: string;
+    i1: string;
+    i2: string;
+    i3: string;
+    i4: string;
+    portfolioLabel: string;
+    entries: string;
+    footer1: string;
+    footer2: string;
+  }
+> = {
   en: {
     established: "Established · 2026 · Santiago, Chile",
     sub: "software · games · infrastructure",
@@ -171,10 +239,13 @@ export const CORPORATE_T: Record<Lang, {
     volume: "Volume I · Folio 01",
     reportTitle: "Annual Report",
     principal: "Developer —",
-    body: "One developer building a large-scale online video game from first principles, alongside a portfolio of prototypes for possible insertion in Latin America.",
+    body: "Software built with purpose — robust backend systems, active platforms and large-scale projects for Latin America.",
     intent: "— Statement of Intent",
     indexTitle: "Index",
-    i1: "I. Flagship Project", i2: "II. Public Portfolio", i3: "III. Open Source", i4: "IV. Correspondence",
+    i1: "I. Flagship Project",
+    i2: "II. Public Portfolio",
+    i3: "III. Open Source",
+    i4: "IV. Correspondence",
     portfolioLabel: "Portfolio",
     entries: "entries",
     footer1: "Idyllic Entertainment · MMXXVI",
@@ -187,10 +258,13 @@ export const CORPORATE_T: Record<Lang, {
     volume: "Volumen I · Folio 01",
     reportTitle: "Informe Anual",
     principal: "Desarrollador —",
-    body: "Un desarrollador construyendo un videojuego online a gran escala desde principios fundamentales, junto a un portfolio de prototipos para posible inserción en América Latina.",
+    body: "Software construido con propósito — backend robusto, plataformas activas y proyectos a gran escala para América Latina.",
     intent: "— Declaración de Intención",
     indexTitle: "Índice",
-    i1: "I. Proyecto Insignia", i2: "II. Portfolio Público", i3: "III. Open Source", i4: "IV. Correspondencia",
+    i1: "I. Proyecto Insignia",
+    i2: "II. Portfolio Público",
+    i3: "III. Open Source",
+    i4: "IV. Correspondencia",
     portfolioLabel: "Portfolio",
     entries: "entradas",
     footer1: "Idyllic Entertainment · MMXXVI",
@@ -198,37 +272,64 @@ export const CORPORATE_T: Record<Lang, {
   },
 };
 
-export const CYBERPUNK_T: Record<Lang, {
-  nodeTag: string; sProjects: string; sLive: string; sWip: string; sStandby: string;
-  manifest: string; eof: string;
-}> = {
+export const CYBERPUNK_T: Record<
+  Lang,
+  {
+    nodeTag: string;
+    sProjects: string;
+    sLive: string;
+    sWip: string;
+    sStandby: string;
+    manifest: string;
+    eof: string;
+  }
+> = {
   en: {
     nodeTag: "NODE.LATAM // PORTFOLIO_v5.0 // 2026.05",
-    sProjects: "PROJECTS", sLive: "DEPLOYED", sWip: "STACKS", sStandby: "UPTIME",
+    sProjects: "PROJECTS",
+    sLive: "DEPLOYED",
+    sWip: "STACKS",
+    sStandby: "UPTIME",
     manifest: "MANIFEST",
     eof: "EOF // session=alive // mem=98%",
   },
   es: {
     nodeTag: "NODO.LATAM // PORTFOLIO_v5.0 // 2026.05",
-    sProjects: "PROYECTOS", sLive: "DESPLEGADOS", sWip: "STACKS", sStandby: "UPTIME",
+    sProjects: "PROYECTOS",
+    sLive: "DESPLEGADOS",
+    sWip: "STACKS",
+    sStandby: "UPTIME",
     manifest: "MANIFIESTO",
     eof: "EOF // sesión=activa // mem=98%",
   },
 };
 
-export const EDITORIAL_T: Record<Lang, {
-  vol: string; date: string; lede: string; byline: string; photoCaption: string;
-  body1: string; body2: string;
-  catalogTitle: string; continued: string; footer: string; end: string;
-}> = {
+export const EDITORIAL_T: Record<
+  Lang,
+  {
+    vol: string;
+    date: string;
+    lede: string;
+    byline: string;
+    photoCaption: string;
+    body1: string;
+    body2: string;
+    catalogTitle: string;
+    continued: string;
+    footer: string;
+    end: string;
+  }
+> = {
   en: {
     vol: "Vol. I · No. 01",
     date: "Tuesday, May 5, 2026",
     lede: "A solo developer building things, one at a time.",
     byline: "By Idyllic Entertainment",
-    photoCaption: "↳ The author, photographed in his bedroom",
-    body1: "The portfolio you are reading is intentionally heterogeneous. A large-scale online video game built ground-up shares a column with a forex algorithm, a pharmacy-shift marketplace, and a humble affiliate site for home appliances. None of it in production. All of it being built.",
-    body2: "This is not a contradiction — it is the working method. Build small, iterate often, and hold one ambitious thing on the long horizon.",
+    photoCaption: "↳ The author, at his desk",
+    body1:
+      "The portfolio you are reading is intentionally diverse. A large-scale backend system with 8+ microservices shares a column with a production analytics platform, a POS system and an investment marketplace. Built with purpose. Shipped.",
+    body2:
+      "This is not a contradiction — it is the working method. Build small, iterate often, and hold one ambitious thing on the long horizon.",
     catalogTitle: "The Catalogue",
     continued: "Continued from cover →",
     footer: "The Idyllic Review © MMXXVI",
@@ -239,9 +340,11 @@ export const EDITORIAL_T: Record<Lang, {
     date: "Martes, 5 de mayo de 2026",
     lede: "Un desarrollador solo construyendo cosas, de a poco.",
     byline: "Por Idyllic Entertainment",
-    photoCaption: "↳ El autor, fotografiado en su pieza",
-    body1: "El portfolio que estás leyendo es intencionalmente heterogéneo. Un videojuego online a gran escala construido desde cero comparte columna con un algoritmo de forex, un marketplace de turnos de farmacia y un sitio de afiliados para electrodomésticos. Nada en producción. Todo en construcción.",
-    body2: "Esto no es una contradicción — es el método de trabajo. Construir pequeño, iterar seguido, y mantener una cosa ambiciosa en el horizonte largo.",
+    photoCaption: "↳ El autor, en su escritorio",
+    body1:
+      "El portfolio que estás leyendo es intencionalmente diverso. Un sistema backend a gran escala con 8+ microservicios comparte columna con una plataforma analytics en producción, un sistema POS y un marketplace de inversiones. Construido con propósito. Desplegado.",
+    body2:
+      "Esto no es una contradicción — es el método de trabajo. Construir pequeño, iterar seguido, y mantener una cosa ambiciosa en el horizonte largo.",
     catalogTitle: "El Catálogo",
     continued: "Continúa en portada →",
     footer: "The Idyllic Review © MMXXVI",
@@ -249,17 +352,31 @@ export const EDITORIAL_T: Record<Lang, {
   },
 };
 
-export const ORGANIC_T: Record<Lang, {
-  role: string; title: string; sub: string; body: string;
-  tag1: string; tag2: string; tag3: string; tag4: string; tag5: string;
-  footer: string;
-}> = {
+export const ORGANIC_T: Record<
+  Lang,
+  {
+    role: string;
+    title: string;
+    sub: string;
+    body: string;
+    tag1: string;
+    tag2: string;
+    tag3: string;
+    tag4: string;
+    tag5: string;
+    footer: string;
+  }
+> = {
   en: {
     role: "✿ the gardener",
     title: "✦ a portfolio garden ✦",
     sub: "grown slowly, with hands.",
     body: "eleven projects, one gardener. a video game that takes years, an affiliate site that took weekends. each one watered when it asked for water.",
-    tag1: "✿ chile", tag2: "✦ santiago", tag3: "❀ since 2026", tag4: "✺ open source", tag5: "❁ slow software",
+    tag1: "✿ chile",
+    tag2: "✦ santiago",
+    tag3: "❀ since 2026",
+    tag4: "✺ open source",
+    tag5: "❁ slow software",
     footer: "keep growing ✿ keep shipping ✦ keep going",
   },
   es: {
@@ -267,46 +384,78 @@ export const ORGANIC_T: Record<Lang, {
     title: "✦ un jardín portfolio ✦",
     sub: "cultivado lentamente, con las manos.",
     body: "once proyectos, un jardinero. un videojuego que lleva años, un sitio de afiliados que tomó fines de semana. cada uno regado cuando lo pedía.",
-    tag1: "✿ chile", tag2: "✦ santiago", tag3: "❀ desde 2026", tag4: "✺ open source", tag5: "❁ software lento",
+    tag1: "✿ chile",
+    tag2: "✦ santiago",
+    tag3: "❀ desde 2026",
+    tag4: "✺ open source",
+    tag5: "❁ software lento",
     footer: "seguir creciendo ✿ seguir lanzando ✦ seguir adelante",
   },
 };
 
-export const HOLOGRAPHIC_T: Record<Lang, {
-  title: string; sub: string; body: (n: number) => string;
-  sProjects: string; sLive: string; sWip: string; sStandby: string;
-  footer: string;
-}> = {
+export const HOLOGRAPHIC_T: Record<
+  Lang,
+  {
+    title: string;
+    sub: string;
+    body: (n: number) => string;
+    sProjects: string;
+    sLive: string;
+    sWip: string;
+    sStandby: string;
+    footer: string;
+  }
+> = {
   en: {
     title: "✦ a portfolio of impossible objects ✦",
     sub: "Software from a parallel timeline.",
-    body: (n) => `// ${n} projects rendered through a chrome lens. all prototypes, all in motion, // all built by one developer & a handful of tools.`,
-    sProjects: "PROJECTS", sLive: "LIVE", sWip: "WIP", sStandby: "STAND BY",
+    body: (n) =>
+      `// ${n} projects rendered through a chrome lens. all in production, all in motion, // all built by one developer & a handful of tools.`,
+    sProjects: "PROJECTS",
+    sLive: "LIVE",
+    sWip: "WIP",
+    sStandby: "STAND BY",
     footer: "// signal stable · channel open · MMXXVI",
   },
   es: {
     title: "✦ un portfolio de objetos imposibles ✦",
     sub: "Software de una línea temporal paralela.",
-    body: (n) => `// ${n} proyectos renderizados a través de un lente cromado. todos prototipos, todos en movimiento, // todos construidos por un desarrollador y un puñado de herramientas.`,
-    sProjects: "PROYECTOS", sLive: "EN VIVO", sWip: "EN DESARROLLO", sStandby: "EN ESPERA",
+    body: (n) =>
+      `// ${n} proyectos renderizados a través de un lente cromado. todos en producción, todos en movimiento, // todos construidos por un desarrollador y un puñado de herramientas.`,
+    sProjects: "PROYECTOS",
+    sLive: "EN VIVO",
+    sWip: "EN DESARROLLO",
+    sStandby: "EN ESPERA",
     footer: "// señal estable · canal abierto · MMXXVI",
   },
 };
 
-export const NETFLIX_T: Record<Lang, {
-  brand: string; topNav: string;
-  heroTag: string; heroTitle: string; heroDesc: string; heroPlay: string; heroGithub: string;
-  rowFeatured: string; rowAll: string;
-  matchScore: string; year: string; rating: string;
-  totalLabel: string;
-  footer: string;
-}> = {
+export const NETFLIX_T: Record<
+  Lang,
+  {
+    brand: string;
+    topNav: string;
+    heroTag: string;
+    heroTitle: string;
+    heroDesc: string;
+    heroPlay: string;
+    heroGithub: string;
+    rowFeatured: string;
+    rowAll: string;
+    matchScore: string;
+    year: string;
+    rating: string;
+    totalLabel: string;
+    footer: string;
+  }
+> = {
   en: {
     brand: "AGRIMFLIX",
     topNav: "PORTFOLIO · MMXXVI",
     heroTag: "FLAGSHIP · ONE OF A KIND",
     heroTitle: "Idyllic",
-    heroDesc: "A large-scale online video game built ground-up. Custom Godot engine work, NestJS backend mesh, server meshing, multi-region. The headline project.",
+    heroDesc:
+      "A large-scale online video game built ground-up. Custom Godot engine work, NestJS backend mesh, server meshing, multi-region. The headline project.",
     heroPlay: "Play",
     heroGithub: "GitHub",
     rowFeatured: "Featured",
@@ -315,14 +464,16 @@ export const NETFLIX_T: Record<Lang, {
     year: "2026",
     rating: "WIP",
     totalLabel: "in the catalogue",
-    footer: "© MMXXVI · Built by one person in Santiago · Streaming since today",
+    footer:
+      "© MMXXVI · Built by one person in Santiago · Streaming since today",
   },
   es: {
     brand: "AGRIMFLIX",
     topNav: "PORTFOLIO · MMXXVI",
     heroTag: "PROYECTO INSIGNIA · ÚNICO",
     heroTitle: "Idyllic",
-    heroDesc: "Videojuego online a gran escala construido desde cero. Motor Godot personalizado, backend NestJS con server meshing, múltiples regiones. El proyecto principal.",
+    heroDesc:
+      "Videojuego online a gran escala construido desde cero. Motor Godot personalizado, backend NestJS con server meshing, múltiples regiones. El proyecto principal.",
     heroPlay: "Reproducir",
     heroGithub: "GitHub",
     rowFeatured: "Destacados",
@@ -331,26 +482,35 @@ export const NETFLIX_T: Record<Lang, {
     year: "2026",
     rating: "WIP",
     totalLabel: "en el catálogo",
-    footer: "© MMXXVI · Hecho por una persona en Santiago · Streaming desde hoy",
+    footer:
+      "© MMXXVI · Hecho por una persona en Santiago · Streaming desde hoy",
   },
 };
 
-export const ICE_CITADEL_T: Record<Lang, {
-  prologue: string; chapterLabel: string;
-  heroEyebrow: string; heroTitle: string; heroSubtitle: string;
-  heroBody: string;
-  portalsLabel: string;
-  enterPortal: string;
-  finis: string; subtitleFinis: string;
-  body: (n: number) => string;
-}> = {
+export const ICE_CITADEL_T: Record<
+  Lang,
+  {
+    prologue: string;
+    chapterLabel: string;
+    heroEyebrow: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    heroBody: string;
+    portalsLabel: string;
+    enterPortal: string;
+    finis: string;
+    subtitleFinis: string;
+    body: (n: number) => string;
+  }
+> = {
   en: {
     prologue: "✦ Codex Septima ✦ Anno Glaciei ✦",
     chapterLabel: "Prologus",
     heroEyebrow: "Idyllic Codex · MMXXVI",
     heroTitle: "Frozen Citadel",
     heroSubtitle: "◇ Halls of the Solo Builder ◇",
-    heroBody: "\"Let the traveler cross the seven portals of the citadel. Each one guards a domain of the ecosystem, forged in ice and obsidian, sealed with the ancient sigils of the lone developer.\"",
+    heroBody:
+      '"Let the traveler cross the seven portals of the citadel. Each one guards a domain of the ecosystem, forged in ice and obsidian, sealed with the ancient sigils of the lone developer."',
     portalsLabel: "Portae Vigentes · The Active Portals",
     enterPortal: "Cross the Threshold",
     finis: "Finis",
@@ -361,9 +521,10 @@ export const ICE_CITADEL_T: Record<Lang, {
     prologue: "✦ Códice Séptimo ✦ Año de Hielo ✦",
     chapterLabel: "Prólogo",
     heroEyebrow: "Códice Idyllic · MMXXVI",
-    heroTitle: "Ciudadela de Hielo",
+    heroTitle: "PORTOFOLIO",
     heroSubtitle: "◇ Salones del Constructor Solitario ◇",
-    heroBody: "\"Que el viajero atraviese los siete portales de la ciudadela. Cada uno custodia un dominio del ecosistema, forjado en hielo y obsidiana, sellado con los antiguos sigilos del desarrollador solitario.\"",
+    heroBody:
+      '"Que el viajero atraviese los siete portales de la ciudadela. Cada uno custodia un dominio del ecosistema, forjado en hielo y obsidiana, sellado con los antiguos sigilos del desarrollador solitario."',
     portalsLabel: "Portae Vigentes · Los Portales Activos",
     enterPortal: "Cruzar el Umbral",
     finis: "Finis",
@@ -372,22 +533,28 @@ export const ICE_CITADEL_T: Record<Lang, {
   },
 };
 
-export const TRON_T: Record<Lang, {
-  systemTag: string; bootLabel: string;
-  heroTitle: string; subtitle: string;
-  heroBody: string;
-  activePrograms: string;
-  enterGrid: string;
-  vector: string;
-  footer: string;
-  totalNodes: (n: number) => string;
-}> = {
+export const TRON_T: Record<
+  Lang,
+  {
+    systemTag: string;
+    bootLabel: string;
+    heroTitle: string;
+    subtitle: string;
+    heroBody: string;
+    activePrograms: string;
+    enterGrid: string;
+    vector: string;
+    footer: string;
+    totalNodes: (n: number) => string;
+  }
+> = {
   en: {
     systemTag: "[ SYSTEM/GRID v.MMXXVI ]",
     bootLabel: "BOOT",
-    heroTitle: "IDYLLIC GRID",
+    heroTitle: "PORTOFOLIO",
     subtitle: "> DIGITAL GRID INTERFACE <",
-    heroBody: "User program initialized. Active subroutines on the grid. Select an entry vector to access the corresponding ecosystem node.",
+    heroBody:
+      "User program initialized. Active subroutines on the grid. Select an entry vector to access the corresponding ecosystem node.",
     activePrograms: "ACTIVE_PROGRAMS",
     enterGrid: "ENTER_GRID",
     vector: "VECTOR",
@@ -397,9 +564,10 @@ export const TRON_T: Record<Lang, {
   es: {
     systemTag: "[ SISTEMA/GRID v.MMXXVI ]",
     bootLabel: "BOOT",
-    heroTitle: "IDYLLIC GRID",
+    heroTitle: "PORTOFOLIO",
     subtitle: "> INTERFAZ DE LA GRILLA DIGITAL <",
-    heroBody: "Programa de usuario inicializado. Subrutinas activas en la grilla. Selecciona un vector de entrada para acceder al nodo correspondiente del ecosistema.",
+    heroBody:
+      "Programa de usuario inicializado. Subrutinas activas en la grilla. Selecciona un vector de entrada para acceder al nodo correspondiente del ecosistema.",
     activePrograms: "PROGRAMAS_ACTIVOS",
     enterGrid: "ACCEDER",
     vector: "VECTOR",

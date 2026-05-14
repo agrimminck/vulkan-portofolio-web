@@ -121,7 +121,7 @@ export const themes = [
   { id: "refined", label: "Refined", subtitle: "Quiet · Considered", color: "#1e3a5f", wip: false },
   { id: "corporate", label: "Corporate", subtitle: "Boardroom", color: "#0a2540", wip: false },
   { id: "editorial", label: "Editorial", subtitle: "Print Brutalism", color: "#1a1a1a", wip: false },
-  { id: "organic", label: "Organic", subtitle: "Risograph", color: "#d97757", wip: false },
+  { id: "organic", label: "Organic", subtitle: "Risograph", color: "#d97757", wip: true },
 ] as const;
 
 export type ThemeId = (typeof themes)[number]["id"];
