@@ -6,7 +6,8 @@ import { SettingsContext } from "../lib/settings-context";
 
 type Variant =
   | "refined" | "corporate" | "cyberpunk" | "editorial"
-  | "organic" | "holographic" | "metropolis";
+  | "organic" | "holographic" | "metropolis"
+  | "netflix" | "ice-citadel" | "tron";
 
 type Props = {
   variant: Variant;
@@ -49,7 +50,7 @@ export default function ThemedPortrait({ variant, size = 210, className = "", ri
   }, [variant]);
 
   const dbSrc = `/api/portrait/${variant}?v=${version}`;
-  const staticSrc = (settings[`portrait_${variant}` as keyof typeof settings] as string) || "/me.jpg";
+  const staticSrc = (settings[`portrait_${variant}` as keyof typeof settings] as string) || "/me.png";
   const src = srcError ? staticSrc : dbSrc;
 
   const filterClass = `portrait-${variant === "cyberpunk" ? "cyber" : variant === "holographic" ? "holo" : variant}`;
@@ -97,5 +98,8 @@ function defaultRing(v: Variant): string {
     case "organic": return "0 0 0 4px #2b1d12, 8px 8px 0 #d97757";
     case "holographic": return "0 0 0 1px rgba(255,255,255,0.3), 0 0 60px rgba(192,132,252,0.4), 0 0 100px rgba(103,232,249,0.25)";
     case "metropolis": return "0 0 0 2px rgba(255,255,255,0.6), 0 0 0 4px rgba(103,232,249,0.45), 0 12px 30px rgba(0,0,0,0.35)";
+    case "netflix": return "0 0 0 2px rgba(229,9,20,0.6), 0 0 40px rgba(229,9,20,0.3)";
+    case "ice-citadel": return "0 0 0 1px rgba(111,195,255,0.5), 0 0 30px rgba(111,195,255,0.4), 0 0 60px rgba(74,144,217,0.2)";
+    case "tron": return "0 0 0 2px #00f0ff, 0 0 20px rgba(0,240,255,0.6), 0 0 60px rgba(0,240,255,0.2)";
   }
 }

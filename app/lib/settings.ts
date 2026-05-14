@@ -13,13 +13,13 @@ export type PortfolioSettings = {
 export const DEFAULT_SETTINGS: PortfolioSettings = {
   default_theme: "metropolis",
   default_lang: "en",
-  portrait_refined: "/me.jpg",
-  portrait_metropolis: "/me.jpg",
-  portrait_corporate: "/me.jpg",
-  portrait_cyberpunk: "/me.jpg",
-  portrait_editorial: "/me.jpg",
-  portrait_organic: "/me.jpg",
-  portrait_holographic: "/me.jpg",
+  portrait_refined: "/me.png",
+  portrait_metropolis: "/me-metropolis.png",
+  portrait_corporate: "/me-corporate.png",
+  portrait_cyberpunk: "/me-cyberpunk.png",
+  portrait_editorial: "/me.png",
+  portrait_organic: "/me.png",
+  portrait_holographic: "/me.png",
 };
 
 export async function fetchSettings(): Promise<PortfolioSettings> {
