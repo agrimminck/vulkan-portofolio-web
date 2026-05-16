@@ -397,18 +397,32 @@ export default function NetflixTheme() {
               />
               {/* Shimmer sweep */}
               <div className="nf-shimmer absolute inset-0" />
-              {/* Big I letterform */}
-              <div
-                className="absolute inset-0 flex items-center justify-center select-none pointer-events-none"
+              {/* Portrait photo */}
+              <img
+                src="/api/portrait/netflix"
+                alt="Portrait"
                 style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "14rem",
-                  letterSpacing: "-0.04em",
-                  color: "#fff",
-                  opacity: 0.06,
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center top",
                 }}
-              >
-                I
+                onError={(e) => { (e.target as HTMLImageElement).src = "/me.jpg"; }}
+              />
+              {/* Idyllic helm logo */}
+              <div className="absolute top-4 left-0 right-0 flex justify-center pointer-events-none">
+                <img
+                  src="/idyllic-helm.png"
+                  alt="Idyllic"
+                  style={{
+                    height: 56,
+                    width: "auto",
+                    filter: "drop-shadow(0 0 12px rgba(229,9,20,0.9)) drop-shadow(0 0 30px rgba(229,9,20,0.5))",
+                    opacity: 0.92,
+                  }}
+                />
               </div>
               {/* Poster label bottom */}
               <div

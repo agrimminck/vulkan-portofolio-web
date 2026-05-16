@@ -191,9 +191,9 @@ type PortfolioStatus = "live" | "wip" | "standby";
 
 function StatusBadge({ status }: { status: PortfolioStatus }) {
   const cfg: Record<PortfolioStatus, { label: string; color: string; bg: string }> = {
-    live: { label: "ONLINE", color: "#00f0ff", bg: "rgba(0,240,255,0.08)" },
-    wip: { label: "COMPILING", color: "#ff8a3d", bg: "rgba(255,138,61,0.1)" },
-    standby: { label: "DORMANT", color: "#7fa8b3", bg: "rgba(127,168,179,0.08)" },
+    live:    { label: "ONLINE", color: "#00f0ff", bg: "rgba(0,240,255,0.08)" },
+    wip:     { label: "ONLINE", color: "#00f0ff", bg: "rgba(0,240,255,0.08)" },
+    standby: { label: "ONLINE", color: "#00f0ff", bg: "rgba(0,240,255,0.08)" },
   };
   const c = cfg[status];
   return (
@@ -305,74 +305,29 @@ function LogoFX() {
       {/* vertical scan bar */}
       <div className="tn-logo-scanbar pointer-events-none absolute inset-0" />
 
-      {/* glitch RGB shifted letterform — "AG" glyph, no image dependency */}
-      <div className="tn-logo-stack relative z-10 h-40 w-40 sm:h-48 sm:w-48">
-        {/* base layer */}
-        <div
-          className="tn-logo-base absolute inset-0 flex items-center justify-center"
+      {/* Portrait photo — centered in ring with tron glow */}
+      <div
+        className="relative z-10 overflow-hidden"
+        style={{
+          width: 160,
+          height: 160,
+          borderRadius: "50%",
+          border: "1.5px solid #00f0ff",
+          boxShadow: "0 0 0 1px rgba(0,240,255,0.3), 0 0 20px rgba(0,240,255,0.6), 0 0 60px rgba(0,240,255,0.2)",
+          filter: "drop-shadow(0 0 8px rgba(0,240,255,0.8))",
+        }}
+      >
+        <img
+          src="/api/portrait/tron"
+          alt="Portrait"
           style={{
-            filter: "drop-shadow(0 0 12px rgba(0,240,255,0.9)) drop-shadow(0 0 32px rgba(0,240,255,0.5))",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center top",
           }}
-        >
-          <svg viewBox="0 0 120 120" className="h-full w-full" fill="none">
-            <text
-              x="60"
-              y="78"
-              textAnchor="middle"
-              fontFamily="Orbitron, sans-serif"
-              fontWeight="800"
-              fontSize="52"
-              fill="#00f0ff"
-              letterSpacing="4"
-            >
-              AG
-            </text>
-            <line x1="18" y1="88" x2="102" y2="88" stroke="#00f0ff" strokeWidth="1.5" opacity="0.6" />
-            <line x1="28" y1="92" x2="92" y2="92" stroke="#00f0ff" strokeWidth="0.5" opacity="0.35" />
-          </svg>
-        </div>
-        {/* R-shifted layer */}
-        <div
-          className="tn-logo-r absolute inset-0 flex items-center justify-center"
-          style={{ mixBlendMode: "screen" }}
-        >
-          <svg viewBox="0 0 120 120" className="h-full w-full" fill="none">
-            <text
-              x="62"
-              y="78"
-              textAnchor="middle"
-              fontFamily="Orbitron, sans-serif"
-              fontWeight="800"
-              fontSize="52"
-              fill="#ff00aa"
-              letterSpacing="4"
-              opacity="0"
-            >
-              AG
-            </text>
-          </svg>
-        </div>
-        {/* B-shifted layer */}
-        <div
-          className="tn-logo-b absolute inset-0 flex items-center justify-center"
-          style={{ mixBlendMode: "screen" }}
-        >
-          <svg viewBox="0 0 120 120" className="h-full w-full" fill="none">
-            <text
-              x="58"
-              y="78"
-              textAnchor="middle"
-              fontFamily="Orbitron, sans-serif"
-              fontWeight="800"
-              fontSize="52"
-              fill="#00ffe5"
-              letterSpacing="4"
-              opacity="0"
-            >
-              AG
-            </text>
-          </svg>
-        </div>
+          onError={(e) => { (e.target as HTMLImageElement).src = "/me.jpg"; }}
+        />
       </div>
     </div>
   );

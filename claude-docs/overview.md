@@ -164,8 +164,8 @@ Todos los temas usan pills explícitos (no `<a>` wrapper en card — HTML invál
 
 ## Framing de contenido
 
-- Un desarrollador solo, una pieza en Santiago
-- Nada en producción — todos prototipos
+- Un desarrollador solo en Santiago, Chile
+- Técnicamente desplegados, pero prototipos sin uso real — `SHARED.live = "Deployed"` (no "En producción")
 - Framing: "prototipos para posible inserción en América Latina"
 - `SHARED.product` = "Prototype"
 
@@ -236,18 +236,35 @@ Para Ice Citadel y Tron, se portó código directo desde `/home/agrim/github/idy
 - tn-card scanline + load bar
 - tn-hbeam horizontal data beams
 - PerspectiveGrid SVG (perspective lines bottom)
-- LogoFX rotating rings + scanbar + RGB layered images (adaptado: usamos texto SVG en vez de logo image)
+- LogoFX rotating rings + scanbar (centro → portrait circular con glow cyan; era "AG" SVG text)
 - HeaderCircuits animated traces
 
 Selectores reescritos de `[data-theme="ice-gothic"]` → `.t-ice-citadel`, `[data-theme="tron"]` → `.t-tron`.
 
 ## Portrait dinámico
 
-`ThemedPortrait` sirve imagen desde Neon DB. Variants: refined/metropolis/corporate/cyberpunk/editorial/organic/holographic. **Pendiente:** agregar variants para `netflix`/`ice-citadel`/`tron` si se quiere portrait personalizado en esos temas (actualmente fallback inline-text).
+`ThemedPortrait` sirve imagen desde Neon DB. Variants: **todos los 10 temas** — refined/metropolis/corporate/cyberpunk/editorial/organic/holographic/netflix/ice-citadel/tron. Fallback `/me.jpg` vía `onError`. Subir por tema desde `/admin`.
+
+Netflix/IceCitadel/Tron no usan `<ThemedPortrait>` (tamaño no cuadrado) — usan `<img src="/api/portrait/<theme>">` directo con `onError → /me.jpg`.
+
+**LogoFX (Tron):** centro del anillo → portrait circular. **IceCitadel hero:** centro del anillo giratorio → portrait circular. **Netflix poster:** portrait fill + helm logo (`/public/idyllic-helm.png` — copiado de `idyllic-web/src/assets/brand/02-color-cinematic.png`).
+
+## Historial de cambios clave
+
+- **visibleThemes filtering:** `themes.filter((t) => isDev || !t.wip)` — netflix/tron/ice-citadel ocultos en prod (`wip: true`), visibles en `npm run dev`
+- **Badge JWT · 5 roles:** movido a `y=372` en ArchitectureDiagram.tsx (estaba en `y=318`, tapaba caja GAME LAYER)
+- **Branding "Idyllic" en diagramas:** todos los 10 skins tienen eyebrow o title que menciona "Idyllic" explícitamente
+- **Copy review (2026-05):** removidos "pharmacy/farmacia/turnos", "tranquilo/quiet index", "pieza/bedroom" de todos los T objects EN+ES
+- **MetropolisTheme next button:** movido inline con el stat panel "proyectos lanzados" (flex row, justify-between)
+- **IceCitadel scrollbar fix:** `ig-aurora-layer` → `position: fixed; inset: 0` (era `absolute; inset: -10%`). La extensión -10% con `overflow-x-hidden` (fuerza `overflow-y: auto` por CSS spec) creaba scrollbar extra en el wrapper. Con `fixed` es viewport-relative como MagicCanvas. Wrapper sin overflow class.
+- **Foto en 10 temas:** ThemedPortrait extendido con variants netflix/ice-citadel/tron. Portraits usan `/api/portrait/<theme>` con fallback `/me.jpg`.
+- **IceCitadel:** statusbadge "Vigente/Dormido/En Forja" removidos de project cards. Centro del anillo hero ahora muestra portrait circular.
+- **Tron:** todos los statuses → "ONLINE" cyan. Centro LogoFX → portrait circular.
+- **Netflix:** portrait + casco alado en movie poster hero. Logo en `/public/idyllic-helm.png` (copiado de idyllic-web).
 
 ## Pendientes / mejoras futuras
 
-- [ ] ThemedPortrait variants para netflix/ice-citadel/tron
+- [ ] Subir fotos por tema desde /admin (actualmente todos fallback a /me.jpg)
 - [ ] Test A/B framing actual ("solo dev prototypes") vs versión más confiada
 - [ ] Mobile responsive review en los 10 temas (especialmente IceCitadel + Tron con muchos efectos)
 - [ ] Lighthouse audit — Canvas pesado puede afectar performance score

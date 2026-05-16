@@ -644,8 +644,8 @@ body { margin: 0; overflow-x: hidden; }
   animation: ig-bg-breathe 24s ease-in-out infinite;
 }
 .t-ice-citadel .ig-aurora-layer {
-  position: absolute;
-  inset: -10%;
+  position: fixed;
+  inset: 0;
   z-index: 1;
   pointer-events: none;
   background:

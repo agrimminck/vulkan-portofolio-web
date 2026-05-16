@@ -134,37 +134,87 @@ export default function MetropolisTheme() {
           </div>
         </section>
 
-        {/* Frosted info panel */}
-        <div className="mb-16">
-        <div
-          className="backdrop-blur-xl rounded-2xl px-6 py-4 inline-flex items-center gap-5"
-          style={{
-            background: "rgba(255,255,255,0.55)",
-            border: "1px solid rgba(255,255,255,0.7)",
-            boxShadow: "0 16px 40px -16px rgba(10,20,40,0.4)",
-          }}
-        >
+        {/* Frosted info panel + next design button inline */}
+        <div className="mb-16 flex items-center justify-between gap-4">
           <div
-            className="text-4xl font-black"
-            style={{ fontFamily: "var(--font-display-metro)", color: "#0b1320" }}
+            className="backdrop-blur-xl rounded-2xl px-6 py-4 inline-flex items-center gap-5"
+            style={{
+              background: "rgba(255,255,255,0.55)",
+              border: "1px solid rgba(255,255,255,0.7)",
+              boxShadow: "0 16px 40px -16px rgba(10,20,40,0.4)",
+            }}
           >
-            {projects.length}
-          </div>
-          <div>
             <div
-              className="text-[10px] tracking-[0.3em] uppercase mb-1"
-              style={{ color: "#1e3a5f", fontFamily: "var(--font-body-metro)" }}
+              className="text-4xl font-black"
+              style={{ fontFamily: "var(--font-display-metro)", color: "#0b1320" }}
             >
-              {t.sTotal}
+              {projects.length}
             </div>
-            <div
-              className="text-sm"
-              style={{ color: "#3f3f46", fontFamily: "var(--font-body-metro)" }}
-            >
-              {lang === "en" ? "projects shipped" : "proyectos lanzados"}
+            <div>
+              <div
+                className="text-[10px] tracking-[0.3em] uppercase mb-1"
+                style={{ color: "#1e3a5f", fontFamily: "var(--font-body-metro)" }}
+              >
+                {t.sTotal}
+              </div>
+              <div
+                className="text-sm"
+                style={{ color: "#3f3f46", fontFamily: "var(--font-body-metro)" }}
+              >
+                {lang === "en" ? "projects shipped" : "proyectos lanzados"}
+              </div>
             </div>
           </div>
-        </div>
+
+          {/* Next design — HUD next-broadcast panel */}
+          <button
+            aria-label={`Switch to ${nextLabel} theme`}
+            onClick={(e) => onNext(e.clientX, e.clientY)}
+            className="group cursor-pointer border-none bg-transparent p-0"
+          >
+            <div
+              className="relative rounded-2xl px-8 py-5 transition-all duration-400"
+              style={{
+                background: "rgba(255,255,255,0.08)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid rgba(103,232,249,0.55)",
+                boxShadow: "0 0 18px rgba(103,232,249,0.2), inset 0 0 18px rgba(103,232,249,0.04)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLDivElement).style.boxShadow =
+                  "0 0 40px rgba(103,232,249,0.55), inset 0 0 30px rgba(103,232,249,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLDivElement).style.boxShadow =
+                  "0 0 18px rgba(103,232,249,0.2), inset 0 0 18px rgba(103,232,249,0.04)";
+              }}
+            >
+              <div
+                className="text-[9px] tracking-[0.45em] uppercase mb-1"
+                style={{ color: "rgba(103,232,249,0.7)", fontFamily: "var(--font-body-metro)" }}
+              >
+                // CHANNEL.NEXT
+              </div>
+              <div
+                className="text-3xl font-black tracking-tight flex items-center gap-3"
+                style={{ fontFamily: "var(--font-display-metro)", color: "#67e8f9" }}
+              >
+                {nextLabel.toUpperCase()}
+                <span
+                  className="text-2xl transition-transform duration-300 group-hover:translate-x-2"
+                  style={{ display: "inline-block" }}
+                >
+                  &#8594;
+                </span>
+              </div>
+              <div
+                className="text-[9px] tracking-[0.3em] mt-1 opacity-60"
+                style={{ fontFamily: "var(--font-body-metro)", color: "rgba(103,232,249,0.8)" }}
+              >
+                {sh.nextHint.toUpperCase()}
+              </div>
+            </div>
+          </button>
         </div>
 
         {/* Cards */}
@@ -277,58 +327,6 @@ export default function MetropolisTheme() {
             ))}
           </div>
         </section>
-
-        {/* Next design — HUD next-broadcast panel */}
-        <div className="mb-12 flex justify-end">
-          <button
-            aria-label={`Switch to ${nextLabel} theme`}
-            onClick={(e) => onNext(e.clientX, e.clientY)}
-            className="group cursor-pointer border-none bg-transparent p-0"
-          >
-            <div
-              className="relative rounded-2xl px-8 py-5 transition-all duration-400"
-              style={{
-                background: "rgba(255,255,255,0.08)",
-                backdropFilter: "blur(20px)",
-                border: "1px solid rgba(103,232,249,0.55)",
-                boxShadow: "0 0 18px rgba(103,232,249,0.2), inset 0 0 18px rgba(103,232,249,0.04)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLDivElement).style.boxShadow =
-                  "0 0 40px rgba(103,232,249,0.55), inset 0 0 30px rgba(103,232,249,0.1)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLDivElement).style.boxShadow =
-                  "0 0 18px rgba(103,232,249,0.2), inset 0 0 18px rgba(103,232,249,0.04)";
-              }}
-            >
-              <div
-                className="text-[9px] tracking-[0.45em] uppercase mb-1"
-                style={{ color: "rgba(103,232,249,0.7)", fontFamily: "var(--font-body-metro)" }}
-              >
-                // CHANNEL.NEXT
-              </div>
-              <div
-                className="text-3xl font-black tracking-tight flex items-center gap-3"
-                style={{ fontFamily: "var(--font-display-metro)", color: "#67e8f9" }}
-              >
-                {nextLabel.toUpperCase()}
-                <span
-                  className="text-2xl transition-transform duration-300 group-hover:translate-x-2"
-                  style={{ display: "inline-block" }}
-                >
-                  &#8594;
-                </span>
-              </div>
-              <div
-                className="text-[9px] tracking-[0.3em] mt-1 opacity-60"
-                style={{ fontFamily: "var(--font-body-metro)", color: "rgba(103,232,249,0.8)" }}
-              >
-                {sh.nextHint.toUpperCase()}
-              </div>
-            </div>
-          </button>
-        </div>
 
         <footer className="flex flex-wrap items-center justify-between gap-4 text-xs uppercase tracking-[0.3em] text-white/80">
           <span>{t.footerL}</span>

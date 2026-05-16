@@ -659,7 +659,6 @@ function ProjectCard({
           </div>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <StatusBadge status={project.status} />
           <span className="ig-font-rune text-[9px] tracking-[0.3em] text-[#6fc3ff]/60">· {sigil} ·</span>
         </div>
       </div>
@@ -740,7 +739,7 @@ export default function IceCitadelTheme() {
   const flash = useClickFlash();
 
   return (
-    <div className="t-ice-citadel ig-bg-obsidian ig-bg-noise ig-bg-cracks relative min-h-screen overflow-hidden">
+    <div className="t-ice-citadel ig-bg-obsidian ig-bg-noise ig-bg-cracks relative min-h-screen">
       {/* Aurora layer */}
       <div className="ig-aurora-layer absolute inset-0 z-[1]" />
 
@@ -828,28 +827,28 @@ export default function IceCitadelTheme() {
               <circle cx="110" cy="110" r="62" fill="none" stroke="#2a6bb0" strokeWidth="0.5" opacity="0.5" />
             </svg>
 
-            {/* Central brand mark — stylised "I" letter */}
-            <div className="relative z-10 flex h-48 w-48 items-center justify-center sm:h-56 sm:w-56" style={{ filter: "drop-shadow(0 0 16px rgba(111,195,255,0.8)) drop-shadow(0 0 40px rgba(74,144,217,0.5))" }}>
-              <svg viewBox="0 0 80 100" className="h-32 w-24">
-                <defs>
-                  <linearGradient id="ig-brand-grad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#e8f4ff" stopOpacity="0.95" />
-                    <stop offset="50%" stopColor="#b8e6ff" stopOpacity="0.9" />
-                    <stop offset="100%" stopColor="#6fc3ff" stopOpacity="0.7" />
-                  </linearGradient>
-                </defs>
-                {/* Top bar */}
-                <rect x="10" y="8" width="60" height="8" rx="1" fill="url(#ig-brand-grad)" />
-                {/* Stem */}
-                <rect x="34" y="16" width="12" height="68" fill="url(#ig-brand-grad)" />
-                {/* Bottom bar */}
-                <rect x="10" y="84" width="60" height="8" rx="1" fill="url(#ig-brand-grad)" />
-                {/* Decorative serifs */}
-                <line x1="10" y1="12" x2="22" y2="12" stroke="#6fc3ff" strokeWidth="0.5" opacity="0.4" />
-                <line x1="58" y1="12" x2="70" y2="12" stroke="#6fc3ff" strokeWidth="0.5" opacity="0.4" />
-                <line x1="10" y1="88" x2="22" y2="88" stroke="#6fc3ff" strokeWidth="0.5" opacity="0.4" />
-                <line x1="58" y1="88" x2="70" y2="88" stroke="#6fc3ff" strokeWidth="0.5" opacity="0.4" />
-              </svg>
+            {/* Portrait photo — centered in ring */}
+            <div
+              className="relative z-10 overflow-hidden"
+              style={{
+                width: 176,
+                height: 176,
+                borderRadius: "50%",
+                border: "1.5px solid rgba(111,195,255,0.5)",
+                filter: "drop-shadow(0 0 16px rgba(111,195,255,0.8)) drop-shadow(0 0 40px rgba(74,144,217,0.5))",
+              }}
+            >
+              <img
+                src="/api/portrait/ice-citadel"
+                alt="Portrait"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center top",
+                }}
+                onError={(e) => { (e.target as HTMLImageElement).src = "/me.jpg"; }}
+              />
             </div>
           </div>
 
