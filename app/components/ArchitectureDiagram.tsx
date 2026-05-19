@@ -1137,7 +1137,7 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           transition: "opacity 1s ease 0.2s, transform 1s ease 0.2s",
         }}
       >
-        <svg viewBox="0 0 1360 710" style={{ width: "100%", display: "block" }}>
+        <svg viewBox="0 0 1360 730" style={{ width: "100%", display: "block" }}>
           <defs>
             {/* Arrow markers per layer */}
             {(["player", "auth", "game", "web", "global", "data"] as const).map(
@@ -1186,7 +1186,7 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           {/* SVG background */}
           <rect
             width={1360}
-            height={710}
+            height={730}
             fill={svgBgFill === "none" ? "transparent" : svgBgFill}
           />
           {!isDark && svgBgFill !== "none" && (
@@ -1197,10 +1197,10 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           {[
             { y: 42, h: 68, c: C.player },
             { y: 160, h: 68, c: C.auth },
-            { y: 278, h: 80, c: C.game },
-            { y: 408, h: 66, c: C.web },
-            { y: 524, h: 66, c: C.global },
-            { y: 614, h: 66, c: C.data },
+            { y: 278, h: 140, c: C.game },
+            { y: 428, h: 66, c: C.web },
+            { y: 504, h: 66, c: C.global },
+            { y: 580, h: 66, c: C.data },
           ].map((b, i) => (
             <rect
               key={i}
@@ -1219,10 +1219,10 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           {[
             { t: "PLAYER", y: 76, c: C.player },
             { t: "AUTH", y: 194, c: C.auth },
-            { t: "GAME", y: 318, c: C.game },
-            { t: "WEB", y: 441, c: C.web },
-            { t: "GLOBAL", y: 557, c: C.global },
-            { t: "DATA", y: 647, c: C.data },
+            { t: "GAME", y: 346, c: C.game },
+            { t: "WEB", y: 461, c: C.web },
+            { t: "GLOBAL", y: 537, c: C.global },
+            { t: "DATA", y: 613, c: C.data },
           ].map((l) => (
             <text
               key={l.t}
@@ -1250,14 +1250,14 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             color={mutedArrow}
             dashed
             opacity={0.55}
-            d="M660,101 C700,195 960,205 990,289"
+            d="M660,101 C700,250 960,345 990,359"
           />
           {/* Browser → Web Frontend */}
           <Arr
             id={mid("web")}
             color={C.web}
             opacity={0.5}
-            d="M1040,101 C1040,290 1205,370 993,415"
+            d="M1040,101 C1040,290 1205,430 993,435"
           />
           {/* Launcher BE → Auth BE */}
           <Arr
@@ -1283,72 +1283,79 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             d="M645,101 C680,325 410,218 240,288"
           />
           {/* Gateway → MMO Central */}
-          <Arr id={mid("game")} color={C.game} d="M243,318 L345,318" />
+          <Arr id={mid("game")} color={C.game} d="M243,308 L345,308" />
           {/* Gateway → Central BE global */}
           <Arr
             id={mid("global")}
             color={C.global}
             opacity={0.58}
-            d="M160,348 C158,490 390,490 415,524"
+            d="M160,338 C158,510 390,510 415,511"
           />
-          {/* World Manager ↔ Game Server heartbeat (arc over Edge Gateway) */}
+          {/* World Manager ↔ Game Server heartbeat (straight, same row) */}
           <Arr
             id={mid("game")}
             color={C.game}
             opacity={0.78}
-            d="M790,308 C870,270 1090,270 1153,308"
+            d="M790,304 L1097,304"
           />
           <Arr
             id={mid("game")}
             color={C.game}
             opacity={0.78}
-            d="M1153,328 C1090,358 870,358 790,328"
+            d="M1097,312 L790,312"
           />
-          {/* Game Server → MMO Central save/load (arc) */}
+          {/* Game Server → MMO Central save/load (arc under GAME band) */}
           <Arr
             id={mid("game")}
             color={C.game}
             dashed
             opacity={0.42}
-            d="M1113,348 C1160,445 490,445 470,352"
+            d="M1113,338 C1160,423 490,423 470,338"
           />
-          {/* Edge Gateway ↔ Game Server */}
+          {/* World Manager → Edge Gateway (zone routing) */}
+          <Arr
+            id={mid("game")}
+            color={C.game}
+            opacity={0.55}
+            d="M788,320 C850,350 918,370 918,385"
+          />
+          {/* Edge Gateway ↔ Game Server (diagonal cross-row) */}
           <Arr
             id={mid("game")}
             color={C.game}
             opacity={0.75}
-            d="M1066,313 L1097,313"
+            d="M1066,381 C1085,365 1097,345 1097,337"
           />
           <Arr
             id={mid("game")}
             color={C.game}
             opacity={0.75}
-            d="M1097,323 L1066,323"
+            d="M1097,319 C1085,350 1066,370 1066,389"
           />
           {/* Web Frontend → Web Backend */}
           <Arr
             id={mid("web")}
             color={C.web}
             opacity={0.75}
-            d="M997,441 L1025,441"
+            d="M997,461 L1025,461"
           />
           {/* Web Backend → Central BE */}
           <Arr
             id={mid("web")}
             color={C.web}
             opacity={0.42}
-            d="M1080,468 C1080,512 510,512 455,524"
+            d="M1080,487 C1080,530 510,530 455,511"
           />
 
           {/* DB connections (thin) */}
           {[
-            [220, 226, 178, 614],
-            [490, 226, 368, 614],
-            [795, 226, 558, 614],
-            [490, 348, 755, 614],
-            [710, 348, 968, 614],
-            [707, 348, 1175, 614],
-            [992, 348, 1175, 614],
+            [220, 226, 178, 580],
+            [490, 226, 368, 580],
+            [795, 226, 558, 580],
+            [490, 338, 755, 580],
+            [710, 338, 968, 580],
+            [707, 338, 1175, 580],
+            [992, 411, 1175, 580],
           ].map(([x1, y1, x2, y2], i) => (
             <line
               key={i}
@@ -1371,9 +1378,9 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             color={isDark ? `${C.player}88` : "rgba(255,255,255,0.28)"}
           />
           <ALbl x={340} y={260} text="HTTP Bearer" color={C.game} />
-          <ALbl x={970} y={262} text="heartbeat" color={C.game} />
-          <ALbl x={725} y={440} text="save / load" color={C.game} />
-          <ALbl x={140} y={478} text="global" color={C.global} />
+          <ALbl x={940} y={297} text="heartbeat" color={C.game} />
+          <ALbl x={725} y={418} text="save / load" color={C.game} />
+          <ALbl x={140} y={468} text="global" color={C.global} />
 
           {/* ── BOXES ── */}
           {/* Player */}
@@ -1391,45 +1398,46 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           {box(220, 194, "Launcher BE", C.auth, { sub: ":4008" })}
           {box(490, 194, "Auth BE", C.auth, { sub: ":4001", w: 148 })}
           {box(800, 194, "Game Auth BE", C.auth, { sub: ":4004", w: 162 })}
-          {/* Game */}
-          {box(165, 318, "Gateway", C.game, { sub: ":4005", h: 58 })}
-          {box(430, 318, "MMO Central", C.game, { sub: ":4006", h: 58 })}
-          {box(707, 318, "World Manager", C.game, {
+          {/* Game — row 1 */}
+          {box(165, 308, "Gateway", C.game, { sub: ":4005", h: 58 })}
+          {box(430, 308, "MMO Central", C.game, { sub: ":4006", h: 58 })}
+          {box(707, 308, "World Manager", C.game, {
             sub: ":4009",
             w: 162,
             h: 58,
           })}
-          {box(992, 318, "Edge Gateway", C.game, {
-            sub: ":8080 · Go",
-            w: 148,
-            h: 58,
-          })}
-          {box(1175, 318, "Game Server", C.game, {
+          {box(1175, 308, "Game Server", C.game, {
             sub: "UDP:8000+",
             h: 58,
             godot: true,
           })}
+          {/* Game — row 2 */}
+          {box(992, 385, "Edge Gateway", C.game, {
+            sub: ":8080 · Go",
+            w: 148,
+            h: 52,
+          })}
           {/* Web */}
-          {box(920, 441, "Web Frontend", C.web, { sub: ":6001", w: 148 })}
-          {box(1100, 441, "Web Backend", C.web, { sub: ":4007", w: 148 })}
+          {box(920, 461, "Web Frontend", C.web, { sub: ":6001", w: 148 })}
+          {box(1100, 461, "Web Backend", C.web, { sub: ":4007", w: 148 })}
           {/* Global */}
-          {box(430, 557, "Central BE", C.global, { sub: ":4000" })}
+          {box(430, 537, "Central BE", C.global, { sub: ":4000" })}
           {/* DBs */}
-          {db(178, 647, "launcher-db")}
-          {db(368, 647, "auth-db")}
-          {db(558, 647, "game-auth-db")}
-          {db(755, 647, "mmo1-central-db", 148)}
-          {db(968, 647, "world-manager-db", 155)}
-          {db(1175, 647, "redis", 105)}
+          {db(178, 613, "launcher-db")}
+          {db(368, 613, "auth-db")}
+          {db(558, 613, "game-auth-db")}
+          {db(755, 613, "mmo1-central-db", 148)}
+          {db(968, 613, "world-manager-db", 155)}
+          {db(1175, 613, "redis", 105)}
 
           {/* ── BADGES ── */}
           {badge(965, 194, "JWT · 5 roles", C.auth)}
-          {badge(1175, 395, "server meshing", C.game)}
-          {badge(490, 395, "Grist pipeline", C.game)}
-          {badge(920, 478, "idyllic-web.vercel.app", C.web)}
+          {badge(1175, 345, "server meshing", C.game)}
+          {badge(430, 347, "Grist pipeline", C.game)}
+          {badge(920, 498, "idyllic-web.vercel.app", C.web)}
 
           {/* Legend */}
-          <g transform="translate(88,696)">
+          <g transform="translate(88,716)">
             {[
               { t: "◆GD  Godot", x: 0 },
               { t: "■  NestJS", x: 85 },
@@ -1453,7 +1461,7 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           {/* Watermark */}
           <text
             x={1345}
-            y={704}
+            y={724}
             textAnchor="end"
             fill={isDark ? `${C.data}55` : "rgba(255,255,255,0.12)"}
             fontSize={8}
