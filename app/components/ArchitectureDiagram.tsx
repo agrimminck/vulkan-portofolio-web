@@ -1137,7 +1137,7 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           transition: "opacity 1s ease 0.2s, transform 1s ease 0.2s",
         }}
       >
-        <svg viewBox="0 0 1200 710" style={{ width: "100%", display: "block" }}>
+        <svg viewBox="0 0 1360 710" style={{ width: "100%", display: "block" }}>
           <defs>
             {/* Arrow markers per layer */}
             {(["player", "auth", "game", "web", "global", "data"] as const).map(
@@ -1185,7 +1185,7 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
 
           {/* SVG background */}
           <rect
-            width={1200}
+            width={1360}
             height={710}
             fill={svgBgFill === "none" ? "transparent" : svgBgFill}
           />
@@ -1206,7 +1206,7 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
               key={i}
               x={84}
               y={b.y}
-              width={1108}
+              width={1268}
               height={b.h}
               rx={8}
               fill={bandFill(b.c)}
@@ -1244,13 +1244,13 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           <Arr id={mid("auth")} color={C.auth} d="M220,101 L220,160" />
           {/* Game Client → Game Auth BE */}
           <Arr id={mid("auth")} color={C.auth} d="M655,101 L795,160" />
-          {/* Game Client ENet UDP → Game Server (dashed) */}
+          {/* Game Client WS → Edge Gateway (dashed) */}
           <Arr
             id={mid("muted")}
             color={mutedArrow}
             dashed
             opacity={0.55}
-            d="M660,101 C700,195 960,205 990,279"
+            d="M660,101 C700,195 960,205 990,289"
           />
           {/* Browser → Web Frontend */}
           <Arr
@@ -1291,18 +1291,18 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             opacity={0.58}
             d="M160,348 C158,490 390,490 415,524"
           />
-          {/* World Manager ↔ Game Server heartbeat */}
+          {/* World Manager ↔ Game Server heartbeat (arc over Edge Gateway) */}
           <Arr
             id={mid("game")}
             color={C.game}
             opacity={0.78}
-            d="M790,308 L912,308"
+            d="M790,308 C870,270 1090,270 1153,308"
           />
           <Arr
             id={mid("game")}
             color={C.game}
             opacity={0.78}
-            d="M912,328 L790,328"
+            d="M1153,328 C1090,358 870,358 790,328"
           />
           {/* Game Server → MMO Central save/load (arc) */}
           <Arr
@@ -1310,7 +1310,20 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             color={C.game}
             dashed
             opacity={0.42}
-            d="M950,348 C990,445 490,445 470,352"
+            d="M1113,348 C1160,445 490,445 470,352"
+          />
+          {/* Edge Gateway ↔ Game Server */}
+          <Arr
+            id={mid("game")}
+            color={C.game}
+            opacity={0.75}
+            d="M1066,313 L1097,313"
+          />
+          <Arr
+            id={mid("game")}
+            color={C.game}
+            opacity={0.75}
+            d="M1097,323 L1066,323"
           />
           {/* Web Frontend → Web Backend */}
           <Arr
@@ -1334,6 +1347,8 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             [795, 226, 558, 614],
             [490, 348, 755, 614],
             [710, 348, 968, 614],
+            [707, 348, 1175, 614],
+            [992, 348, 1175, 614],
           ].map(([x1, y1, x2, y2], i) => (
             <line
               key={i}
@@ -1352,11 +1367,11 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           <ALbl
             x={755}
             y={192}
-            text="ENet UDP"
+            text="WS"
             color={isDark ? `${C.player}88` : "rgba(255,255,255,0.28)"}
           />
           <ALbl x={340} y={260} text="HTTP Bearer" color={C.game} />
-          <ALbl x={850} y={302} text="heartbeat" color={C.game} />
+          <ALbl x={970} y={262} text="heartbeat" color={C.game} />
           <ALbl x={725} y={440} text="save / load" color={C.game} />
           <ALbl x={140} y={478} text="global" color={C.global} />
 
@@ -1384,7 +1399,12 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             w: 162,
             h: 58,
           })}
-          {box(992, 318, "Game Server", C.game, {
+          {box(992, 318, "Edge Gateway", C.game, {
+            sub: ":8080 · Go",
+            w: 148,
+            h: 58,
+          })}
+          {box(1175, 318, "Game Server", C.game, {
             sub: "UDP:8000+",
             h: 58,
             godot: true,
@@ -1400,10 +1420,11 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           {db(558, 647, "game-auth-db")}
           {db(755, 647, "mmo1-central-db", 148)}
           {db(968, 647, "world-manager-db", 155)}
+          {db(1175, 647, "redis", 105)}
 
           {/* ── BADGES ── */}
           {badge(965, 194, "JWT · 5 roles", C.auth)}
-          {badge(1020, 357, "server meshing", C.game)}
+          {badge(1175, 395, "server meshing", C.game)}
           {badge(490, 395, "Grist pipeline", C.game)}
           {badge(920, 478, "idyllic-web.vercel.app", C.web)}
 
@@ -1412,8 +1433,9 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             {[
               { t: "◆GD  Godot", x: 0 },
               { t: "■  NestJS", x: 85 },
-              { t: "──→  HTTP", x: 162 },
-              { t: "- -→  UDP/ENet", x: 238 },
+              { t: "▶  Go", x: 162 },
+              { t: "──→  HTTP", x: 210 },
+              { t: "- -→  WS/ENet", x: 285 },
             ].map((l) => (
               <text
                 key={l.t}
@@ -1430,7 +1452,7 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
 
           {/* Watermark */}
           <text
-            x={1185}
+            x={1345}
             y={704}
             textAnchor="end"
             fill={isDark ? `${C.data}55` : "rgba(255,255,255,0.12)"}
