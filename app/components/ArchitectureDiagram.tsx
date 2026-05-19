@@ -1243,14 +1243,14 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           {/* Launcher → Launcher BE */}
           <Arr id={mid("auth")} color={C.auth} d="M220,101 L220,160" />
           {/* Game Client → Game Auth BE */}
-          <Arr id={mid("auth")} color={C.auth} d="M655,101 L795,160" />
+          <Arr id={mid("auth")} color={C.auth} d="M685,101 L735,166" />
           {/* Game Client WS → Edge Gateway (dashed) */}
           <Arr
             id={mid("muted")}
             color={mutedArrow}
             dashed
             opacity={0.55}
-            d="M660,101 C700,250 960,345 990,359"
+            d="M660,101 C620,250 960,305 990,359"
           />
           {/* Browser → Web Frontend */}
           <Arr
@@ -1280,16 +1280,16 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             id={mid("game")}
             color={C.game}
             opacity={0.6}
-            d="M645,101 C680,325 410,218 240,288"
+            d="M645,101 C680,325 410,218 245,288"
           />
           {/* Gateway → MMO Central */}
-          <Arr id={mid("game")} color={C.game} d="M243,308 L345,308" />
+          <Arr id={mid("game")} color={C.game} d="M243,308 L350,308" />
           {/* Gateway → Central BE global */}
           <Arr
             id={mid("global")}
             color={C.global}
             opacity={0.58}
-            d="M160,338 C158,510 390,510 415,511"
+            d="M160,338 C158,510 320,510 350,520"
           />
           {/* World Manager ↔ Game Server heartbeat (straight, same row) */}
           <Arr
@@ -1310,27 +1310,27 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             color={C.game}
             dashed
             opacity={0.42}
-            d="M1113,338 C1160,423 490,423 470,338"
+            d="M1113,278 C1160,193 550,253 505,278"
           />
           {/* World Manager → Edge Gateway (zone routing) */}
           <Arr
             id={mid("game")}
             color={C.game}
             opacity={0.55}
-            d="M788,320 C850,350 918,370 918,385"
+            d="M788,320 C850,350 888,370 916,385"
           />
           {/* Edge Gateway ↔ Game Server (diagonal cross-row) */}
           <Arr
             id={mid("game")}
             color={C.game}
             opacity={0.75}
-            d="M1066,381 C1085,365 1097,345 1097,337"
+            d="M1066,381 C1085,365 1094,345 1097,337"
           />
           <Arr
             id={mid("game")}
             color={C.game}
             opacity={0.75}
-            d="M1097,319 C1085,350 1066,370 1066,389"
+            d="M1097,319 C1085,350 1076,350 1066,360"
           />
           {/* Web Frontend → Web Backend */}
           <Arr
@@ -1344,7 +1344,7 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
             id={mid("web")}
             color={C.web}
             opacity={0.42}
-            d="M1080,487 C1080,530 510,530 455,511"
+            d="M1080,487 C1080,530 520,541 510,541"
           />
 
           {/* DB connections (thin) */}
@@ -1380,7 +1380,6 @@ export default function ArchitectureDiagram({ theme }: { theme: ThemeId }) {
           <ALbl x={340} y={260} text="HTTP Bearer" color={C.game} />
           <ALbl x={940} y={297} text="heartbeat" color={C.game} />
           <ALbl x={725} y={418} text="save / load" color={C.game} />
-          <ALbl x={140} y={468} text="global" color={C.global} />
 
           {/* ── BOXES ── */}
           {/* Player */}
